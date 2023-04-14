@@ -29,7 +29,7 @@ namespace ClinoTag.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=tcp:172.16.75.1\\\\\\\\SQLEDGE, 49172;Initial Catalog=CLINOTAG;Persist Security Info=True;User ID=sa;Password=Pa$$w0rd;MultipleActiveResultSets=True;");
+                optionsBuilder.UseSqlServer("Server=.;Initial Catalog=CLINOTAG;Integrated Security=True;trusted_connection=true;encrypt=false;");
             }
         }
 
