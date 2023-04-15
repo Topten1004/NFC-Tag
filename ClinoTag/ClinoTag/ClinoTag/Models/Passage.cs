@@ -21,13 +21,17 @@ namespace ClinoTag.Models
         public int IdLieu { get; set; }
         [Column("ID_AGENT")]
         public int IdAgent { get; set; }
-        [Column("DH_DEBUT", TypeName = "datetime")]
+        [Column("DH_DEBUT")]
+        [DataType(DataType.DateTime)]
         public DateTime DhDebut { get; set; }
-        [Column("DH_FIN", TypeName = "datetime")]
+        [Column("DH_FIN")]
+        [DataType(DataType.DateTime)]
         public DateTime DhFin { get; set; }
         [Column("PHOTO")]
         public byte[]? Photo { get; set; }
-        [Column("COMMENTAIRE", TypeName = "ntext")]
+
+        [Column("COMMENTAIRE")]
+        [DataType(DataType.Text)]
         public string? Commentaire { get; set; }
 
         [ForeignKey("IdAgent")]

@@ -17,10 +17,12 @@ namespace ClinoTag.Models
         [Key]
         [Column("ID_TACHE")]
         public int IdTache { get; set; }
+
         [Column("NOM")]
         [StringLength(50)]
         public string Nom { get; set; } = null!;
-        [Column("DESCRIPTION", TypeName = "ntext")]
+
+        [Column("DESCRIPTION")]
         public string? Description { get; set; }
 
         [InverseProperty("IdTacheNavigation")]

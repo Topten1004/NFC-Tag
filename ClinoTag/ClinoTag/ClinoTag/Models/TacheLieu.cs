@@ -26,6 +26,7 @@ namespace ClinoTag.Models
         [ForeignKey("IdLieu")]
         [InverseProperty("TacheLieus")]
         public virtual Lieu IdLieuNavigation { get; set; } = null!;
+
         [ForeignKey("IdTache")]
         [InverseProperty("TacheLieus")]
         public virtual Tache IdTacheNavigation { get; set; } = null!;
