@@ -26,6 +26,9 @@ namespace ClinoTag.Models
         [Unicode(false)]
         public string Code { get; set; } = null!;
 
+        [Column("LANG")]
+        public int Lang { get; set; } = 0;
+
         [InverseProperty("IdAgentNavigation")]
         public virtual ICollection<Passage> Passages { get; set; }
     }
