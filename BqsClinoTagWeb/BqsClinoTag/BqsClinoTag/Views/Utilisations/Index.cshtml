@@ -1,0 +1,80 @@
+﻿@model IEnumerable<BqsClinoTag.Models.Utilisation>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/col-exp-panel.css" />
+    <link rel="Stylesheet" href="~/css/ol.css" />
+}
+
+<h1>Utilisation</h1>
+@await Html.PartialAsync("../Shared/_RechercheClientDates")
+@*<p>
+    <a asp-action="Create">Nouveau</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date/Heure début
+            </th>
+            <th>
+                Date/Heure fin
+            </th>            
+            <th>
+                Agent
+            </th>
+            <th>
+                Client
+            </th>
+            <th>
+                Materiel
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Commentaire)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DhDebut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DhFin)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAgentNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdMaterielNavigation.IdClientNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdMaterielNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Commentaire)
+            </td>
+            <td>
+                <a class="btnGeoloc pointer-hand" data-bs-target="#geolocModal" data-idutilisation="@item.IdUtilisation">
+                    <img class="img-24x24" src="~/img/marker.pointeur.32x32.png">
+                </a>
+            </td>
+            @*<td>
+                <a asp-action="Edit" asp-route-id="@item.IdUtilisation">Modifier</a> |
+                <a asp-action="Details" asp-route-id="@item.IdUtilisation">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdUtilisation">Supprimer</a>
+            </td>*@
+        </tr>}
+    </tbody>
+</table>
+
+@await Html.PartialAsync("../Shared/_VisualiseGeoloc")
+
+@section Scripts {
+    <script src="~/js/col-exp-panel.js"></script>
+}

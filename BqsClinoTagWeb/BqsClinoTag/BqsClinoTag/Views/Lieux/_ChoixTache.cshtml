@@ -1,0 +1,44 @@
+﻿@using BqsClinoTag.Models
+
+<div class="modal fade" id="tacheModal" tabindex="-1" role="dialog" aria-labelledby="tacheModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajouter une tâche</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">                
+                <div class="list-group">                      
+                    @foreach (Tache tache in ViewBag.ListeTache)
+                    {
+                        <a href="#" class="btnTacheChoisie list-group-item list-group-item-action" data-idtache="@tache.IdTache" >@tache.Nom</a>
+                    }
+                </div>                 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                @*<button id="btnCreate" type="submit" class="btn btn-primary">Valider</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".btnTacheChoisie").click(function(){
+        var idTache = $(this).data("idtache");
+        var idLieu = $("#idLieu").val();
+        $.get("/Lieux/AjoutTacheLieu/" + idLieu + "/" + idTache, function (data) {
+            if(data === true){
+                location.reload();
+            }else{
+                $('#hTitreMessage').text("Erreur");
+                $('#pMessage').html("Erreur lors de l'ajout de la tâche. Opération annulée");
+                $('#ModalMessage').modal("show");
+            }
+            var modal = $("#tacheModal");
+            modal.hide();
+        });
+    });
+
+</script>

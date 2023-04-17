@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
         HttpsTrustManager.allowAllSSL();
         labCodeLogin = (TextView) findViewById(R.id.labCodeLogin);
-        setTitle("BQS ClinoTag - Connexion");
+        setTitle("BQS ClinoTag - Login");
 
         Globals g = (Globals)getApplication();
         String codeAgent = g.lirePref("codeAgent");
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             String req = Globals.urlAPIClinoTag + "AgentLogin/" + codeAgent;
             try {
                 if(!g.isNetworkConnected()){
-                    Toast.makeText(getApplicationContext(), "Connexion Internet nécessaire", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Internet connection required", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Agent result = new JsonTaskAgent().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     Globals.cetAgent = result;
                     startActivityForResult(new Intent(getApplicationContext(), MainActivity.class), 0);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Code inconnu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 Globals g = (Globals)getApplication();
                 if(!g.isNetworkConnected()){
-                    Toast.makeText(getApplicationContext(), "Connexion Internet nécessaire", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Internet connection required", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Agent result = new JsonTaskAgent().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                     g.ecrirePref("codeAgent", codeSaisie);
                     startActivityForResult(new Intent(getApplicationContext(), MainActivity.class), 0);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Code inconnu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();

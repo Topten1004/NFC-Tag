@@ -120,7 +120,7 @@ public class UtilisationActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            LectureTag("YFHF45OKJF"); // Voiture BQS
+            ReadingTag("YFHF45OKJF"); // Voiture BQS
         }
     }
 
@@ -135,7 +135,7 @@ public class UtilisationActivity extends AppCompatActivity {
 //                        tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
 //                        tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
                     tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
-                    LectureTag(hexTagId);
+                    ReadingTag(hexTagId);
                 }
             }), NfcAdapter.FLAG_READER_NFC_A |
                     NfcAdapter.FLAG_READER_NFC_B |
@@ -148,7 +148,7 @@ public class UtilisationActivity extends AppCompatActivity {
         }
     }
 
-    private void LectureTag(String hexTagId) {
+    private void ReadingTag(String hexTagId) {
         try {
             scanEnCours = true;
             if(hexTagId.equals(Globals.MaterielEnCours.uidTag)){

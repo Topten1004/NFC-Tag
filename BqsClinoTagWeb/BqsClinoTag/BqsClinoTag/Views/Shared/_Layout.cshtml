@@ -1,0 +1,125 @@
+﻿@using System.Security.Claims
+@using BqsClinoTag.Grool
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BQS ClinoTag</title>
+    <link rel="icon" type="image/x-icon" href="/img/bqsclinotag.png" />
+    <link rel="stylesheet" href="~/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BqsClinoTag.styles.css" asp-append-version="true" />
+
+    @RenderSection("styles", false)
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 fond-menu">
+            <div class="container">
+                <a class="navbar-brand" href="https://www.bqs.nc"><img class="moyen-logo" src="~/img/logobqs.png" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+
+                            @if (User.IsInRole(nameof(Droits.Roles.SUPERADMIN)) || User.IsInRole(nameof(Droits.Roles.ADMIN))){
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Tiers
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="nav-link" asp-area="" asp-controller="Utilisateurs" asp-action="Index">Utilisateur</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Clients" asp-action="Index">Client</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Agents" asp-action="Index">Agent</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Métier
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                    
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Lieux" asp-action="Index">Lieu</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Taches" asp-action="Index">Tâche</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Materiels" asp-action="Index">Matériel</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Suivi
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                    
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Passages" asp-action="Index">Nettoyage</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Utilisations" asp-action="Index">Utilisat° Matériel</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">Notificat° Matériel</a>
+                                    </div>
+                                </li>
+                            }
+
+                            @if (User.IsInRole(nameof(Droits.Roles.MANAGER)))
+                            {
+                                <li class="nav-item">
+                                  <a class="nav-link active" asp-area="" asp-controller="Lieux" asp-action="Index">Lieu</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link active" asp-area="" asp-controller="Passages" asp-action="Index">Nettoyage</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link active" asp-area="" asp-controller="Materiels" asp-action="Index">Matériel</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link active" asp-area="" asp-controller="Utilisations" asp-action="Index">Utilisation</a>
+                                </li>
+                            }                            
+
+                        </ul>
+                        <a href="/Home/Logout" >
+                            <button class="btn btn-outline-danger my-2 my-sm-0">Déconnexion</button>
+                        </a>
+                        @*<button type="button" class="button-image mx-1" data-toggle="modal" data-target="#ModalAide"><img class="img-icone-moyen" src="~/img/aide.48x48.png"></button>*@
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Accueil</a>
+                            </li>
+                        </ul>
+                        <a href="/Home/Login" >
+                            <button class="btn btn-outline-success my-2 my-sm-0">Connexion</button>
+                        </a>                        
+                    }
+                    
+                    @*<partial name="_LoginPartial" />*@
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - ClinoTag - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    @await Html.PartialAsync("../Shared/_Message")
+</body>
+</html>

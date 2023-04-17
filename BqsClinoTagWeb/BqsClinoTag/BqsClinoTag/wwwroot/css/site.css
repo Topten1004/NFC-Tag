@@ -1,0 +1,91 @@
+.rotated {
+    rotate: 90deg; /* Equal to rotateZ(45deg) */
+}
+
+.fond-menu {
+    background-color: #ccd5d8 !important;
+}
+
+.button-image {
+    border: 0;
+    background: transparent
+}
+
+.moyen-logo {
+    width: 150px;
+}
+
+.mini-logo {
+    width: 75px;
+}
+
+.img-24x24 {
+    width: 24px;
+    height: 24px;
+}
+
+.img-32x32 {
+    width: 32px;
+    height: 32px;
+}
+
+.img-48x48{
+    width: 48px;
+    height: 48px;
+}
+
+.img-256 {
+    width: 256px;
+}
+
+.img-1024 {
+    width: 1024px;
+}
+
+.img-768 {
+    width: 768px;
+}
+
+.pointer-hand {
+    cursor: pointer;
+}
+
+.modalMap {
+    height: 350px;
+    width: 100%;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+@font-face {
+    font-family: 'MuseoSansRounded';
+    src: url('../font/MuseoSansRounded300.otf') format('opentype'),url('../font/MuseoSansRounded700.otf') format('opentype');
+}
+
+body {
+    font-family: 'MuseoSansRounded', Fallback, sans-serif;
+    margin-bottom: 60px;
+    background-color: #f0f0f0;
+}
+
+.footer {
+    background-color: #ccd5d8 !important;
+    /*position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; */ /* Vertically center the text there */
+}

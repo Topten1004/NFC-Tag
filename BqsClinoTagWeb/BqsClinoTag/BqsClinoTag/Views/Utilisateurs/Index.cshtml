@@ -1,0 +1,59 @@
+﻿@model IEnumerable<BqsClinoTag.Models.Utilisateur>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Utilisateurs</h1>
+
+<p>
+    <a asp-action="Create">Nouveau</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prenom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                Rôle
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prenom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleNavigation.Role1)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdUtilisateur">Modifier</a> |
+                <a asp-action="Details" asp-route-id="@item.IdUtilisateur">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdUtilisateur">Supprimer</a>
+            </td>
+        </tr>}
+    </tbody>
+</table>

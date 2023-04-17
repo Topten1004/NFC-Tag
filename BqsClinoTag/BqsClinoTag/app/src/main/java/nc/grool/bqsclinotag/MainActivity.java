@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            LectureTag("YFHF45OKJF"); //GHYSKJDLDSMAZP-9
+            ReadingTag("YFHF45OKJF"); //GHYSKJDLDSMAZP-9
         }
     }
 
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
 //                        tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
 //                        tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
                             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
-                            LectureTag(hexTagId);
+                            ReadingTag(hexTagId);
                         }
                     });
 
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void LectureTag(String hexTagId) {
+    private void ReadingTag(String hexTagId) {
         try {
             scanEnCours = true;
             String req = Globals.urlAPIClinoTag + "IdentificationTag/" + hexTagId ;
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (result == 0) {
                     Toast.makeText(getApplicationContext(), "Le matériel est associé au tag.", Toast.LENGTH_SHORT).show();
-                    LectureTag(hexTagId);
+                    ReadingTag(hexTagId);
                 } else {
                     Toast.makeText(getApplicationContext(), "L'enregistrement du matériel a échoué.", Toast.LENGTH_SHORT).show();
                 }
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (result == 0) {
                     Toast.makeText(getApplicationContext(), "Le nom est associé au tag.", Toast.LENGTH_SHORT).show();
-                    LectureTag(hexTagId);
+                    ReadingTag(hexTagId);
                 } else {
                     Toast.makeText(getApplicationContext(), "L'enregistrement du nom a échoué.", Toast.LENGTH_SHORT).show();
                 }

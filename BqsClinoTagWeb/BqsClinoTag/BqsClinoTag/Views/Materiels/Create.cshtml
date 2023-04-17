@@ -1,0 +1,54 @@
+﻿@model BqsClinoTag.Models.Materiel
+
+@{
+    ViewData["Title"] = "Création";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Création</h1>
+
+<h4>Materiel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nom" class="control-label"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UidTag" class="control-label"></label>
+                <input asp-for="UidTag" class="form-control" />
+                <span asp-validation-for="UidTag" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instruction" class="control-label"></label>
+                <input asp-for="Instruction" class="form-control" />
+                <span asp-validation-for="Instruction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Expiration (en minutes)</label>
+                <input asp-for="Expiration" class="form-control" type="number" min="0" max="40320" />
+                <span asp-validation-for="Expiration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Client</label>
+                <select asp-for="IdClient" class ="form-control" asp-items="ViewBag.IdClient"></select>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary my-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

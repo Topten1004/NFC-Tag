@@ -97,7 +97,7 @@ public class PassageActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            LectureTag("GHYSKJDLDSMAZP-9");
+            ReadingTag("GHYSKJDLDSMAZP-9");
         }
     }
 
@@ -130,7 +130,7 @@ public class PassageActivity extends AppCompatActivity {
 //                        tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
 //                        tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
                             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
-                            LectureTag(hexTagId);
+                            ReadingTag(hexTagId);
                         }
                     });
 
@@ -146,7 +146,7 @@ public class PassageActivity extends AppCompatActivity {
         }
     }
 
-    private void LectureTag(String hexTagId) {
+    private void ReadingTag(String hexTagId) {
         try {
             scanEnCours = true;
             if(hexTagId.equals(Globals.LieuEnCours.uidTag)){

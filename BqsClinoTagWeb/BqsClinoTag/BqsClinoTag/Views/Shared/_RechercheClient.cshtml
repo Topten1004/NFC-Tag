@@ -1,0 +1,16 @@
+﻿<button type="button" class="rechcollapsible">Recherche</button>
+<div class="rechcontent">
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <label class="control-label my-2">Client</label>
+                <select name="idClient" class="form-control" asp-items="@ViewBag.IdClient"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col p-2 text-center">
+                <input id="btnRechercher" type="submit" value="Rechercher" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>

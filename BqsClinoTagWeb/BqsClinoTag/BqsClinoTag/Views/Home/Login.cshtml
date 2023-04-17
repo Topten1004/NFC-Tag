@@ -1,0 +1,118 @@
+﻿@model BqsClinoTag.Models.Utilisateur
+@{
+    ViewData["Title"] = "Connexion";
+    var rurl = (string)ViewData["returnUrl"];
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <script>
+        location.href = window.location.href.replace('/home/login?returnurl=', '');
+    </script>
+}
+else
+{
+    <h1>Connexion</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Login" asp-route-returnurl="@rurl">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">Identifiant</label>
+                    <input asp-for="Login" class="form-control" placeholder="votre identifiant"  value="@ViewData["login"]" />
+                    <span asp-validation-for="Login" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Mot de passe</label>
+                    <input asp-for="Mdp" class="form-control" type="password" placeholder="votre mot de passe"/>
+                    <span asp-validation-for="Mdp" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Valider" class="btn btn-primary my-2" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a href="" data-toggle="modal" data-target="#oubliModal">Mot de passe oublié</a>
+    </div>
+    <!-- Modal Oubli Mdp -->
+    <div class="modal fade" id="oubliModal" tabindex="-1" role="dialog" aria-labelledby="oubliModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header alert-primary">
+                    <h5 class="modal-title" id="oubliModalLabel">Mot de passe oublié</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label text-primary">Indiqué ici l'adresse avec laquelle vous recevez le courrier électronique de Totem.</label>
+                        <input required id="txtAdresseMail" class="form-control" type="email" placeholder="votre adresse mail" />
+                    </div>
+                    <div class="alert alert-success" role="alert">
+                        Les identifiants ont étés envoyés.
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        Adresse mail inconnue.
+                    </div>
+                    <div class="alert alert-warning" role="alert">
+                        Format d'adresse mail non reconnue.
+                    </div>
+                    <div class="alert alert-danger" role="alert">
+                        Erreur lors de l'envoi du mot de passe.
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center" style="margin-bottom:10px">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Chargement...</span>
+                    </div>
+                </div>
+                <div class="modal-footer alert-primary">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button id="btnEnvoyer" class="btn btn-primary my-2">Envoyer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            $(".alert").hide();
+
+            $('#btnEnvoyer').click(function (e) {
+                $(".alert").hide();
+                
+                if (ValidateEmail($("#txtAdresseMail").val())) {
+                    $(".spinner-border").show();
+                    $.get('/api/DistriPubli/OubliMotDePasse/' + $("#txtAdresseMail").val())
+                    .done(function (response, status, jqxhr) {
+                        if (response === true) {
+                            $(".alert-success").show();
+                            $("#btnEnvoyer")[0].disabled = true;
+                        } else $(".alert-info").show();
+                        $(".spinner-border").hide();
+                    })
+                    .fail(function (jqxhr, status, error) {
+                        $(".alert-danger").show();
+                        $(".spinner-border").hide();
+                    });
+                }  
+            });
+        });
+
+        function ValidateEmail(adrEmail)
+        {
+            var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if (adrEmail.match(mailformat))
+                return true;
+            else {
+                $(".alert-warning").show();
+                return false;
+            }
+        }
+    </script>
+}
+
+

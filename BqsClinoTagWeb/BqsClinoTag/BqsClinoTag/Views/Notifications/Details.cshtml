@@ -1,0 +1,31 @@
+﻿@model BqsClinoTag.Models.Notification
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Notification</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DhNotification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DhNotification)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdUtilisationNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdUtilisationNavigation.IdUtilisation)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdNotification">Modifier</a> |
+    <a asp-action="Index">Retour à la liste</a>
+</div>

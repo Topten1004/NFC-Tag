@@ -34,6 +34,10 @@ namespace ClinoTag.Migrations
                         .HasColumnName("CODE")
                         .IsFixedLength();
 
+                    b.Property<int>("Lang")
+                        .HasColumnType("int")
+                        .HasColumnName("LANG");
+
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasMaxLength(100)
