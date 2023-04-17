@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext 'Server=tcp:172.16.75.1\\SQLEDGE, 49172;Initial Catalog=CLINOTAG-BQS;Persist Security Info=True;User ID=sa;Password=Pa$$w0rd;MultipleActiveResultSets=True;' Microsoft.EntityFrameworkCore.SqlServer -f -OutputDir Models -DataAnnotations

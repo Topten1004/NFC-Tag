@@ -1,0 +1,65 @@
+﻿@model BqsClinoTag.Models.Client
+
+@{
+    ViewData["Title"] = "Modification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Client</h4>
+<input hidden id="idClient" value="@Model.IdClient" />
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdClient" />
+            <div class="form-group">
+                <label asp-for="Nom" class="control-label"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br />
+                <button type="button" class="button-image" data-bs-toggle="modal" data-bs-target="#uClientModal">
+                    <img class="img-24x24" src="~/img/plus.48x48.png">
+                </button><span>Manager(s)</span>
+                <table class="table table-sm table-hover">
+                    @*<caption>Publications à livrer</caption>*@
+                    <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (Uclient u in Model.Uclients)
+                    {
+                        <tr>
+                            <td>
+                                @u.IdUtilisateurNavigation.Nom @u.IdUtilisateurNavigation.Prenom
+                            </td>                           
+                            <td>
+                                <a asp-controller="Clients" asp-action="SupprUClient" asp-route-id="@u.IdUclient">
+                                    <img class="img-24x24" src="~/img/suppr.48x48.png">
+                                </a>                                                              
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary my-2" />
+            </div>
+        </form>
+        @await Html.PartialAsync("_ChoixUClient")
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

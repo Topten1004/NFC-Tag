@@ -1,0 +1,64 @@
+﻿@using System.Security.Claims
+@using BqsClinoTag.Grool
+@model IEnumerable<BqsClinoTag.Models.Lieu>
+
+@{
+    ViewData["Title"] = "Lieu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/col-exp-panel.css" />
+}
+<h1>Lieu</h1>
+<p>
+    <a asp-action="Create">Nouveau</a>
+</p>
+@if (User.IsInRole(nameof(Droits.Roles.SUPERADMIN)) || User.IsInRole(nameof(Droits.Roles.ADMIN)))
+{
+    @await Html.PartialAsync("../Shared/_RechercheClient")
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Lieu
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UidTag)
+            </th>
+            <th>
+                Client
+            </th>    
+            <th>
+                Tâche(s)
+            </th>     
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UidTag)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdClientNavigation.Nom)
+            </td>
+            <td>
+                @item.TacheLieus.Count
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdLieu">Modifier</a> |
+                @*<a asp-action="Details" asp-route-id="@item.IdLieu">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.IdLieu">Supprimer</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts {
+    <script src="~/js/col-exp-panel.js"></script>
+}

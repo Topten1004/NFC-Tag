@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BqsClinoTag.Models.Notification>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/col-exp-panel.css" />
+}
+
+<h1>Notification</h1>
+@await Html.PartialAsync("../Shared/_RechercheClientDates")
+@*<p>
+    <a asp-action="Create">Nouveau</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date/Heure Notification
+            </th>
+            <th>
+                Client
+            </th>
+            <th>
+                Materiel
+            </th>
+            <th>
+                Date/Heure début
+            </th>
+            <th>
+                Date/Heure expiration
+            </th>
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DhNotification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdUtilisationNavigation.IdMaterielNavigation.IdClientNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdUtilisationNavigation.IdMaterielNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdUtilisationNavigation.DhDebut)
+            </td>
+            <td>
+                @item.IdUtilisationNavigation.DhDebut.AddMinutes(item.IdUtilisationNavigation.IdMaterielNavigation.Expiration)
+            </td>
+            @*<td>
+                <a asp-action="Edit" asp-route-id="@item.IdNotification">Modifier</a> |
+                <a asp-action="Details" asp-route-id="@item.IdNotification">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdNotification">Supprimer</a>
+            </td>*@
+        </tr>}
+    </tbody>
+</table>
+@section Scripts {
+    <script src="~/js/col-exp-panel.js"></script>
+}

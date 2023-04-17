@@ -1,0 +1,52 @@
+﻿@model BqsClinoTag.Models.Utilisation
+
+@{
+    ViewData["Title"] = "Création";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Création</h1>
+
+<h4>Utilisation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DhDebut" class="control-label"></label>
+                <input asp-for="DhDebut" class="form-control" />
+                <span asp-validation-for="DhDebut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DhFin" class="control-label"></label>
+                <input asp-for="DhFin" class="form-control" />
+                <span asp-validation-for="DhFin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdMateriel" class="control-label"></label>
+                <select asp-for="IdMateriel" class ="form-control" asp-items="ViewBag.IdMateriel"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdAgent" class="control-label"></label>
+                <select asp-for="IdAgent" class ="form-control" asp-items="ViewBag.IdAgent"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Commentaire" class="control-label"></label>
+                <input asp-for="Commentaire" class="form-control" />
+                <span asp-validation-for="Commentaire" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary my-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

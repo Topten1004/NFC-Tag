@@ -1,0 +1,89 @@
+﻿@using System.Security.Claims
+@using BqsClinoTag.Grool
+
+@model IEnumerable<BqsClinoTag.Models.Passage>
+
+@{
+    ViewData["Title"] = "Nettoyage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/col-exp-panel.css" />
+}
+
+<h1>Prestation</h1>
+@await Html.PartialAsync("../Shared/_RechercheClientDates")
+@*<p>
+    <a asp-action="Create">Nouveau</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DhDebut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DhFin)
+            </th>
+            <th>
+                Agent
+            </th>
+            <th>
+                Client / Lieu
+            </th>
+            <th>
+                Commentaire
+            </th>
+            <th>
+                Tâches effectuées
+            </th>
+            <th>Photo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DhDebut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DhFin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdAgentNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdLieuNavigation.IdClientNavigation.Nom) / @Html.DisplayFor(modelItem => item.IdLieuNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Commentaire)
+            </td>
+            <td>
+                @{
+                    int nbTacheFait = 0;
+                }
+                @foreach(PassageTache pt in item.PassageTaches){ if (pt.Fait) nbTacheFait++; }
+                @nbTacheFait / @item.PassageTaches.Count
+            </td>
+            <td>
+                @if (item.Photo != null)
+                {
+                    <img src="~/img/camera.128x128.png" class="img-32x32" />
+                }
+            </td>
+            <td>
+                @if (!User.IsInRole(nameof(Droits.Roles.MANAGER)))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.IdPassage">Modifier</a> Html.Raw(" | ");
+                }                
+                <a asp-action="Details" asp-route-id="@item.IdPassage">Details</a> @*|
+                <a asp-action="Delete" asp-route-id="@item.IdPassage">Supprimer</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts {
+    <script src="~/js/col-exp-panel.js"></script>
+}

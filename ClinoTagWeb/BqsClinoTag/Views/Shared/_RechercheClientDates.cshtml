@@ -1,0 +1,39 @@
+﻿@using System.Security.Claims
+@using BqsClinoTag.Grool
+
+<button type="button" class="rechcollapsible">Recherche</button>
+<div class="rechcontent">
+    <form>
+        <div class="form-row">
+            <div class="col-2">
+                <label class="control-label my-2">Du</label>
+                <input id="dtDebut" name="dtDebut" class="form-control" value="@ViewBag.dtDebut.Date.ToString("yyyy-MM-dd")" type="date" />
+            </div>
+            <div class="col-2">
+                <label class="control-label my-2">Au</label>
+                <input id="dtFin" name="dtFin" class="form-control" value="@ViewBag.dtFin.Date.ToString("yyyy-MM-dd")" type="date" />
+            </div>
+            <script>
+                $("#dtDebut").change(function () {
+                    if ((new Date($("#dtDebut").val()).getTime() > new Date($("#dtFin").val()).getTime())) {
+                        $("#dtFin").val($("#dtDebut").val());
+                    }
+                })
+            </script>
+        </div>
+        @if (User.IsInRole(nameof(Droits.Roles.SUPERADMIN)) || User.IsInRole(nameof(Droits.Roles.ADMIN)))
+        {
+            <div class="row">
+                <div class="col-4">
+                    <label class="control-label my-2">Client</label>
+                    <select name="idClient" class="form-control" asp-items="@ViewBag.IdClient"></select>
+                </div>
+            </div>
+        }        
+        <div class="row">
+            <div class="col p-2 text-center">
+                <input id="btnRechercher" type="submit" value="Rechercher" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>

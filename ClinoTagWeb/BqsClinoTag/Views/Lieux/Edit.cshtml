@@ -1,0 +1,78 @@
+﻿@model BqsClinoTag.Models.Lieu
+
+@{
+    ViewData["Title"] = "Modification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Lieu</h4>
+<input hidden id="idLieu" value="@Model.IdLieu" />
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdLieu" />
+            <div class="form-group">
+                <label asp-for="Nom" class="control-label"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UidTag" class="control-label"></label>
+                <input asp-for="UidTag" class="form-control" />
+                <span asp-validation-for="UidTag" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdClient" class="control-label"></label>
+                <select asp-for="IdClient" class="form-control" asp-items="ViewBag.IdClient"></select>
+                <span asp-validation-for="IdClient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br />
+                <button type="button" class="button-image" data-bs-toggle="modal" data-bs-target="#tacheModal">
+                    <img class="img-24x24" src="~/img/plus.48x48.png">
+                </button><span>Tâche(s)</span>
+                <table class="table table-sm table-hover">
+                    @*<caption>Publications à livrer</caption>*@
+                    <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @foreach (TacheLieu t in Model.TacheLieus)
+                    {
+                        <tr>
+                            <td>
+                                @t.IdTacheNavigation.Nom
+                            </td>                           
+                            <td>
+                                @if (!t.PassageTaches.Any())
+                                {
+                                    <a asp-controller="Lieux" asp-action="SupprTacheLieu" asp-route-id="@t.IdTl">
+                                        <img class="img-24x24" src="~/img/suppr.48x48.png">
+                                    </a>    
+                                }                                                            
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary my-2" />
+            </div>
+        </form>
+        @await Html.PartialAsync("_ChoixTache")
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

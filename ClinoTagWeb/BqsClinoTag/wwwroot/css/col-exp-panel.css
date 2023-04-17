@@ -1,0 +1,35 @@
+﻿.rechcollapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+    .rechactive, .rechcollapsible:hover {
+        background-color: #40826d;
+    }
+
+    .rechcollapsible:after {
+        content: '\002B';
+        color: white;
+        font-weight: bold;
+        float: right;
+        margin-left: 5px;
+    }
+
+.rechactive:after {
+    content: "\2212";
+}
+
+.rechcontent {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    background-color: #c5d9d3;
+}
