@@ -14,7 +14,8 @@ namespace BqsClinoTag.Models
         public int IdNotification { get; set; }
         [Column("ID_UTILISATION")]
         public int IdUtilisation { get; set; }
-        [Column("DH_NOTIFICATION", TypeName = "datetime")]
+        [Column("DH_NOTIFICATION")]
+        [DataType(DataType.DateTime)]
         public DateTime DhNotification { get; set; }
         [Column("TYPE_DESTINATAIRE")]
         [StringLength(10)]

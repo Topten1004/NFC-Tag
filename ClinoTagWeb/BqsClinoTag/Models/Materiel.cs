@@ -21,7 +21,8 @@ namespace BqsClinoTag.Models
         [Column("NOM")]
         [StringLength(150)]
         public string Nom { get; set; } = null!;
-        [Column("INSTRUCTION", TypeName = "ntext")]
+        [Column("INSTRUCTION")]
+        [DataType(DataType.Text)]
         public string? Instruction { get; set; }
         [Column("ID_CLIENT")]
         public int IdClient { get; set; }

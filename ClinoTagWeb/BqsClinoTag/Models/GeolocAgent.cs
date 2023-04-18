@@ -21,7 +21,8 @@ namespace BqsClinoTag.Models
         public double Lati { get; set; }
         [Column("LONGI")]
         public double Longi { get; set; }
-        [Column("DH_GEOLOC", TypeName = "datetime")]
+        [Column("DH_GEOLOC")]
+        [DataType(DataType.DateTime)]
         public DateTime DhGeoloc { get; set; }
         [Column("IP_GEOLOC")]
         [StringLength(30)]

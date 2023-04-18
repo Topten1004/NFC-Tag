@@ -23,9 +23,11 @@ namespace BqsClinoTag.Models
         [Column("DESCRIPTION_CRONTAB")]
         [StringLength(120)]
         public string? DescriptionCrontab { get; set; }
-        [Column("DH_TACHE_PLANIFIEE", TypeName = "datetime")]
+        [Column("DH_TACHE_PLANIFIEE")]
+        [DataType(DataType.DateTime)]
         public DateTime? DhTachePlanifiee { get; set; }
-        [Column("DH_DERNIERE_TACHE", TypeName = "datetime")]
+        [Column("DH_DERNIERE_TACHE")]
+        [DataType(DataType.DateTime)]
         public DateTime? DhDerniereTache { get; set; }
         [Column("TACHE_ACCOMPLIE")]
         public bool TacheAccomplie { get; set; }

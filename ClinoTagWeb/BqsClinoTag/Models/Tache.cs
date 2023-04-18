@@ -20,7 +20,8 @@ namespace BqsClinoTag.Models
         [Column("NOM")]
         [StringLength(50)]
         public string Nom { get; set; } = null!;
-        [Column("DESCRIPTION", TypeName = "ntext")]
+        [Column("DESCRIPTION")]
+        [DataType(DataType.Text)]
         public string? Description { get; set; }
 
         [InverseProperty("IdTacheNavigation")]

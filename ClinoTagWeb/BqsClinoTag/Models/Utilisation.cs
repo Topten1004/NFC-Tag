@@ -17,9 +17,11 @@ namespace BqsClinoTag.Models
         [Key]
         [Column("ID_UTILISATION")]
         public int IdUtilisation { get; set; }
-        [Column("DH_DEBUT", TypeName = "datetime")]
+        [Column("DH_DEBUT")]
+        [DataType(DataType.DateTime)]
         public DateTime DhDebut { get; set; }
-        [Column("DH_FIN", TypeName = "datetime")]
+        [Column("DH_FIN")]
+        [DataType(DataType.DateTime)]
         public DateTime? DhFin { get; set; }
         [Column("ID_MATERIEL")]
         public int IdMateriel { get; set; }
