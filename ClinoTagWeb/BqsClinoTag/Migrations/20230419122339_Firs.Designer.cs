@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BqsClinoTag.Migrations
 {
     [DbContext(typeof(CLINOTAGBQSContext))]
-    [Migration("20230418054049_Firs")]
+    [Migration("20230419122339_Firs")]
     partial class Firs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("BqsClinoTag.Models.Agent", b =>

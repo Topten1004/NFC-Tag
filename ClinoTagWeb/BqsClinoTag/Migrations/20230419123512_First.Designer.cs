@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BqsClinoTag.Migrations
 {
     [DbContext(typeof(CLINOTAGBQSContext))]
-    [Migration("20230418054655_First")]
+    [Migration("20230419123512_First")]
     partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

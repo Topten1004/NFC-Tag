@@ -10,4 +10,7 @@ public class Lieu {
     public List<Tache> lTache;
     public String uidTag;
 
+    public int actionType;
+
+    public int progress;
 }

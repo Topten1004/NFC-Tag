@@ -28,6 +28,13 @@ namespace BqsClinoTag.Models
         [StringLength(50)]
         public string UidTag { get; set; } = null!;
 
+        [Column("ACTION_TYPE")]
+        public int ActionType { get; set; } = 0!;
+
+        [Column("PROGRESS")]
+        public int Progress { get; set; } = 0!;
+
+
         [ForeignKey("IdClient")]
         [InverseProperty("Lieus")]
         public virtual Client IdClientNavigation { get; set; } = null!;

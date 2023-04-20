@@ -1,0 +1,96 @@
+﻿@model IEnumerable<BqsClinoTag.Models.Lieu>
+
+@{
+    ViewData["Title"] = "Activity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Activity</h1>
+
+@section styles {
+    <link rel="stylesheet" href="~/css/col-exp-panel.css" />
+}
+
+<form asp-action="Create">
+<div style="display:flex">
+    <div class="col-8">
+        @foreach (var item in Model)
+        {
+            <div class="@((item.ActionType == 1)? "ASKED":(item.ActionType == 2)?"DISTURB":(item.Progress == 2)?"DONE":(item.Progress == 1)?"PROGRESS":"NONE")">
+                <a asp-action="Asked" style="text-decoration:none;color:black !important" asp-route-id="@item.IdLieu">@Html.DisplayFor(modelItem => item.Nom)</a>
+            </div>
+        }
+    </div>
+    <div class="col-4">
+        <div style="border: 2px solid black;padding:40px;margin:20px">
+            <div style="background:green;height:30px;">
+            </div>
+            <p>
+                GREEN COLOR<br />AGENT visited the location
+            </p>
+            <div style="background:#8775F8;height:30px;">
+            </div>
+            <p>
+                PURPLE COLOR<br />Action asked
+            </p>
+            <div style="background:#FEAA08;height:30px;">
+            </div>
+            <p>
+                ORANGE COLOR <br />Action in progress
+            </p>
+            <div style="background:#FF0000;height:30px;">
+            </div>
+            <p>
+                RED COLOR <br />NO action (do not disturb)
+            </p>
+        </div>
+   </div>
+</div>
+</form>
+<style>
+    .DONE {
+        width: 100%;
+        margin-top: 20px;
+        padding: 20px;
+        text-align: center;
+        background: green !important;
+        color: black;
+    }
+    .NONE {
+        width: 100%;
+        margin-top: 20px;
+        padding: 20px;
+        text-align: center;
+        background: #D9D9D9;
+        color: black;
+    }
+    .ASKED {
+        width: 100%;
+        margin-top: 20px;
+        padding: 20px;
+        text-align: center;
+        background: #8775F8;
+        color: black;
+    }
+
+    .PROGRESS {
+        width: 100%;
+        margin-top: 20px;
+        padding: 20px;
+        text-align: center;
+        background: #FEAA08;
+        color: black;
+    }
+
+    .DISTURB {
+        width: 100%;
+        margin-top: 20px;
+        padding: 20px;
+        text-align: center;
+        background: red;
+        color: black;
+    }
+</style>
+@section Scripts {
+    <script src="~/js/col-exp-panel.js"></script>
+}

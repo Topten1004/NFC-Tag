@@ -77,6 +77,9 @@ namespace BqsClinoTag.Controllers
                 newL.IdClientNavigation = unC;
                 newL.UidTag = lieu.uidTag;
                 newL.Nom = lieu.nom;
+                newL.ActionType = 0;
+                newL.Progress = 0;
+
                 db.Lieus.Add(newL);
                 await db.SaveChangesAsync();
                 return 0;
@@ -219,6 +222,12 @@ namespace BqsClinoTag.Controllers
                 .Include(l => l.IdClientNavigation)
                 .Include(l => l.TacheLieus).ThenInclude(tl => tl.IdTacheNavigation)
                 .Where(l => l.UidTag == uidLieu).FirstOrDefaultAsync();
+
+            // check NFC tag successfully, set progress
+            if (unL.Progress != 2)
+                ++unL.Progress;
+
+            await db.SaveChangesAsync();
             if (unL != null) return new LieuLight(unL);
             else return null;
         }

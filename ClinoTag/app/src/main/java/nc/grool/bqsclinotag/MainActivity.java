@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            ReadingTag("YFHF45OKJF"); //GHYSKJDLDSMAZP-9
+            ReadingTag("531F010701E140"); //GHYSKJDLDSMAZP-9
         }
     }
 
@@ -185,8 +185,11 @@ public class MainActivity extends AppCompatActivity {
                     if(result.equals("LIEU")) {
                         req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
                         Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+                        // find location from Uid Tag
                         if (rLieu != null) {
-                            //finish();
+                            // finish();
+                            Globals.isWorking = true;
                             Globals.LieuEnCours = rLieu;
                             startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
                             Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();

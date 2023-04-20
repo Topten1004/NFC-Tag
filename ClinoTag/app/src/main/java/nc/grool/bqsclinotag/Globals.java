@@ -36,10 +36,12 @@ public class Globals extends Application {
     public static String dns = "bqs-clinotag.square.nc";
     public static String url = "https://bqs-clinotag.square.nc";
 
-//    public static String dns = "10.0.2.2";
-//    public static String url = "https://10.0.2.2:44328";
+    public static Boolean isWorking = false;
 
-//    public static String urlAPIGrool = "https://10.0.2.2:44330/api/grool/";
+//  public static String dns = "10.0.2.2";
+//  public static String url = "https://10.0.2.2:44328";
+
+//  public static String urlAPIGrool = "https://10.0.2.2:44330/api/grool/";
     public static String urlAPIClinoTag = url + "/api/clinotag/";
     public static Boolean dispoAPI= false;
 

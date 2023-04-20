@@ -1,4 +1,5 @@
 
+using BqsClinoTag;
 using BqsClinoTag.Grool;
 using BqsClinoTag.Models;
 using BqsClinoTag.Services;
@@ -65,6 +66,7 @@ builder.Services.AddControllersWithViews()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddTransient<IMailService, MailService>();
+
 var config = new ConfigurationBuilder()
         .AddJsonFile("appsettings.json", optional: false)
         .Build();
@@ -74,6 +76,10 @@ builder.Services.Configure<MailSettings>(config.GetSection("MailSettings"));
 ////if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
 builder.Services.AddSingleton<ScheduleService>();
 builder.Services.AddHostedService<ScheduleService>();
+
+var startup = new Startup(builder.Configuration);
+
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 

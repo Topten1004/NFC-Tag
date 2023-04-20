@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace BqsClinoTag.Models
 {
@@ -38,7 +39,7 @@ namespace BqsClinoTag.Models
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 //                optionsBuilder.UseSqlServer("Server=.;Initial Catalog=CLINOTAG-BQS;Integrated Security=True;trusted_connection=true;encrypt=false;");
-                optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password="));
+                optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
             }
         }
 

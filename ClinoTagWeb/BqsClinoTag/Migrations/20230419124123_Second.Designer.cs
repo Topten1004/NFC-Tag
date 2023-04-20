@@ -3,6 +3,7 @@ using System;
 using BqsClinoTag.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BqsClinoTag.Migrations
 {
     [DbContext(typeof(CLINOTAGBQSContext))]
-    partial class CLINOTAGBQSContextModelSnapshot : ModelSnapshot
+    [Migration("20230419124123_Second")]
+    partial class Second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
