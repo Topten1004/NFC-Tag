@@ -1,24 +1,23 @@
-﻿@model IEnumerable<BqsClinoTag.Models.Lieu>
+﻿@model BqsClinoTag.ViewModel.Inventory.InventoryVM
 
 @{
-    ViewData["Title"] = "Activity";
+    ViewData["Title"] = "Inventory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Activity</h1>
+<h1>Inventory</h1>
 
 @section styles {
     <link rel="stylesheet" href="~/css/col-exp-panel.css" />
 }
 
-<form asp-action="Create">
 <div style="display:flex">
     <div class="col-8">
-        @foreach (var item in Model)
+        @foreach (var item in Model.places)
         {
             <div class="@((item.ActionType == 1)? "ASKED":(item.ActionType == 2)?"DISTURB":(item.Progress == 2)?"DONE":(item.Progress == 1)?"PROGRESS":"NONE")">
                 <a asp-action="Asked" style="text-decoration:none;color:black !important" asp-route-id="@item.IdLieu">@Html.DisplayFor(modelItem => item.Nom)</a>
-            </div>
+            </div>            
         }
     </div>
     <div class="col-4">
@@ -44,9 +43,17 @@
                 RED COLOR <br />NO action (do not disturb)
             </p>
         </div>
+        <div id="model-data">
+            @foreach (var item in Model.tasks)
+            {
+                <div style="margin:20px;">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </div>
+            }
+        </div>
    </div>
 </div>
-</form>
+
 <style>
     .DONE {
         width: 100%;
@@ -55,6 +62,7 @@
         text-align: center;
         background: green !important;
         color: black;
+        border: none;
     }
     .NONE {
         width: 100%;
@@ -63,6 +71,7 @@
         text-align: center;
         background: #D9D9D9;
         color: black;
+        border : none;
     }
     .ASKED {
         width: 100%;
@@ -71,6 +80,7 @@
         text-align: center;
         background: #8775F8;
         color: black;
+        border: none;
     }
 
     .PROGRESS {
@@ -80,6 +90,7 @@
         text-align: center;
         background: #FEAA08;
         color: black;
+        border: none;
     }
 
     .DISTURB {
@@ -89,8 +100,10 @@
         text-align: center;
         background: red;
         color: black;
+        border: none;
     }
 </style>
 @section Scripts {
-    <script src="~/js/col-exp-panel.js"></script>
+    <script src="~/js/col-exp-panel.js">
+    </script>
 }

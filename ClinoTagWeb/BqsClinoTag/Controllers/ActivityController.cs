@@ -42,7 +42,6 @@ namespace BqsClinoTag.Controllers
             }
 
             return RedirectToAction(nameof(Index));
-
         }
 
         // GET: Activities/Details/5
