@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BqsClinoTag.Models.Lieu>
+﻿@model BqsClinoTag.ViewModel.Activity.ActivityVM
 
 @{
     ViewData["Title"] = "Inventory";
@@ -14,7 +14,7 @@
 <form asp-action="Create">
 <div style="display:flex">
     <div class="col-8">
-        @foreach (var item in Model)
+        @foreach (var item in Model.datas)
         {
             <div class="@((item.ActionType == 1)? "ASKED":(item.ActionType == 2)?"DISTURB":(item.Progress == 2)?"DONE":(item.Progress == 1)?"PROGRESS":"NONE")">
                 <a asp-action="Asked" style="text-decoration:none;color:black !important" asp-route-id="@item.IdLieu">@Html.DisplayFor(modelItem => item.Nom)</a>
