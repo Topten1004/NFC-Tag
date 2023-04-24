@@ -23,6 +23,13 @@ namespace BqsClinoTag.Controllers
 
             if (id != 0 && id != null)
             {
+                var passages = await _context.Passages.Where(x => x.IdLieu == id).Include(c => c.PassageTaches).ToListAsync();
+
+                if(passages != null)
+                {
+
+                }
+
                 var taskIds = await _context.TacheLieus.Where(x => x.IdLieu == id).ToListAsync();
                 
                 foreach (var taskId in taskIds)
