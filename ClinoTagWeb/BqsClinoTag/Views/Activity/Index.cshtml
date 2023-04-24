@@ -1,23 +1,58 @@
 ﻿@model BqsClinoTag.ViewModel.Activity.ActivityVM
 
 @{
-    ViewData["Title"] = "Inventory";
+    ViewData["Title"] = "Activity";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Inventory</h1>
+<h1>Activity</h1>
 
 @section styles {
     <link rel="stylesheet" href="~/css/col-exp-panel.css" />
 }
 
-<form asp-action="Create">
 <div style="display:flex">
     <div class="col-8">
         @foreach (var item in Model.datas)
         {
             <div class="@((item.ActionType == 1)? "ASKED":(item.ActionType == 2)?"DISTURB":(item.Progress == 2)?"DONE":(item.Progress == 1)?"PROGRESS":"NONE")">
                 <a asp-action="Asked" style="text-decoration:none;color:black !important" asp-route-id="@item.IdLieu">@Html.DisplayFor(modelItem => item.Nom)</a>
+                    <div>
+                        @if(item.IsCamera == 1 && item.Progress == 2)
+                        {
+                            <a asp-action="IsComment" style="text-decoration:none;color:black !important" asp-route-id="@item.PassageId">
+                            <svg fill="#000000" height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 487 487" xml:space="preserve">
+                            <g>
+                            <g>
+                            <path d="M308.1,277.95c0,35.7-28.9,64.6-64.6,64.6s-64.6-28.9-64.6-64.6s28.9-64.6,64.6-64.6S308.1,242.25,308.1,277.95z
+			                 M440.3,116.05c25.8,0,46.7,20.9,46.7,46.7v122.4v103.8c0,27.5-22.3,49.8-49.8,49.8H49.8c-27.5,0-49.8-22.3-49.8-49.8v-103.9
+			                v-122.3l0,0c0-25.8,20.9-46.7,46.7-46.7h93.4l4.4-18.6c6.7-28.8,32.4-49.2,62-49.2h74.1c29.6,0,55.3,20.4,62,49.2l4.3,18.6H440.3z
+			                 M97.4,183.45c0-12.9-10.5-23.4-23.4-23.4c-13,0-23.5,10.5-23.5,23.4s10.5,23.4,23.4,23.4C86.9,206.95,97.4,196.45,97.4,183.45z
+			                 M358.7,277.95c0-63.6-51.6-115.2-115.2-115.2s-115.2,51.6-115.2,115.2s51.6,115.2,115.2,115.2S358.7,341.55,358.7,277.95z" />
+                                            </g>
+                                            </g>
+                                            </svg>
+
+                            </a>
+                        }
+                        @if (item.IsComment == 1 && item.Progress == 2)
+                        {
+                            <a asp-action="IsComment" style="text-decoration:none;color:black !important" asp-route-id="@item.PassageId">
+
+                                <svg fill="#000000" height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                     viewBox="0 0 489.7 489.7" xml:space="preserve">
+                                <g>
+                                <path d="M438.9,10.896H50.7c-28,0-50.7,22.7-50.7,50.7v277.4c0,28,22.7,50.7,50.7,50.7H62v81.7c0,6.6,8,9.9,12.7,5.2l86.9-86.9H439
+                            c28,0,50.7-22.7,50.7-50.7v-277.4C489.7,33.596,467,10.896,438.9,10.896z M156.8,226.796c-14.6,0-26.4-11.8-26.4-26.4
+	                        c0-14.6,11.8-26.4,26.4-26.4c14.6,0,26.4,11.8,26.4,26.4C183.2,214.896,171.4,226.796,156.8,226.796z M244.8,226.796
+	                        c-14.6,0-26.4-11.8-26.4-26.4c0-14.6,11.8-26.4,26.4-26.4s26.4,11.8,26.4,26.4C271.2,214.896,259.4,226.796,244.8,226.796z
+	                        M332.8,226.796c-14.6,0-26.4-11.8-26.4-26.4c0-14.6,11.8-26.4,26.4-26.4s26.4,11.8,26.4,26.4
+	                        C359.2,214.896,347.4,226.796,332.8,226.796z" />
+                                    </g>
+                                    </svg>
+                            </a>
+                        }
+                    </div>
             </div>
         }
     </div>
@@ -44,11 +79,25 @@
                 RED COLOR <br />NO action (do not disturb)
             </p>
         </div>
+        <div>
+            @if (Model.passageId != 0 && Model.passageId != null && Model.comment.Length != 0)
+            {
+                <div>
+                    <h6>@Html.DisplayFor(modelItem => Model.comment)</h6>
+                </div>
+            }
+            @if(Model.passageId != 0 && Model.passageId != null && Model.comment.Length == 0)
+            {
+                <img src="@Url.Action("IsCamera", "Activity", new { id = Model.passageId})" alt="Image">
+            }
+        </div>
    </div>
 </div>
-</form>
+
 <style>
     .DONE {
+        display:flex;
+        justify-content: space-between;
         width: 100%;
         margin-top: 20px;
         padding: 20px;
@@ -57,6 +106,7 @@
         color: black;
     }
     .NONE {
+        display: flex;
         width: 100%;
         margin-top: 20px;
         padding: 20px;
@@ -65,6 +115,7 @@
         color: black;
     }
     .ASKED {
+        display: flex;
         width: 100%;
         margin-top: 20px;
         padding: 20px;
@@ -74,6 +125,7 @@
     }
 
     .PROGRESS {
+        display: flex;
         width: 100%;
         margin-top: 20px;
         padding: 20px;
@@ -83,6 +135,7 @@
     }
 
     .DISTURB {
+        display: flex;
         width: 100%;
         margin-top: 20px;
         padding: 20px;

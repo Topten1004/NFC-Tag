@@ -4,6 +4,7 @@ using BqsClinoTag.Models;
 using BqsClinoTag.ViewModel.Activity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace BqsClinoTag.Controllers
@@ -21,7 +22,7 @@ namespace BqsClinoTag.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var lieus = await _context.Lieus.ToListAsync();
 
@@ -45,6 +46,8 @@ namespace BqsClinoTag.Controllers
                 
                 if( flag != null )
                 {
+                    tempItem.PassageId = flag.IdPassage;
+
                     if (flag.Photo != null)
                         tempItem.IsCamera = 1;
                     if (flag.Commentaire != null)
@@ -52,6 +55,16 @@ namespace BqsClinoTag.Controllers
                 }
 
                 datas.datas.Add(tempItem);
+            }
+
+            if(id != 0 && id != null)
+            {
+                var passage = await _context.Passages.Where(x => x.IdPassage == id).FirstOrDefaultAsync();
+
+                if(passage != null)
+                {
+                    datas.comment = passage.Commentaire;
+                }
             }
 
             return View(datas);
@@ -76,10 +89,28 @@ namespace BqsClinoTag.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Activities/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Activities/IsComment/5
+        public async Task<IActionResult> IsComment(int? id)
         {
-            return View();
+            var passage = await _context.Passages.FirstOrDefaultAsync(x => x.IdPassage == id);
+
+            if (passage == null)
+                return NotFound();
+
+            return RedirectToAction(nameof(Index), new { id = id});
+        }
+
+        // GET: Activities/IsCamera/5
+        public async Task<ActionResult> IsCamera(int? id)
+        {
+            var passage = await _context.Passages.FirstOrDefaultAsync(x => x.IdPassage == id);
+
+            if (passage == null)
+                return NotFound();
+
+            string base64String = Convert.ToBase64String(passage.Photo);
+
+            return Content(base64String, "text/plain");
         }
     }
 }

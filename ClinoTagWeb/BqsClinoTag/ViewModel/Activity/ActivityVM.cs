@@ -7,6 +7,10 @@
         }
 
         public List<ActivityItem> datas;
+
+        public string comment { get; set; } = string.Empty!;
+
+        public int passageId { get; set; } = 0;
     }
 
     public class ActivityItem
@@ -22,6 +26,8 @@
 
         public int IsComment { get; set; } = 0!;
 
-        public int IsCamera { get; set; } = 0!; 
+        public int IsCamera { get; set; } = 0!;
+
+        public int PassageId { get; set; }
     }
 }
