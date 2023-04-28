@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BqsClinoTag.Migrations
 {
     [DbContext(typeof(CLINOTAGBQSContext))]
-    [Migration("20230419122339_Firs")]
-    partial class Firs
+    [Migration("20230426072017_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,6 +117,10 @@ namespace BqsClinoTag.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ID_LIEU");
 
+                    b.Property<int>("ActionType")
+                        .HasColumnType("int")
+                        .HasColumnName("ACTION_TYPE");
+
                     b.Property<int>("IdClient")
                         .HasColumnType("int")
                         .HasColumnName("ID_CLIENT");
@@ -126,6 +130,10 @@ namespace BqsClinoTag.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("NOM");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("int")
+                        .HasColumnName("PROGRESS");
 
                     b.Property<string>("UidTag")
                         .IsRequired()

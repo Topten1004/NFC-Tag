@@ -19,42 +19,6 @@ namespace BqsClinoTag.Migrations
                 .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("BqsClinoTag.Models.ActivityEntity", b =>
-                {
-                    b.Property<int>("IdAgent")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID_ACTIVITY");
-
-                    b.Property<string>("ActionType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("ACTION_TYPE");
-
-                    b.Property<bool>("Finished")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("FINISHED");
-
-                    b.Property<DateTime>("FinishedDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("FINSHED_DATE");
-
-                    b.Property<string>("NamePlace")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("NAME_LIEU");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("START_DATE");
-
-                    b.HasKey("IdAgent");
-
-                    b.ToTable("ACTIVITY");
-                });
-
             modelBuilder.Entity("BqsClinoTag.Models.Agent", b =>
                 {
                     b.Property<int>("IdAgent")
@@ -151,6 +115,10 @@ namespace BqsClinoTag.Migrations
                         .HasColumnType("int")
                         .HasColumnName("ID_LIEU");
 
+                    b.Property<int>("ActionType")
+                        .HasColumnType("int")
+                        .HasColumnName("ACTION_TYPE");
+
                     b.Property<int>("IdClient")
                         .HasColumnType("int")
                         .HasColumnName("ID_CLIENT");
@@ -160,6 +128,10 @@ namespace BqsClinoTag.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("NOM");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("int")
+                        .HasColumnName("PROGRESS");
 
                     b.Property<string>("UidTag")
                         .IsRequired()

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BqsClinoTag.Migrations
 {
-    public partial class Firs : Migration
+    public partial class First : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -134,7 +134,9 @@ namespace BqsClinoTag.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ID_CLIENT = table.Column<int>(type: "int", nullable: false),
                     UID_TAG = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ACTION_TYPE = table.Column<int>(type: "int", nullable: false),
+                    PROGRESS = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

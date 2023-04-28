@@ -34,7 +34,7 @@ public class Globals extends Application {
     public static String idConstructeur;
 
     public static String dns = "bqs-clinotag.square.nc";
-    public static String url = "https://bqs-clinotag.square.nc";
+    public static String url = "http://demo.clinotag.com/";
 
     public static Boolean isWorking = false;
 

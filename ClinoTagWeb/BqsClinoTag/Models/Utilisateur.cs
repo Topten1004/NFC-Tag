@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BqsClinoTag.Models
 {
-    [Table("UTILISATEUR")]
+    [Table("utilisateur")]
     public partial class Utilisateur
     {
         public Utilisateur()

@@ -1,4 +1,5 @@
-﻿using BqsClinoTag.Services;
+﻿using BqsClinoTag.Models;
+using BqsClinoTag.Services;
 using Microsoft.AspNetCore.Builder;
 
 namespace BqsClinoTag

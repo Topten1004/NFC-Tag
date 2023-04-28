@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging.Abstractions;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace BqsClinoTag.Models
 {
@@ -38,8 +39,11 @@ namespace BqsClinoTag.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //                optionsBuilder.UseSqlServer("Server=.;Initial Catalog=CLINOTAG-BQS;Integrated Security=True;trusted_connection=true;encrypt=false;");
-                optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
+                //              optionsBuilder.UseSqlServer("Server=.;Initial Catalog=CLINOTAG-BQS;Integrated Security=True;trusted_connection=true;encrypt=false;");
+                //              optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
+                //              optionsBuilder.UseMySql("server=127.0.0.1;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=127.0.0.1;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
+                //              optionsBuilder.UseMySql("server=172.16.75.101;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
+                optionsBuilder.UseMySql("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True"));
             }
         }
 
