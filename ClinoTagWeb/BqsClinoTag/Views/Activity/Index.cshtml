@@ -1,4 +1,5 @@
-﻿@model BqsClinoTag.ViewModel.Activity.ActivityVM
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model BqsClinoTag.ViewModel.Activity.ActivityVM
 
 @{
     ViewData["Title"] = "Activity";
@@ -16,7 +17,7 @@
         @foreach (var item in Model.datas)
         {
             <div class="@((item.ActionType == 1)? "ASKED":(item.ActionType == 2)?"DISTURB":(item.Progress == 2)?"DONE":(item.Progress == 1)?"PROGRESS":"NONE")">
-                <a asp-action="Asked" style="text-decoration:none;color:black !important" asp-route-id="@item.IdLieu">@Html.DisplayFor(modelItem => item.Nom)</a>
+                <a asp-action="Asked" asp-route-id="@item.IdLieu" style="text-decoration:none;color:black !important;width:100%" >@Html.DisplayFor(modelItem => item.Nom)</a>
                     <div>
                         @if(item.IsCamera == 1 && item.Progress == 2)
                         {
@@ -35,9 +36,11 @@
 
                             </a>
                         }
-                        @if (item.IsComment == 1 && item.Progress == 2)
+                    </div>
+                    <div>
+                       @if (item.IsComment == 1 && item.Progress == 2)
                         {
-                            <a asp-action="IsComment" style="text-decoration:none;color:black !important" asp-route-id="@item.PassageId">
+                           <a asp-action="IsComment" style="text-decoration:none;color:black !important" asp-route-id="@item.PassageId">
 
                                 <svg fill="#000000" height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                      viewBox="0 0 489.7 489.7" xml:space="preserve">
