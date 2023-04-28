@@ -19,7 +19,7 @@ namespace BqsClinoTag.Controllers
         {
             var model = new InventoryVM();
 
-            model.places = await _context.Lieus.Where( x => x.Stock != 0).ToListAsync();
+            model.places = await _context.Lieus.Where( x => x.Inventory != false).ToListAsync();
 
             if (id != 0 && id != null)
             {

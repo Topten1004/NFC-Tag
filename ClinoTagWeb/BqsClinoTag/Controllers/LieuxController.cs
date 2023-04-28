@@ -131,7 +131,7 @@ namespace BqsClinoTag.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdLieu,Nom,UidTag,IdClient")] Lieu lieu)
+        public async Task<IActionResult> Create([Bind("IdLieu,Nom,UidTag,IdClient,Inventory")] Lieu lieu)
         {
             if (lieu.IdClient > 0 && lieu.UidTag != null)
             {
@@ -169,7 +169,7 @@ namespace BqsClinoTag.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdLieu,Nom,UidTag,IdClient")] Lieu lieu)
+        public async Task<IActionResult> Edit(int id, [Bind("IdLieu,Nom,UidTag,IdClient,Inventory")] Lieu lieu)
         {
             if (id != lieu.IdLieu)
             {
