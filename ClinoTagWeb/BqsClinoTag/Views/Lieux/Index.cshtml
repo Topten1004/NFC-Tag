@@ -28,10 +28,13 @@
             </th>
             <th>
                 Client
-            </th>    
+            </th>
             <th>
                 Tâche(s)
-            </th>     
+            </th>
+            <th>
+                Stock
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -50,6 +53,11 @@
             <td>
                 @item.TacheLieus.Count
             </td>
+                <td>
+                    @if(item.Stock == 1){
+                        <button class="btn btn-danger">Ok</button>
+                    }
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdLieu">Modifier</a> |
                 @*<a asp-action="Details" asp-route-id="@item.IdLieu">Details</a> |*@

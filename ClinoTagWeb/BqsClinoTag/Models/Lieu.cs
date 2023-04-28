@@ -34,6 +34,8 @@ namespace BqsClinoTag.Models
         [Column("PROGRESS")]
         public int Progress { get; set; } = 0!;
 
+        [Column("STOCK")]
+        public int Stock { get; set; } = 0!;
 
         [ForeignKey("IdClient")]
         [InverseProperty("Lieus")]
