@@ -81,10 +81,13 @@ namespace BqsClinoTag.Controllers
             if (lieu.Progress == 0 && lieu.ActionType == 0)
             {
                 lieu.ActionType = 1;
-
-                await _context.SaveChangesAsync();
-
             }
+            else if (lieu.Progress == 0 && lieu.ActionType == 1)
+            {
+                lieu.ActionType = 0;
+            }
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
