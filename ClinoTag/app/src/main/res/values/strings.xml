@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ClinoTag</string>
+    <string name="app_name">ClinoTag-v2</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

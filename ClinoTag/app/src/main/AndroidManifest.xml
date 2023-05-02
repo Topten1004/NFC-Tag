@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="nc.grool.bqsclinotag">
+    package="nc.grool.clinotag">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".Globals"
+        android:name="nc.grool.clinotag.Globals"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -29,12 +29,12 @@
         android:theme="@style/Theme.ClinoTag"
         tools:targetApi="31">
         <activity
-            android:name=".UtilisationActivity"
+            android:name="nc.grool.clinotag.UtilisationActivity"
             android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="nc.grool.bqsclinotag.fileprovider"
+            android:authorities="nc.grool.clinotag.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -43,14 +43,14 @@
         </provider>
 
         <activity
-            android:name=".PassageActivity"
+            android:name="nc.grool.clinotag.PassageActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MainActivity"
+            android:name="nc.grool.clinotag.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name="nc.grool.clinotag.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

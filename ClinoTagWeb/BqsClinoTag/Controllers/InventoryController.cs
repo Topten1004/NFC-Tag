@@ -53,6 +53,18 @@ namespace BqsClinoTag.Controllers
         {
             var lieu = await _context.Lieus.Where(x => x.IdLieu == id).FirstOrDefaultAsync();
 
+            if (lieu == null)
+                return NotFound();
+
+            if (lieu.Progress == 0 && lieu.ActionType == 0)
+            {
+                lieu.ActionType = 1;
+            }
+            else if (lieu.Progress == 0 && lieu.ActionType == 1)
+            {
+                lieu.ActionType = 0;
+            }
+
             if (lieu.Progress != 2)
                 id = 0;
 
