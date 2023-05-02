@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("nc.grool.bqsclinotag", appContext.getPackageName());
+        assertEquals("nc.grool.clinotag", appContext.getPackageName());
     }
 }

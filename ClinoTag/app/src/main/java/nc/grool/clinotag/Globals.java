@@ -57,14 +57,14 @@ public class Globals extends Application {
     }
 
     public void ecrirePref(String cle, String valeur){
-        SharedPreferences sp = getSharedPreferences("BqsClinoTag_Preference", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("ClinoTag_Preference", MODE_PRIVATE);
         SharedPreferences.Editor esp = sp.edit();
         esp.putString(cle, valeur);
         esp.commit();
     }
 
     public String lirePref(String cle){
-        SharedPreferences sp = getSharedPreferences("BqsClinoTag_Preference", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("ClinoTag_Preference", MODE_PRIVATE);
         return sp.getString(cle, null);
     }
 

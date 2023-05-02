@@ -6,7 +6,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "nc.grool.bqsclinotag"
+        applicationId "nc.grool.clinotag"
         minSdk 23
         targetSdk 30
         versionCode 103
