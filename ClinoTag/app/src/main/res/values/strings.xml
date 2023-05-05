@@ -13,4 +13,5 @@
     <string name="deconnexion">deconnexion</string>
     <string name="magasins">magasins</string>
     <string name="noconnexion">Pas de connexion Internet</string>
+    <string name="notification">Notification</string>
 </resources>

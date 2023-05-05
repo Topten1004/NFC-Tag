@@ -1,6 +1,7 @@
 package nc.grool.clinotag.json;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -13,16 +14,17 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import nc.grool.clinotag.dto.Lieu;
 
-public class JsonTaskLieu extends AsyncTask<String, String, Lieu> {
+public class JsonTaskNotification extends AsyncTask<String, String, List<Lieu>> {
 
-    public JsonTaskLieu() {
+    public JsonTaskNotification() {
         super();
     }
 
-    protected Lieu doInBackground(String... params) {
+    protected List<Lieu> doInBackground(String... params) {
 
         HttpURLConnection connection = null;
         BufferedReader reader = null;
@@ -41,7 +43,7 @@ public class JsonTaskLieu extends AsyncTask<String, String, Lieu> {
             boolean authOk = buffer.length() < 15;
             if(!authOk) authOk = !buffer.substring(0, 15).equals("<!DOCTYPE html>");
             if(authOk){
-                Type t = new TypeToken<Lieu>(){}.getType();
+                Type t = new TypeToken<List<Lieu>>(){}.getType();
                 return new Gson().fromJson(buffer.toString(), t);
             }
         } catch (MalformedURLException e) {
@@ -61,12 +63,5 @@ public class JsonTaskLieu extends AsyncTask<String, String, Lieu> {
             }
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Lieu result) {
-
-        super.onPostExecute(result);
-
     }
 }

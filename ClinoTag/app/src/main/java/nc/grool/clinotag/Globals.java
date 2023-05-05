@@ -30,11 +30,13 @@ public class Globals extends Application {
     public static Utilisation UtilisationEnCours = null;
     public static List<Client> listeClient = new ArrayList<>();
 
+    public static List<Lieu> listLieus = new ArrayList<>();
+
     public static List<String> lstCarteMaitresse = new ArrayList<>();
     public static String idConstructeur;
 
     public static String dns = "bqs-clinotag.square.nc";
-    public static String url = "http://demo.clinotag.com/";
+    public static String url = "https://demo.clinotag.com";
 
     public static Boolean isWorking = false;
 

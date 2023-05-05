@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         HttpsTrustManager.allowAllSSL();
         labCodeLogin = (TextView) findViewById(R.id.labCodeLogin);
-        setTitle("BQS ClinoTag - Login");
+        setTitle("ClinoTag - Login");
 
         Globals g = (Globals)getApplication();
         String codeAgent = g.lirePref("codeAgent");

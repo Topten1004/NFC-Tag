@@ -8,6 +8,8 @@ package nc.grool.clinotag;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -24,6 +26,7 @@ import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,14 +39,19 @@ import java.util.concurrent.ExecutionException;
 
 import nc.grool.clinotag.composant.DialogTexte;
 import nc.grool.clinotag.composant.Location;
+import nc.grool.clinotag.composant.RecyclerViewLieuAdapter;
+import nc.grool.clinotag.composant.RecyclerViewTacheAdapter;
+import nc.grool.clinotag.dto.Agent;
 import nc.grool.clinotag.dto.Client;
 import nc.grool.clinotag.dto.Lieu;
 import nc.grool.clinotag.dto.LieuOuMaterielPost;
 import nc.grool.clinotag.dto.Materiel;
+import nc.grool.clinotag.json.JsonTaskAgent;
 import nc.grool.clinotag.json.JsonTaskClients;
 import nc.grool.clinotag.json.JsonTaskIntegerPost;
 import nc.grool.clinotag.json.JsonTaskLieu;
 import nc.grool.clinotag.json.JsonTaskMateriel;
+import nc.grool.clinotag.json.JsonTaskNotification;
 import nc.grool.clinotag.json.JsonTaskString;
 import nc.grool.clinotag.outil.Format;
 
@@ -59,7 +67,14 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        Button btn = this.findViewById(R.id.Notification);
         TextView txtInstructions = this.findViewById(R.id.txtInstructions);
+
+        if(Globals.isWorking == true)
+        {
+            btn.setVisibility(View.GONE);
+        }
         if(mAdapter == null){
             txtInstructions.setText("Appuyer sur l'image");
             txtInstructions.setTextColor(getResources().getColor(R.color.white));
@@ -73,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 toogleNfc(true);
             }
         }
+
+        chargement();
     }
 
     @Override
@@ -145,6 +162,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickNotification(View v) {
+        String req = Globals.urlAPIClinoTag + "Notify/" ;
+        try {
+            List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+            if (result != null) {
+                Globals.listLieus = result;
+                chargement();
+            } else {
+                Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
     void toogleNfc(Boolean enable) {
         if(enable){
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
@@ -175,6 +210,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void chargement() {
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
+        RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        adapter.setOnItemClickListener(onItemClickListener);
+    }
+
     private void ReadingTag(String hexTagId) {
         try {
             scanEnCours = true;
@@ -189,7 +232,13 @@ public class MainActivity extends AppCompatActivity {
                         // find location from Uid Tag
                         if (rLieu != null) {
                             // finish();
-                            Globals.isWorking = true;
+
+                            // set agent is working part
+                            if(Globals.isWorking == true)
+                                Globals.isWorking = false;
+                            else if(Globals.isWorking == false)
+                                Globals.isWorking = true;
+
                             Globals.LieuEnCours = rLieu;
                             startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
                             Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();
