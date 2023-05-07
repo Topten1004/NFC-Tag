@@ -5,20 +5,17 @@
     android:id="@+id/cardViewDistributionLieu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
-    app:cardBackgroundColor="@color/purple_500"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/purple_200"
+    >
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
         <Button
             android:id="@+id/lieuItem"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
@@ -26,6 +23,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="6dp"
+            android:background="#FFFFFF"
             android:text="Button" />
 
 

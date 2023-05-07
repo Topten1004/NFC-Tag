@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -211,11 +212,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chargement() {
+        Log.e("here", "here" + Globals.listLieus.size());
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
         RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        adapter.setOnItemClickListener(onItemClickListener);
+        adapter.notifyDataSetChanged();
     }
 
     private void ReadingTag(String hexTagId) {

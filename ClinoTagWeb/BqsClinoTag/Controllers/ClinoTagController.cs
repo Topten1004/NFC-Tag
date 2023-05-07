@@ -233,6 +233,27 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpGet]
+        [Route("Notify")]
+        public async Task<List<LieuLight>> ScanNotification()
+        {
+            List<Lieu>? unL = await db.Lieus
+                .Include(l => l.IdClientNavigation)
+                .Include(l => l.TacheLieus).ThenInclude(tl => tl.IdTacheNavigation)
+                .Where(l => l.ActionType != 0).ToListAsync();
+
+            var model = new List<LieuLight>();
+
+            foreach( var item in unL)
+            {
+                var tempItem = new LieuLight(item);
+                model.Add(tempItem);
+            }
+
+            if (unL != null) return model;
+            else return null;
+        }
+
+        [HttpGet]
         [Route("ScanMateriel/{uidMateriel}")]
         public async Task<MaterielLight?> ScanMateriel(string uidMateriel)
         {

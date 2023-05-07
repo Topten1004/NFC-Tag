@@ -6,6 +6,10 @@
         public string UidTag { get; set; }
         public string? Client { get; set; }
         public string? Nom { get; set; }   
+
+        public int? ActionType { get; set; }
+        public int? Progress { get; set; }
+        public bool? Inventory { get; set; }
         public List<TacheLight>? lTache { get; set; }
 
         public LieuLight(Lieu lieu)
@@ -14,6 +18,10 @@
             UidTag = lieu.UidTag;
             Client = lieu.IdClientNavigation.Nom;
             Nom = lieu.Nom;
+            ActionType = lieu.ActionType;
+            Progress = lieu.Progress;
+            Inventory = lieu.Inventory;
+
             lTache = new List<TacheLight>();
             foreach (TacheLieu t in lieu.TacheLieus)
             {

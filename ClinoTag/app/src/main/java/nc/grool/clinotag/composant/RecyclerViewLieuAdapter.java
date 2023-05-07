@@ -1,7 +1,9 @@
 package nc.grool.clinotag.composant;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,31 +43,22 @@ public class RecyclerViewLieuAdapter extends RecyclerView.Adapter<RecyclerViewLi
         return new ViewHolderSite(v);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolderSite holder, int position) {
         holder.btnLieu.setTag(lieus.get(position).idLieu);
         holder.btnLieu.setText(lieus.get(position).nom);
 
+//      holder.btnLieu.setAlpha((float) 1);
+        if(lieus.get(position).actionType == 1) {
+            Log.e("heres", "1");
+            holder.btnLieu.setBackgroundColor(R.color.action);
+        }
+        else if(lieus.get(position).actionType == 2) {
+            Log.e("heres", "2");
+            holder.btnLieu.setBackgroundColor(R.color.noaction);
+        }
 
-        holder.btnLieu.setOnClickListener(view -> {
-            for (Tache t: Globals.PassageEnCours.lTache) {
-                if(t.idTache == (Integer)view.getTag() && t.description != null){
-                    // Affiche la description
-                    DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                        }
-                    };
-                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle(t.nom)
-                            .setMessage(t.description)
-                            .setPositiveButton("Ok", dialogClickListener)
-                            .show();
-                    return;
-                }
-            }
-
-        });
     }
 
     @Override
@@ -105,12 +98,4 @@ public class RecyclerViewLieuAdapter extends RecyclerView.Adapter<RecyclerViewLi
         lieus.add(position, data);
         notifyItemInserted(position);
     }
-
-//    // Remove a RecyclerView item containing a specified Data object
-//    public void remove(Site data) {
-//        int position = taches.indexOf(data);
-//        taches.remove(position);
-//        notifyItemRemoved(position);
-//    }
-
 }

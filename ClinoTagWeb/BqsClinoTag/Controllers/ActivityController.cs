@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BqsClinoTag.Grool;
 using BqsClinoTag.Models;
+using BqsClinoTag.Models.LightObject;
 using BqsClinoTag.ViewModel.Activity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace BqsClinoTag.Controllers
 
         public async Task<IActionResult> Index(int? id)
         {
+
             var lieus = await _context.Lieus.Where(x => x.Inventory == false).ToListAsync();
 
             var datas = new ActivityVM();
