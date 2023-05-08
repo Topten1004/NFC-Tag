@@ -3,6 +3,8 @@ package nc.grool.clinotag.composant;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,14 +54,11 @@ public class RecyclerViewLieuAdapter extends RecyclerView.Adapter<RecyclerViewLi
 
 //      holder.btnLieu.setAlpha((float) 1);
         if(lieus.get(position).actionType == 1) {
-            Log.e("heres", "1");
-            holder.btnLieu.setBackgroundColor(R.color.action);
+            holder.btnLieu.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#8775F8")));
         }
         else if(lieus.get(position).actionType == 2) {
-            Log.e("heres", "2");
-            holder.btnLieu.setBackgroundColor(R.color.noaction);
+            holder.btnLieu.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000")));
         }
-
     }
 
     @Override
@@ -74,7 +74,7 @@ public class RecyclerViewLieuAdapter extends RecyclerView.Adapter<RecyclerViewLi
     public class ViewHolderSite extends RecyclerView.ViewHolder {
 
         CardView cv;
-        Button btnLieu;
+        AppCompatButton btnLieu;
 
         public ViewHolderSite(View itemView) {
             super(itemView);

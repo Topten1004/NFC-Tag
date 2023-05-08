@@ -212,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chargement() {
-        Log.e("here", "here" + Globals.listLieus.size());
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
         RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
         recyclerView.setAdapter(adapter);

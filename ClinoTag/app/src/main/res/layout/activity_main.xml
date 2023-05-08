@@ -53,18 +53,16 @@
 
     <Button
         android:id="@+id/Notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:layout_width="89dp"
+        android:layout_height="72dp"
+        android:background="@drawable/btnnotify"
+        android:foreground="@drawable/btnnotify"
         android:onClick="onClickNotification"
-        android:text="@string/notification"
-        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtInstructions"
-        app:layout_constraintVertical_bias="0.071" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewMagasin"
@@ -82,7 +80,6 @@
             android:id="@+id/recyclerViewLieu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:focusable="true"
             app:layoutManager="GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +87,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@android:layout/simple_list_item_checked">
+            tools:listitem="@android:layout/simple_list_item_2">
 
         </androidx.recyclerview.widget.RecyclerView>
 

@@ -17,6 +17,6 @@
     <color name="blancCassé">#D9E3EA</color>
     <color name="grisSombre">#a4a4a4</color>
     <color name="grisDur">#8a8a8a</color>
-    <color name="action">#FF8775F8</color>
+    <color name="action">#8775F8</color>
     <color name="noaction">#ff0000</color>
 </resources>
