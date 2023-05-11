@@ -12,16 +12,16 @@
     <link rel="stylesheet" href="~/css/col-exp-panel.css" />
 }
 
-<div style="display:flex">
-    <div class="col-8">
+<div class="my-container">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8">
         @foreach (var item in Model.datas)
         {
-            <div class="@((item.ActionType == 1)? "ASKED":(item.ActionType == 2)?"DISTURB":(item.Progress == 2)?"DONE":(item.Progress == 1)?"PROGRESS":"NONE")">
+            <div class="@((item.Progress == 1)? "PROGRESS":(item.Progress == 2)?"DONE":(item.ActionType == 1)?"ASKED":(item.ActionType == 2)?"DISTURB":"NONE")">
                 <a asp-action="Asked" asp-route-id="@item.IdLieu" style="text-decoration:none;color:black !important;width:100%" >@Html.DisplayFor(modelItem => item.Nom)</a>
                     <div>
                         @if(item.IsCamera == 1 && item.Progress == 2)
                         {
-                            <a asp-action="IsComment" style="text-decoration:none;color:black !important" asp-route-id="@item.PassageId">
+                        <a asp-action="IsCamera" style="text-decoration:none;color:black !important" asp-route-id="@item.IdLieu">
                             <svg fill="#000000" height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 487 487" xml:space="preserve">
                             <g>
                             <g>
@@ -37,10 +37,10 @@
                             </a>
                         }
                     </div>
-                    <div>
+                    <div style="padding-right:10px">
                        @if (item.IsComment == 1 && item.Progress == 2)
                         {
-                           <a asp-action="IsComment" style="text-decoration:none;color:black !important" asp-route-id="@item.PassageId">
+                        <a asp-action="IsComment" style="text-decoration:none;color:black !important" asp-route-id="@item.IdLieu">
 
                                 <svg fill="#000000" height="30px" width="30px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                      viewBox="0 0 489.7 489.7" xml:space="preserve">
@@ -59,41 +59,58 @@
             </div>
         }
     </div>
-    <div class="col-4">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4">
         <div style="border: 2px solid black;padding:40px;margin:20px">
             <div style="background:green;height:30px;">
             </div>
             <p>
-                GREEN COLOR<br />AGENT visited the location
+                AGENT visited the location
             </p>
             <div style="background:#8775F8;height:30px;">
             </div>
             <p>
-                PURPLE COLOR<br />Action asked
+                Action asked
             </p>
             <div style="background:#FEAA08;height:30px;">
             </div>
             <p>
-                ORANGE COLOR <br />Action in progress
+                Action in progress
             </p>
             <div style="background:#FF0000;height:30px;">
             </div>
             <p>
-                RED COLOR <br />NO action (do not disturb)
+                Do not disturb
             </p>
         </div>
-        <div>
-            @if (Model.passageId != 0 && Model.passageId != null && Model.comment.Length != 0)
-            {
-                <div>
-                    <h6>@Html.DisplayFor(modelItem => Model.comment)</h6>
-                </div>
-            }
-            @if(Model.passageId != 0 && Model.passageId != null && Model.comment.Length == 0)
-            {
-                <img src="@Url.Action("IsCamera", "Activity", new { id = Model.passageId})" alt="Image">
-            }
-        </div>
+        @if (Model.flag >= 1)
+        {
+            <div style="border: 2px solid black;padding:40px;margin:20px">
+                @if (Model.flag == 1)
+                {
+                    <div style="padding-left:20px">
+                        <h3>@Html.DisplayFor(modelItem => Model.comment)</h3>
+                    </div>
+                }
+                else if (Model.flag == 2)
+                {
+@*                    <img src="data:image/jpeg;base64,Convert.@Model.photo" alt="Image" />
+*@
+                    <img src="@Model.photo" alt="Image" />
+
+                }
+
+                else if (Model.flag == 3)
+                {
+                    <h3>@Html.DisplayFor(modelItem => Model.lieu)</h3>
+                    @foreach (var item in Model.tasks)
+                    {
+                        <div class="container">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </div>
+                    }
+                }
+            </div>
+        }
    </div>
 </div>
 

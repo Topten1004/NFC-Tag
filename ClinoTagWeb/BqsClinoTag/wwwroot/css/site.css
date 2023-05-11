@@ -81,6 +81,12 @@ body {
     background-color: #f0f0f0;
 }
 
+@media (min-width: 768px) {
+    .my-container {
+        display: flex;
+    }
+}
+
 .footer {
     background-color: #ccd5d8 !important;
     /*position: absolute;

@@ -23,7 +23,7 @@ namespace BqsClinoTag.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, int? flag)
         {
 
             var lieus = await _context.Lieus.Where(x => x.Inventory == false).ToListAsync();
@@ -44,28 +44,61 @@ namespace BqsClinoTag.Controllers
                 tempItem.IsComment = 0;
                 tempItem.IsCamera = 0; 
 
-                var flag = await _context.Passages.Where( x => x.IdLieu == tempItem.IdLieu).OrderByDescending(x => x.DhDebut).LastOrDefaultAsync();
+                var check = await _context.Passages.Where( x => x.IdLieu == tempItem.IdLieu).OrderBy(x => x.DhDebut).LastOrDefaultAsync();
                 
-                if( flag != null )
+                if(check != null )
                 {
-                    tempItem.PassageId = flag.IdPassage;
+                    tempItem.PassageId = check.IdPassage;
 
-                    if (flag.Photo != null)
+                    if (check.Photo != null)
                         tempItem.IsCamera = 1;
-                    if (flag.Commentaire != null)
+                    if (check.Commentaire != null)
                         tempItem.IsComment = 1;
                 }
 
                 datas.datas.Add(tempItem);
             }
 
+            if(flag != null && flag != 0)
+            {
+                datas.flag = flag;
+            }
+
             if(id != 0 && id != null)
             {
-                var passage = await _context.Passages.Where(x => x.IdPassage == id).FirstOrDefaultAsync();
+                var lieu = await _context.Lieus.Where(x => x.IdLieu == id).FirstOrDefaultAsync();
 
-                if(passage != null)
+                datas.lieu = lieu?.Nom;
+
+                var passages = await _context.Passages.Where(x => x.IdLieu == id).OrderBy(x => x.DhDebut).ThenBy(x => x.IdPassage).LastOrDefaultAsync();
+
+                if (passages != null)
                 {
-                    datas.comment = passage.Commentaire;
+                    datas.comment = passages?.Commentaire ?? new string("");
+
+                    string base64String = Convert.ToBase64String(passages?.Photo ?? new byte[0]);
+
+                    byte[] bytes = System.Convert.FromBase64String(base64String);
+                    string normalString = System.Text.Encoding.UTF8.GetString(bytes);
+
+                    datas.photo = normalString;
+                }
+
+                var taskIds = await _context.TacheLieus.Where(x => x.IdLieu == id).Include(c => c.PassageTaches).ToListAsync();
+
+                foreach (var taskId in taskIds)
+                {
+                    var temp = new TaskVM();
+
+                    var temps = _context.Taches.Where(x => x.IdTache == taskId.IdTache).FirstOrDefault();
+
+                    if (temps != null)
+                    {
+                        temp.IdTask = temps.IdTache;
+                        temp.Description = temps.Description ?? new string("");
+
+                        datas.tasks.Add(temp);
+                    }
                 }
             }
 
@@ -80,42 +113,34 @@ namespace BqsClinoTag.Controllers
             if( lieu == null )
                 return NotFound();
 
-            if (lieu.Progress == 0 && lieu.ActionType == 0)
+            if (lieu.Progress != 1 && lieu.ActionType == 0)
             {
                 lieu.ActionType = 1;
             }
-            else if (lieu.Progress == 0 && lieu.ActionType == 1)
+
+            else if (lieu.Progress != 1 && lieu.ActionType == 1)
             {
                 lieu.ActionType = 0;
             }
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            if (lieu.Progress == 2)
+                return RedirectToAction(nameof(Index), new { id = id, flag = 3 });
+            else
+                return RedirectToAction(nameof(Index));
         }
 
         // GET: Activities/IsComment/5
         public async Task<IActionResult> IsComment(int? id)
         {
-            var passage = await _context.Passages.FirstOrDefaultAsync(x => x.IdPassage == id);
-
-            if (passage == null)
-                return NotFound();
-
-            return RedirectToAction(nameof(Index), new { id = id});
+            return RedirectToAction(nameof(Index), new { id = id, flag = 1});
         }
 
         // GET: Activities/IsCamera/5
-        public async Task<ActionResult> IsCamera(int? id)
+        public async Task<IActionResult> IsCamera(int? id)
         {
-            var passage = await _context.Passages.FirstOrDefaultAsync(x => x.IdPassage == id);
-
-            if (passage == null)
-                return NotFound();
-
-            string base64String = Convert.ToBase64String(passage.Photo);
-
-            return Content(base64String, "text/plain");
+            return RedirectToAction(nameof(Index), new { id = id, flag = 2 });
         }
     }
 }

@@ -19,8 +19,10 @@ import com.google.gson.Gson;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
+import nc.grool.clinotag.dto.Lieu;
 import nc.grool.clinotag.dto.Utilisation;
 import nc.grool.clinotag.json.JsonTaskIntegerPost;
+import nc.grool.clinotag.json.JsonTaskLieu;
 import nc.grool.clinotag.json.JsonTaskUtilisationPost;
 import nc.grool.clinotag.outil.Format;
 
@@ -114,7 +116,7 @@ public class UtilisationActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            ReadingTag("YFHF45OKJF"); // Voiture BQS
+            ReadingTag(hexTagId); // Voiture BQS
         }
     }
 
@@ -126,8 +128,8 @@ public class UtilisationActivity extends AppCompatActivity {
                 if(!scanEnCours){
                     hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
                     Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
-//                        tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
-//                        tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
+//                  tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
+//                  tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
                     tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
                     ReadingTag(hexTagId);
                 }
@@ -146,6 +148,15 @@ public class UtilisationActivity extends AppCompatActivity {
         try {
             scanEnCours = true;
             if(hexTagId.equals(Globals.MaterielEnCours.uidTag)){
+
+                String req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
+                Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+                if(rLieu.progress == 1)
+                    Globals.isWorking = true;
+                else if(rLieu.progress == 2)
+                    Globals.isWorking = false;
+
                 new enregistrerUtilisationTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 finish();
             }else{

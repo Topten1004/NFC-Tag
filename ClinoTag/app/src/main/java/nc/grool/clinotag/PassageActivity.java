@@ -37,8 +37,10 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import nc.grool.clinotag.composant.RecyclerViewTacheAdapter;
+import nc.grool.clinotag.dto.Lieu;
 import nc.grool.clinotag.dto.Passage;
 import nc.grool.clinotag.json.JsonTaskIntegerPost;
+import nc.grool.clinotag.json.JsonTaskLieu;
 import nc.grool.clinotag.outil.Format;
 
 public class PassageActivity extends AppCompatActivity {
@@ -96,7 +98,7 @@ public class PassageActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            ReadingTag("GHYSKJDLDSMAZP-9");
+            ReadingTag(hexTagId); //534E35AF016640
         }
     }
 
@@ -124,10 +126,11 @@ public class PassageActivity extends AppCompatActivity {
                 public void onTagDiscovered(final Tag tag) {
                     runOnUiThread(() -> {
                         if(!scanEnCours){
+
                             hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
                             Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
-//                        tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
-//                        tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
+//                          tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
+//                          tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
                             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
                             ReadingTag(hexTagId);
                         }
@@ -148,7 +151,16 @@ public class PassageActivity extends AppCompatActivity {
     private void ReadingTag(String hexTagId) {
         try {
             scanEnCours = true;
+
             if(hexTagId.equals(Globals.LieuEnCours.uidTag)){
+                String req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
+                Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+                if(rLieu.progress == 1)
+                    Globals.isWorking = true;
+                else if(rLieu.progress == 2)
+                    Globals.isWorking = false;
+
                 new enregistrerPassageTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 finish();
             }else{

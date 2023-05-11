@@ -4,13 +4,23 @@
     {
         public ActivityVM() {
             datas = new List<ActivityItem>();
+            tasks = new List<TaskVM>();
         }
 
         public List<ActivityItem> datas;
 
+        public List<TaskVM> tasks { get; set; }
+
         public string comment { get; set; } = string.Empty!;
 
+        public string photo { get; set; } = string.Empty!;
+
         public int passageId { get; set; } = 0;
+
+        public int? flag { get; set; } = 0; // 0: Normal 1: Comment, 2: Photo
+
+        public string? lieu { get; set; } = string.Empty!;
+
     }
 
     public class ActivityItem
@@ -29,5 +39,12 @@
         public int IsCamera { get; set; } = 0!;
 
         public int PassageId { get; set; }
+    }
+
+    public class TaskVM
+    {
+        public int IdTask { get; set; }
+
+        public string Description { get; set; } = string.Empty;
     }
 }

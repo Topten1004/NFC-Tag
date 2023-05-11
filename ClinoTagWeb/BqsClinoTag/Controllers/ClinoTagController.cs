@@ -226,6 +226,8 @@ namespace BqsClinoTag.Controllers
             // check NFC tag successfully, set progress
             if (unL.Progress != 2)
                 ++unL.Progress;
+            else
+                unL.Progress = 1;
 
             await db.SaveChangesAsync();
             if (unL != null) return new LieuLight(unL);

@@ -54,6 +54,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddHostedService<SetGreenColorToGreyService>();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddRazorPages();

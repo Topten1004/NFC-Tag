@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity {
         if(Globals.isWorking == true)
         {
             btn.setVisibility(View.GONE);
+        } else {
+            btn.setVisibility(View.VISIBLE);
         }
+
         if(mAdapter == null){
             txtInstructions.setText("Appuyer sur l'image");
             txtInstructions.setTextColor(getResources().getColor(R.color.white));
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         location.initLocation();
+        chargement();
     }
 
     private String niveauBatterie() {
@@ -159,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            ReadingTag("531F010701E140"); //GHYSKJDLDSMAZP-9
+            ReadingTag(hexTagId); //534E35AF016640-9
         }
     }
 
@@ -192,8 +196,8 @@ public class MainActivity extends AppCompatActivity {
                         if(!scanEnCours){
                             hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
                             Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
-//                        tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
-//                        tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
+//                          tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
+//                          tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
                             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
                             ReadingTag(hexTagId);
                         }
@@ -212,6 +216,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chargement() {
+
+        Button btn = this.findViewById(R.id.Notification);
+
+        if(Globals.isWorking == true)
+        {
+            btn.setVisibility(View.GONE);
+        } else {
+            btn.setVisibility(View.VISIBLE);
+        }
+
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
         RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
         recyclerView.setAdapter(adapter);
@@ -235,17 +249,24 @@ public class MainActivity extends AppCompatActivity {
                         if (rLieu != null) {
                             // finish();
 
-                            // set agent is working part
-                            if(Globals.isWorking == true)
-                                Globals.isWorking = false;
-                            else if(Globals.isWorking == false)
+                            if(rLieu.progress == 1)
                                 Globals.isWorking = true;
+                            else if(rLieu.progress == 2)
+                                Globals.isWorking = false;
 
                             Globals.LieuEnCours = rLieu;
                             startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
                             Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();
                         }
                     } else if(result.equals("MATERIEL")) {
+
+                        // set agent is working part
+                        if(Globals.isWorking == true)
+                            Globals.isWorking = false;
+
+                        else if(Globals.isWorking == false)
+                            Globals.isWorking = true;
+
                         req = Globals.urlAPIClinoTag + "ScanMateriel/" + hexTagId ;
                         Materiel rMateriel = new JsonTaskMateriel().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
                         if (rMateriel != null) {
