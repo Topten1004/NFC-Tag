@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using BqsClinoTag.Grool;
+using Cronos;
 
 namespace BqsClinoTag.Services
 {
@@ -45,10 +46,16 @@ namespace BqsClinoTag.Services
         private readonly CLINOTAGBQSContext context;
         private readonly IMailService mailService;
 
+        private readonly CronExpression _cron;
+
+        private const string schedule = "0 0 * * *"; // every day (any day of the week, any month, any day of the month, at 12:00AM)
+
+
         public ScheduleService(IServiceScopeFactory _scopeFactory, IMailService _mailService)
         {
             context = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<CLINOTAGBQSContext>();
             mailService = _mailService;
+            _cron = CronExpression.Parse(schedule);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -57,6 +64,14 @@ namespace BqsClinoTag.Services
             {
                 do
                 {
+                    var utcNow = DateTime.UtcNow;
+                    var nextUtc = _cron.GetNextOccurrence(utcNow);
+                    var delaySpan = nextUtc.Value - utcNow;
+
+                    await Task.Delay(delaySpan, stoppingToken);
+
+                    await ChangeColor();
+
                     IEnumerable<TachePlanifiee> ieTP = context.TachePlanifiees.Where(tp => tp.TachePlanifieeActive == true);
                     var maintenant = DateTime.Now;
                     CrontabSchedule ctPlannif;
@@ -107,6 +122,26 @@ namespace BqsClinoTag.Services
                 string msg = ex.Message;
             }
             
+        }
+
+        private async Task ChangeColor()
+        {
+            try
+            {
+                var lieus = await context.Lieus.ToListAsync();
+
+                foreach (var item in lieus)
+                {
+                    item.Progress = 0;
+                }
+
+                await context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private async Task<bool> NotifMateriel(TachePlanifiee tp)
