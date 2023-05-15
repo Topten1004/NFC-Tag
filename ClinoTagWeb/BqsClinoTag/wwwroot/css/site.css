@@ -95,3 +95,20 @@ body {
     white-space: nowrap;
     line-height: 60px; */ /* Vertically center the text there */
 }
+
+.circle {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #fff; /* Set the background color for the circle */
+    color: #fff; /* Set the text color inside the circle */
+    text-align: center;
+    line-height: 5px;
+}
+
+.myButton .tooltip-inner {
+    max-width: 300px; /* Set the desired maximum width */
+    width: auto; /* Allow the tooltip to expand beyond the max-width if necessary */
+    background: white;
+}

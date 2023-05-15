@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using BqsClinoTag.Grool;
 using System.Security.Claims;
 using System.Globalization;
+using static System.Net.WebRequestMethods;
 
 namespace BqsClinoTag.Controllers
 {
@@ -17,6 +18,7 @@ namespace BqsClinoTag.Controllers
     public class LieuxController : Controller
     {
         private readonly CLINOTAGBQSContext _context;
+        private string PublicLink = "https://demo.clinotag.com/api/clinoTag/link?location=";
 
         public LieuxController(CLINOTAGBQSContext context)
         {
@@ -57,6 +59,18 @@ namespace BqsClinoTag.Controllers
         // GET: Lieux
         public async Task<IActionResult> Index(int idClient = 0)
         {
+            var lieus = await _context.Lieus.ToListAsync();
+
+            foreach(var item in lieus)
+            {
+                if(item.PublicLink.Length == 0)
+                {
+                    item.PublicLink = PublicLink + item.Nom;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
             string? userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             int idUtilisateur = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             switch (userRole)
@@ -135,6 +149,7 @@ namespace BqsClinoTag.Controllers
         {
             if (lieu.IdClient > 0 && lieu.UidTag != null)
             {
+                lieu.PublicLink = PublicLink + "location=" + lieu.Nom.ToLower();
                 lieu.Nom = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lieu.Nom.ToLower());
                 _context.Add(lieu);
                 await _context.SaveChangesAsync();

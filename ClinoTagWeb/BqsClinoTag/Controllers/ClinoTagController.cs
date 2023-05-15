@@ -3,7 +3,10 @@ using BqsClinoTag.Models;
 using BqsClinoTag.Models.LightObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace BqsClinoTag.Controllers
 {
@@ -273,6 +276,60 @@ namespace BqsClinoTag.Controllers
             Agent? unA = await db.Agents.Where(a => a.Code == codeagent).FirstOrDefaultAsync();
             if (unA != null) return new AgentLight(unA);
             else return null;
+        }
+
+        [HttpGet]
+        [Route("link")]
+
+        public async Task<string> AskClean([FromQuery(Name = "location")] string lieuName, [FromQuery(Name = "clean")] string? clean, [FromQuery(Name = "contact")] string? contact, [FromQuery(Name = "satisfaction")] int? satisfaction)
+        {
+            Lieu? lieu = await db.Lieus.Where(x => x.Nom == lieuName).FirstOrDefaultAsync();
+            if (lieu != null)
+            {
+                if(clean == "no")
+                {
+                    lieu.Progress = 0;
+                    lieu.ActionType = 2;
+                } 
+                else if(clean == "yes")
+                {
+                    lieu.Progress = 0;
+                    lieu.ActionType = 1;
+                }
+
+                string PublicLink = "https://demo.clinotag.com/api/Clinotag/link?" + "location=" + lieuName;
+                if(clean != null)
+                {
+                    PublicLink += "&clean=" + clean;
+                }
+
+                if(contact != null)
+                {
+                    PublicLink += "&contact=" + contact;
+                }
+
+                if(satisfaction != null)
+                {
+                    PublicLink += "&satisfaction=" + satisfaction;
+                }
+
+                lieu.PublicLink = PublicLink;
+
+                await db.SaveChangesAsync();
+                return lieu.PublicLink;
+            }
+            else return "Not find lieu";
+        }
+
+        public bool IsEmailValid(string email)
+        {
+            // Regular expression pattern for email validation
+            string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+            // Check if the email matches the pattern
+            bool isEmailValid = Regex.IsMatch(email, pattern);
+
+            return isEmailValid;
         }
 
         [HttpGet]
