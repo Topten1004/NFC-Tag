@@ -26,7 +26,7 @@ namespace BqsClinoTag.Controllers
         public async Task<IActionResult> Index(int? id, int? flag)
         {
 
-            var lieus = await _context.Lieus.Where(x => x.Inventory == false).ToListAsync();
+            var lieus = await _context.Lieus.Where(x => x.Inventory == false).OrderBy( x => x.Nom).ToListAsync();
 
             var datas = new ActivityVM();
             

@@ -58,39 +58,28 @@
         android:background="@drawable/btnnotify"
         android:foreground="@drawable/btnnotify"
         android:onClick="onClickNotification"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtInstructions"
         app:layout_constraintVertical_bias="0.025" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollViewMagasin"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLieu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="289dp"
+        android:focusable="true"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Notification">
+        app:layout_constraintTop_toBottomOf="@+id/Notification"
+        app:layout_constraintVertical_bias="0.0"
+        app:spanCount="2"
+        tools:ignore="MissingConstraints"
+        tools:listitem="@android:layout/simple_list_item_2" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewLieu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            app:layoutManager="GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@android:layout/simple_list_item_2">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

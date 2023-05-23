@@ -18,7 +18,7 @@ namespace BqsClinoTag.Controllers
     public class LieuxController : Controller
     {
         private readonly CLINOTAGBQSContext _context;
-        private string PublicLink = "https://demo.clinotag.com/api/clinoTag/link?location=";
+        private string PublicLink = "https://demo.clinotag.com/api/clinoTag/link?";
 
         public LieuxController(CLINOTAGBQSContext context)
         {
@@ -65,7 +65,7 @@ namespace BqsClinoTag.Controllers
             {
                 if(item.PublicLink.Length == 0)
                 {
-                    item.PublicLink = PublicLink + item.Nom;
+                    item.PublicLink = PublicLink + "location=" + '"' + item.Nom + '"';
                 }
             }
 
@@ -149,8 +149,10 @@ namespace BqsClinoTag.Controllers
         {
             if (lieu.IdClient > 0 && lieu.UidTag != null)
             {
-                lieu.PublicLink = PublicLink + "location=" + lieu.Nom.ToLower();
                 lieu.Nom = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lieu.Nom.ToLower());
+
+                lieu.PublicLink = PublicLink + "location=" + '"' + lieu.Nom + '"';
+
                 _context.Add(lieu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

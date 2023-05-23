@@ -28,12 +28,17 @@ $(function () {
     });
 
     $('.copy').on('click', function () {
-        var value = this.value;
+        var value = $(this).attr('value');
 
-        var content = $('#' + value).text();
-        var content = content.trim();
+        var content = $('#' + value).text().trim();
 
-        navigator.clipboard.writeText(content);
+        navigator.clipboard.writeText(content)
+            .then(function () {
+                console.log('Text copied to clipboard successfully.');
+            })
+            .catch(function (error) {
+                console.error('Unable to copy text to clipboard:', error);
+            });
     });
 
 });

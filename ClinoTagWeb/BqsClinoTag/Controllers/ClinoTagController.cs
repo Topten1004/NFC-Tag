@@ -279,10 +279,72 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpGet]
-        [Route("link")]
+        [Route("Satisfaction")]
 
+        public async Task<string> SatisfactionSurvey([FromQuery(Name ="location")]string lieuName, [FromQuery(Name = "satisfation")]int satisfaction)
+        {
+            lieuName = lieuName.Substring(1, lieuName.Length - 2);
+            var lieu = await db.Lieus.Where(x => x.Nom == lieuName).Include(p => p.Passages).ThenInclude(t => t.PassageTaches).FirstOrDefaultAsync();
+
+            if (lieu != null)
+            {
+                if(lieu.Passages.LastOrDefault() != null)
+                {
+                    lieu.Passages.LastOrDefault().Satisfaction = satisfaction;
+                    await db.SaveChangesAsync();
+
+                    return "Successfully set.";
+                } else
+                {
+                    return "No cleaning yet.";
+                }
+            }
+            else
+            {
+                return "Can't found location.";
+            }
+        }
+
+        [HttpGet]
+        [Route("LastVisit")]
+
+        public async Task<LastVisit> LastVisit([FromQuery(Name = "location")] string lieuName)
+        {
+            lieuName = lieuName.Substring(1, lieuName.Length - 2);
+            var lieu = await db.Lieus.Where(x => x.Nom == lieuName).Include( p => p.Passages).ThenInclude(t => t.PassageTaches).FirstOrDefaultAsync();
+            var checks = await db.PassageTaches.ToListAsync();
+
+            if (lieu != null)
+            {
+                for(int i = checks.Count() - 1; i >= 0; i--)
+                {
+                    if (checks[i].Fait == true)
+                    {
+                        foreach(var item in lieu.Passages)
+                        {
+                            if(item.IdPassage == checks[i].IdPassage)
+                            {
+                                var client = await db.Clients.Where(x => x.IdClient == lieu.IdClient).FirstOrDefaultAsync();
+                                var result = new LastVisit
+                                {
+                                    ClientName = client.Nom,
+                                    LastVisitDate = item.DhFin
+                                };
+
+                                return result;
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        [HttpGet]
+        [Route("link")]
         public async Task<string> AskClean([FromQuery(Name = "location")] string lieuName, [FromQuery(Name = "clean")] string? clean, [FromQuery(Name = "contact")] string? contact, [FromQuery(Name = "satisfaction")] int? satisfaction)
         {
+            lieuName = lieuName.Substring(1, lieuName.Length - 2);
             Lieu? lieu = await db.Lieus.Where(x => x.Nom == lieuName).FirstOrDefaultAsync();
             if (lieu != null)
             {
@@ -297,7 +359,7 @@ namespace BqsClinoTag.Controllers
                     lieu.ActionType = 1;
                 }
 
-                string PublicLink = "https://demo.clinotag.com/api/Clinotag/link?" + "location=" + lieuName;
+                string PublicLink = "https://demo.clinotag.com/api/Clinotag/link?" + "location=" + '"' + lieuName + '"';
                 if(clean != null)
                 {
                     PublicLink += "&clean=" + clean;
@@ -305,11 +367,13 @@ namespace BqsClinoTag.Controllers
 
                 if(contact != null)
                 {
+                    lieu.Contact = contact;
                     PublicLink += "&contact=" + contact;
                 }
 
                 if(satisfaction != null)
                 {
+                    lieu.Satisfaction = satisfaction;
                     PublicLink += "&satisfaction=" + satisfaction;
                 }
 

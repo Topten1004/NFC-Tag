@@ -19,7 +19,7 @@ namespace BqsClinoTag.Controllers
 
         public async Task<IActionResult> Index(int? id, int? flag)
         {
-            var lieus = await _context.Lieus.Where(x => x.Inventory == true).ToListAsync();
+            var lieus = await _context.Lieus.Where(x => x.Inventory == true).OrderBy(x => x.Nom).ToListAsync();
 
             var model = new InventoryVM();
 
@@ -63,7 +63,13 @@ namespace BqsClinoTag.Controllers
                 if (passages != null)
                 {
                     model.comment = passages?.Commentaire ?? new string("");
-                    model.photo = Convert.ToBase64String(passages?.Photo ?? new byte[0]);
+
+                    string base64String = Convert.ToBase64String(passages?.Photo ?? new byte[0]);
+
+                    byte[] bytes = System.Convert.FromBase64String(base64String);
+                    string normalString = System.Text.Encoding.UTF8.GetString(bytes);
+
+                    model.photo = normalString;
                 }
 
                 var taskIds = await _context.TacheLieus.Where(x => x.IdLieu == id).Include(c => c.PassageTaches).ToListAsync();

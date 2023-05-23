@@ -21,6 +21,10 @@ namespace BqsClinoTag.Models
         public int IdLieu { get; set; }
         [Column("ID_AGENT")]
         public int IdAgent { get; set; }
+
+        [Column("SATISFACTION")]
+        public int Satisfaction { get; set; }
+
         [Column("DH_DEBUT")]
         [DataType(DataType.DateTime)]
         public DateTime DhDebut { get; set; }

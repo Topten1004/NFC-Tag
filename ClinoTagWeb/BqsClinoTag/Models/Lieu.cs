@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 namespace BqsClinoTag.Models
@@ -39,6 +40,19 @@ namespace BqsClinoTag.Models
 
         [Column("PUBLIC_LINK")]
         public string PublicLink { get; set; } = null!;
+
+        [Column("ASK")]
+
+        public string? Ask { get; set; } = null!;
+
+
+        [Column("SATISFACTION")]
+        public int? Satisfaction { get; set; } = 0!;
+
+        [Column("CONTACT")]
+
+        public string? Contact { get; set; } = null!;
+
 
         [ForeignKey("IdClient")]
         [InverseProperty("Lieus")]

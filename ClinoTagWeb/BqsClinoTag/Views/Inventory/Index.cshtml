@@ -85,7 +85,7 @@
 
         @if (Model.flag >= 1)
         {
-            <div style="border: 2px solid black;padding:40px;margin:20px">
+            <div style="border: 2px solid black;padding:20px;margin:20px">
                 <div>
                     @if (Model.flag == 1)
                     {
@@ -95,7 +95,7 @@
                     }
                     else if (Model.flag == 2)
                     {
-                        <img src="data:image/jpeg;base64,@Model.photo" alt="Image" />
+                        <img style="width:340px;height:240px" src="@Model.photo" alt="Image"/>
                     }
                     else if (Model.flag == 3)
                     {

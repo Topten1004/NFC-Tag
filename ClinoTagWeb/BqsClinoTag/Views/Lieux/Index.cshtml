@@ -33,7 +33,7 @@
                 Tâche(s)
             </th>
             <th style="display:flex; align-content:center">
-                Link for task
+                Link for API
                 <div id="myButton" style="padding-left:10px" data-toggle="tooltip" class="myButton"
                      title="the link created is for guest<br>-ask a cleaning by adding to this link : &clean=yes<br>-or do not disturb by adding to this link : &clean=no<br>or ask something by adding to this link : &ask='need paper'<br>or add a contact to send when the room is made to this link &contact='greg@gmail.com'<br>or add customer satisfaction (0-5) by adding to this link : &satisfaction=5">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
@@ -64,7 +64,7 @@
                 @item.TacheLieus.Count
             </td>
             <td id =@Html.DisplayFor(modelItem => item.IdLieu) style="display:flex">
-                @Html.DisplayFor(modelItem => item.PublicLink)
+                    <p style="display:none">@Html.DisplayFor(modelItem => item.PublicLink)</p>
                     <button style="border:none" class="copy" value=@Html.Raw(item.IdLieu) data-toggle="copytooltip"
                             title="link copied">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clipboard-check-fill" viewBox="0 0 16 16">
