@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BqsClinoTag.Controllers
 {
-    [Authorize(Roles = nameof(Droits.Roles.SUPERADMIN) + "," + nameof(Droits.Roles.ADMIN))]
+    [Authorize(Roles = nameof(Droits.Roles.SUPERADMIN) + "," + nameof(Droits.Roles.ADMIN) + "," + nameof(Droits.Roles.MANAGER))]
 
     public class ActivityController : Controller
     {
@@ -23,10 +24,17 @@ namespace BqsClinoTag.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? id, int? flag)
+        public async Task<IActionResult> Index(int? id, int? flag, string? filter)
         {
+            string? userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            int idUtilisateur = 0;
 
-            var lieus = await _context.Lieus.Where(x => x.Inventory == false).OrderBy( x => x.Nom).ToListAsync();
+            if (userRole == nameof(Droits.Roles.MANAGER))
+            {
+                idUtilisateur = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            }
+
+            var lieus = await _context.Lieus.Where(x => x.Inventory == false && (filter == null || x.Nom.Contains(filter)) && (idUtilisateur == 0 || x.IdClient == idUtilisateur)).OrderBy( x => x.Nom).ToListAsync();
 
             var datas = new ActivityVM();
             
@@ -135,6 +143,12 @@ namespace BqsClinoTag.Controllers
         public async Task<IActionResult> IsComment(int? id)
         {
             return RedirectToAction(nameof(Index), new { id = id, flag = 1});
+        }
+
+        // GET: Activity/IsFilter/
+        public async Task<IActionResult> IsFilter(string filter)
+        {
+            return RedirectToAction(nameof(Index), new { filter = filter });
         }
 
         // GET: Activities/IsCamera/5

@@ -69,14 +69,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLieu"
         android:layout_width="match_parent"
-        android:layout_height="289dp"
+        android:layout_height="240dp"
         android:focusable="true"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Notification"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.218"
         app:spanCount="2"
         tools:ignore="MissingConstraints"
         tools:listitem="@android:layout/simple_list_item_2" />

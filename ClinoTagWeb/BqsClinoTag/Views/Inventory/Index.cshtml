@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="~/css/col-exp-panel.css" />
 }
 
+@await Html.PartialAsync("../Shared/_RechercheInventory")
+
+
 <div class="my-container">
     <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8">
         @foreach (var item in Model.places)

@@ -1,0 +1,11 @@
+﻿<button type="button" class="rechcollapsible">Recherche</button>
+<div class="rechcontent">
+    <form action="@Url.Action("IsFilter", "Activity")" method="get">
+        <div class="row">
+            <div class="col-6" style="display: flex">
+                <input style="margin:20px" type="text" class="form-control" name="filter" placeholder="Search locations..." />
+                <button style="margin:20px" class="btn btn-primary" style="margin-left:10px" type="submit">Filter</button>
+            </div>
+        </div>
+    </form>
+</div>

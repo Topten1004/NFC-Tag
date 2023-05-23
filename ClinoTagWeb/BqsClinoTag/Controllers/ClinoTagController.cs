@@ -281,7 +281,7 @@ namespace BqsClinoTag.Controllers
         [HttpGet]
         [Route("Satisfaction")]
 
-        public async Task<string> SatisfactionSurvey([FromQuery(Name ="location")]string lieuName, [FromQuery(Name = "satisfation")]int satisfaction)
+        public async Task<string> SatisfactionSurvey([FromQuery(Name ="location")]string lieuName, [FromQuery(Name = "Satisfaction")]int satisfaction)
         {
             lieuName = lieuName.Substring(1, lieuName.Length - 2);
             var lieu = await db.Lieus.Where(x => x.Nom == lieuName).Include(p => p.Passages).ThenInclude(t => t.PassageTaches).FirstOrDefaultAsync();

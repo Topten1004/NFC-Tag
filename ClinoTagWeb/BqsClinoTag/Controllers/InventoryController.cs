@@ -1,13 +1,19 @@
-﻿using BqsClinoTag.Models;
+﻿using BqsClinoTag.Grool;
+using BqsClinoTag.Models;
 using BqsClinoTag.ViewModel.Inventory;
 using MailKit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Security.Claims;
+using static BqsClinoTag.Grool.Droits;
 
 namespace BqsClinoTag.Controllers
 {
+    [Authorize(Roles = nameof(Droits.Roles.SUPERADMIN) + "," + nameof(Droits.Roles.ADMIN) + "," + nameof(Droits.Roles.MANAGER))]
+
     public class InventoryController : Controller
     {
         private readonly CLINOTAGBQSContext _context;
@@ -17,9 +23,18 @@ namespace BqsClinoTag.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? id, int? flag)
+        public async Task<IActionResult> Index(int? id, int? flag, string? filter)
         {
-            var lieus = await _context.Lieus.Where(x => x.Inventory == true).OrderBy(x => x.Nom).ToListAsync();
+
+            string? userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            int idUtilisateur = 0;
+
+            if (userRole == nameof(Droits.Roles.MANAGER))
+            {
+                idUtilisateur = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            }
+
+            var lieus = await _context.Lieus.Where(x => x.Inventory == true && (filter == null || x.Nom.Contains(filter)) && (idUtilisateur == 0 || x.IdClient == idUtilisateur)).OrderBy(x => x.Nom).ToListAsync();
 
             var model = new InventoryVM();
 
@@ -127,16 +142,22 @@ namespace BqsClinoTag.Controllers
         }
 
 
-        // GET: Activities/IsComment/5
+        // GET: Inventory/IsComment/5
         public async Task<IActionResult> IsComment(int? id)
         {
             return RedirectToAction(nameof(Index), new { id = id, flag = 1});
         }
 
-        // GET: Activities/IsCamera/5
+        // GET: Inventory/IsCamera/5
         public async Task<IActionResult> IsCamera(int? id)
         {
             return RedirectToAction(nameof(Index), new { id = id, flag = 2 });
+        }
+
+        // GET: Inventory/IsFilter/
+        public async Task<IActionResult> IsFilter(string? filter)
+        {
+            return RedirectToAction(nameof(Index), new { filter = filter });
         }
     }
 }
