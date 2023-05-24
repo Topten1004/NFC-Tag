@@ -1,11 +1,8 @@
 ﻿using BqsClinoTag.Grool;
 using BqsClinoTag.Models;
 using BqsClinoTag.Models.LightObject;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
 using System.Text.RegularExpressions;
 
 namespace BqsClinoTag.Controllers
@@ -82,6 +79,11 @@ namespace BqsClinoTag.Controllers
                 newL.Nom = lieu.nom;
                 newL.ActionType = 0;
                 newL.Progress = 0;
+                newL.Satisfaction = 0;
+                newL.Inventory = false;
+                newL.Ask = string.Empty;
+                newL.Contact = string.Empty;
+                newL.PublicLink = "https://demo.clinotag.com/api/Clinotag/link?" + "location=" + '"' + lieu.nom + '"';
 
                 db.Lieus.Add(newL);
                 await db.SaveChangesAsync();

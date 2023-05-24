@@ -1,0 +1,124 @@
+Tiers
+Utilisateur
+Client
+Agent
+Enregistrer
+Lieu
+SupprTacheLieu
+PassageTaches
+Retour à la liste
+Prestation
+Commentaire
+Client / Lieu
+DhFin
+DhDebut
+Tâches effectuées
+Modifier
+Nouveau
+Tâche
+Nom
+Prenom
+Login
+Email
+Rôle
+Nombre de manager
+Nom
+Supprimer
+Modifier
+Details
+Tâche(s)
+Lieu
+UidTag
+Client
+Link for API
+Stock
+Date/Heure
+début
+Date/Heure
+fin
+Agent
+Client
+Materiel
+Commentaire
+Date/Heure
+Notification
+Client
+Materiel
+Date/Heure
+début
+Date/Heure
+expiration
+AGENT visited the location
+Action asked
+Action in progress
+Do not disturb
+Filter
+Search locations
+Recherche
+Connexion
+Accueil
+Identifiant
+votre identifiant
+votre mot de passe
+Valider
+Mot de passe oublié
+Connexion
+Privacy Policy
+Use this page to detail your site's privacy policy.
+La solution des entreprises de nettoyage pour suivre vos clients, vos agents et les prestations effectuées.
+Inventory
+Activity
+
+
+--------------------------------Mobile Parts-----------------------------------
+Email
+Password
+Sign in or register
+Sign in
+Welcome !
+Not a valid username
+Password must be >5 characters
+Login failed
+actualiser
+deconnexion
+magasins
+Pas de connexion Internet
+Notification
+Start
+Description of the task
+The tag does not match the original request tag.
+Error reading tag.
+Error while recording passage.
+No geolocation, recording of the passage impossible.
+The contactless tag
+is not that of the initial passage.
+Pass recorded.
+Error reading tag.
+Scan again to finish.
+Comment
+Utilisation de matériel
+Début d'utilisation
+Instructions matériel
+Commentaire
+Scanner à nouveau le tag du matériel pour terminer l'utilisation.
+Dépoussiérage des sols
+En attente de scan
+Internet connection required
+Veuillez saisir votre code d'accès
+est inconnu, que souhaitez-vous enregistrer
+Le tag
+Erreur lors de la lecture du tag
+Error reading tag
+Sélection du client
+Le matériel est associé au tag.
+L'enregistrement du matériel a échoué.
+Pas de connexion InternetNo internet connection
+actualiser
+deconnexion
+Sélection du client
+Le nom est associé au tag.
+L'enregistrement du nom a échoué.
+récupérée
+Enregistrer
+Annuler
+Enregistrement du tag

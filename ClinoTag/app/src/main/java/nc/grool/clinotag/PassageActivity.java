@@ -20,12 +20,16 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.urovo.sdk.rfcard.RFCardHandlerImpl;
+import com.urovo.sdk.rfcard.listener.RFSearchListener;
+import com.urovo.sdk.utils.BytesUtil;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -48,14 +52,60 @@ public class PassageActivity extends AppCompatActivity {
     TextView labDateHeurePassage = null;
     EditText editCommentaire = null;
     static boolean scanEnCours = false;
-    NfcAdapter mAdapter;
+//    NfcAdapter mAdapter;
 
+    public RFCardHandlerImpl rfReader;
     @Override
     public void onStart() {
         super.onStart();
-        mAdapter = NfcAdapter.getDefaultAdapter(this);
-        if(mAdapter != null){
-            toogleNfc(true);
+//        mAdapter = NfcAdapter.getDefaultAdapter(this);
+        startSearchCard();
+//        if(mAdapter != null){
+//            toogleNfc(true);
+//        }
+    }
+
+    public void startSearchCard() {
+        try {
+            rfReader.searchCard(new RFSearchListener() {
+                /**
+                 * 检测到卡
+                 *
+                 * @param cardType - 卡类型
+                 *                 <ul>
+                 *                 <li>S50_CARD(0x00) - S50卡</li>
+                 *                 <li>S70_CARD(0x01) - S70卡</li>
+                 *                 <li>PRO_CARD(0x02) - PRO卡</li>
+                 *                 <li>S50_PRO_CARD(0x03) - 支持S50驱动与PRO驱动的PRO卡</li>
+                 *                 <li>S70_PRO_CARD(0x04) - 支持S70驱动与PRO驱动的PRO卡 </li>
+                 *                 <li>CPU_CARD(0x05) - CPU卡</li>
+                 *                 </ul>
+                 * @param UID
+                 */
+                @Override
+                public void onCardPass(int cardType, byte[] UID) {
+//                    outputText("onCardPass, cardType " + cardType);
+//                    driver = "CPU";
+//                    if (cardType == Constant.CardType.PRO_CARD || cardType == Constant.CardType.S50_PRO_CARD
+//                            || cardType == Constant.CardType.S70_PRO_CARD) {
+//                        driver = "PRO";
+//                    } else if (cardType == Constant.CardType.S50_CARD) {
+//                        driver = "S50";
+//                    } else if (cardType == Constant.CardType.S70_CARD) {
+//                        driver = "S70";
+//                    }
+//                    outputText("" + driver);
+                    hexTagId = BytesUtil.bytes2HexString(UID);
+                    Log.d("MainActivity","UID: " + BytesUtil.bytes2HexString(UID));
+                }
+
+                @Override
+                public void onFail(int error, String message) {
+                    Log.d("MainActivity","onFail,error: " + error + ",message: " + message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -64,6 +114,8 @@ public class PassageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passage);
 
+        rfReader = RFCardHandlerImpl.getInstance();
+
         Globals.PassageEnCours = new Passage();
         Globals.PassageEnCours.dateDebut = new Date();
         Globals.PassageEnCours.idAgent = Globals.cetAgent.idAgent;
@@ -71,7 +123,7 @@ public class PassageActivity extends AppCompatActivity {
         Globals.PassageEnCours.lTache = Globals.LieuEnCours.lTache;
 
         labDateHeurePassage = (TextView) findViewById(R.id.labDateHeurePassage);
-        labDateHeurePassage.setText("Début : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
+        labDateHeurePassage.setText("Start : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " > " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
 
         editCommentaire = (EditText) findViewById(R.id.editCommentaire);
 
@@ -82,7 +134,7 @@ public class PassageActivity extends AppCompatActivity {
 
             public void onFinish() {
                 setTitle(Globals.getCurrentTime() + " - " + Globals.LieuEnCours.client + "/" + Globals.LieuEnCours.nom);
-                labDateHeurePassage.setText("Début : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
+                labDateHeurePassage.setText("Start : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " > " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
                 this.start();
             }
         }.start();
@@ -112,41 +164,41 @@ public class PassageActivity extends AppCompatActivity {
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Description de la tâche")
+        builder.setMessage("Description of the task")
                 .setPositiveButton("Ok", dialogClickListener)
                 .show();
     }
 
-    void toogleNfc(Boolean enable){
-        if(enable){
-            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-
-            mAdapter.enableReaderMode(this, new NfcAdapter.ReaderCallback() {
-                @Override
-                public void onTagDiscovered(final Tag tag) {
-                    runOnUiThread(() -> {
-                        if(!scanEnCours){
-
-                            hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
-                            Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
-//                          tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
-//                          tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
-                            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
-                            ReadingTag(hexTagId);
-                        }
-                    });
-
-                }
-            }, NfcAdapter.FLAG_READER_NFC_A |
-                    NfcAdapter.FLAG_READER_NFC_B |
-                    NfcAdapter.FLAG_READER_NFC_F |
-                    NfcAdapter.FLAG_READER_NFC_V |
-                    NfcAdapter.FLAG_READER_NFC_BARCODE |
-                    NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS, null);
-        }else{
-            mAdapter.disableReaderMode(this);
-        }
-    }
+//    void toogleNfc(Boolean enable){
+//        if(enable){
+//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+//
+//            mAdapter.enableReaderMode(this, new NfcAdapter.ReaderCallback() {
+//                @Override
+//                public void onTagDiscovered(final Tag tag) {
+//                    runOnUiThread(() -> {
+//                        if(!scanEnCours){
+//
+//                            hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
+//                            Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
+////                          tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
+////                          tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
+//                            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
+//                            ReadingTag(hexTagId);
+//                        }
+//                    });
+//
+//                }
+//            }, NfcAdapter.FLAG_READER_NFC_A |
+//                    NfcAdapter.FLAG_READER_NFC_B |
+//                    NfcAdapter.FLAG_READER_NFC_F |
+//                    NfcAdapter.FLAG_READER_NFC_V |
+//                    NfcAdapter.FLAG_READER_NFC_BARCODE |
+//                    NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS, null);
+//        }else{
+//            mAdapter.disableReaderMode(this);
+//        }
+//    }
 
     private void ReadingTag(String hexTagId) {
         try {
@@ -164,11 +216,11 @@ public class PassageActivity extends AppCompatActivity {
                 new enregistrerPassageTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 finish();
             }else{
-                Toast.makeText(getApplicationContext(), "Le tag ne correspond pas au tag de la demande initiale.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "The tag does not match the original request tag.", Toast.LENGTH_SHORT).show();
             }
             scanEnCours = false;
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Erreur lors de la lecture du tag.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error reading tag.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -245,19 +297,19 @@ public class PassageActivity extends AppCompatActivity {
 //            findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
             switch (result){
                 case -100:
-                    Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.noconnection, Toast.LENGTH_SHORT).show();
                     break;
                 case -999:
-                    Toast.makeText(getApplicationContext(), "Erreur lors de l'enregistrement du passage.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error while recording passage.", Toast.LENGTH_SHORT).show();
                     break;
                 case -2:
-                    Toast.makeText(getApplicationContext(), "Pas de géolocalisation, enregistrement du passage impossible.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No geolocation, recording of the passage impossible.", Toast.LENGTH_SHORT).show();
                     break;
                 case -1:
-                    Toast.makeText(getApplicationContext(), "Le tag sans contact " + hexTagId + " n'est pas celui du passage initial.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The contactless tag " + hexTagId + " is not that of the initial passage.", Toast.LENGTH_SHORT).show();
                     break;
                 case 0:
-                    Toast.makeText(getApplicationContext(), "Passage enregistré.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Pass recorded.", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
             }

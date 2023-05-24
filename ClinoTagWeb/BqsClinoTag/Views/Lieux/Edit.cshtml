@@ -54,15 +54,20 @@
                         <tr>
                             <td>
                                 @t.IdTacheNavigation.Nom
-                            </td>                           
+                            </td>
                             <td>
+                                    <a asp-controller="Lieux" asp-action="SupprTacheLieu" asp-route-id="@t.IdTl">
+                                        <img class="img-24x24" src="~/img/suppr.48x48.png">
+                                    </a>
+                            </td>
+@*                            <td>
                                 @if (!t.PassageTaches.Any())
                                 {
                                     <a asp-controller="Lieux" asp-action="SupprTacheLieu" asp-route-id="@t.IdTl">
                                         <img class="img-24x24" src="~/img/suppr.48x48.png">
-                                    </a>    
-                                }                                                            
-                            </td>
+                                    </a>
+                                }
+                            </td>*@
                         </tr>
                     }
                 </table>

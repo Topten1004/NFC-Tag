@@ -28,11 +28,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+import com.urovo.sdk.rfcard.RFCardHandlerImpl;
+import com.urovo.sdk.rfcard.listener.RFSearchListener;
+import com.urovo.sdk.rfcard.utils.Constant;
+import com.urovo.sdk.utils.BytesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,18 +64,18 @@ import nc.grool.clinotag.outil.Format;
 public class MainActivity extends AppCompatActivity {
 
     public Location location;
-
     static boolean scanEnCours = false;
-    NfcAdapter mAdapter;
+//    NfcAdapter mAdapter;
+    public RFCardHandlerImpl rfReader;
 
     @Override
     public void onStart() {
         super.onStart();
 
-        mAdapter = NfcAdapter.getDefaultAdapter(this);
+//        mAdapter = NfcAdapter.getDefaultAdapter(this);
 
         Button btn = this.findViewById(R.id.Notification);
-        TextView txtInstructions = this.findViewById(R.id.txtInstructions);
+//        TextView txtInstructions = this.findViewById(R.id.txtInstructions);
 
         if(Globals.isWorking == true)
         {
@@ -79,19 +84,21 @@ public class MainActivity extends AppCompatActivity {
             btn.setVisibility(View.VISIBLE);
         }
 
-        if(mAdapter == null){
-            txtInstructions.setText("Appuyer sur l'image");
-            txtInstructions.setTextColor(getResources().getColor(R.color.white));
-        } else {
-            if (!mAdapter.isEnabled()) {
-                txtInstructions.setText("Le NFC n'est pas activé/disponible.");
-                txtInstructions.setTextColor(getResources().getColor(R.color.rougeDoux));
-            } else {
-                txtInstructions.setText("Scanner un tag nom ou matériel.");
-                txtInstructions.setTextColor(getResources().getColor(R.color.black));
-                toogleNfc(true);
-            }
-        }
+        startSearchCard();
+
+//        if(mAdapter == null){
+//            txtInstructions.setText("Press the image.");
+//            txtInstructions.setTextColor(getResources().getColor(R.color.white));
+//        } else {
+//            if (!mAdapter.isEnabled()) {
+//                txtInstructions.setText("NFC is not enabled/available.");
+//                txtInstructions.setTextColor(getResources().getColor(R.color.rougeDoux));
+//            } else {
+//                txtInstructions.setText("Scan a name or material tag.");
+//                txtInstructions.setTextColor(getResources().getColor(R.color.black));
+//                toogleNfc(true);
+//            }
+//        }
 
         chargement();
     }
@@ -101,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rfReader = RFCardHandlerImpl.getInstance();
         location = new Location(getApplicationContext());
 
         setTitle(Globals.getCurrentTime() + " - " + Globals.cetAgent.nom);
@@ -113,6 +121,50 @@ public class MainActivity extends AppCompatActivity {
                 this.start();
             }
         }.start();
+    }
+
+    public void startSearchCard() {
+        try {
+            rfReader.searchCard(new RFSearchListener() {
+                /**
+                 * 检测到卡
+                 *
+                 * @param cardType - 卡类型
+                 *                 <ul>
+                 *                 <li>S50_CARD(0x00) - S50卡</li>
+                 *                 <li>S70_CARD(0x01) - S70卡</li>
+                 *                 <li>PRO_CARD(0x02) - PRO卡</li>
+                 *                 <li>S50_PRO_CARD(0x03) - 支持S50驱动与PRO驱动的PRO卡</li>
+                 *                 <li>S70_PRO_CARD(0x04) - 支持S70驱动与PRO驱动的PRO卡 </li>
+                 *                 <li>CPU_CARD(0x05) - CPU卡</li>
+                 *                 </ul>
+                 * @param UID
+                 */
+                @Override
+                public void onCardPass(int cardType, byte[] UID) {
+//                    outputText("onCardPass, cardType " + cardType);
+//                    driver = "CPU";
+//                    if (cardType == Constant.CardType.PRO_CARD || cardType == Constant.CardType.S50_PRO_CARD
+//                            || cardType == Constant.CardType.S70_PRO_CARD) {
+//                        driver = "PRO";
+//                    } else if (cardType == Constant.CardType.S50_CARD) {
+//                        driver = "S50";
+//                    } else if (cardType == Constant.CardType.S70_CARD) {
+//                        driver = "S70";
+//                    }
+//                    outputText("" + driver);
+                    hexTagId = BytesUtil.bytes2HexString(UID);
+                    Log.d("MainActivity","UID: " + BytesUtil.bytes2HexString(UID));
+                }
+
+                @Override
+                public void onFail(int error, String message) {
+                    Log.d("MainActivity","onFail,error: " + error + ",message: " + message);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -185,35 +237,33 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    void toogleNfc(Boolean enable) {
-        if(enable){
-            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
-
-            mAdapter.enableReaderMode(this, new NfcAdapter.ReaderCallback() {
-                @Override
-                public void onTagDiscovered(final Tag tag) {
-                    runOnUiThread(() -> {
-                        if(!scanEnCours){
-                            hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
-                            Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
-//                          tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
-//                          tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
-                            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
-                            ReadingTag(hexTagId);
-                        }
-                    });
-
-                }
-            }, NfcAdapter.FLAG_READER_NFC_A |
-                    NfcAdapter.FLAG_READER_NFC_B |
-                    NfcAdapter.FLAG_READER_NFC_F |
-                    NfcAdapter.FLAG_READER_NFC_V |
-                    NfcAdapter.FLAG_READER_NFC_BARCODE |
-                    NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS, null);
-        }else{
-            mAdapter.disableReaderMode(this);
-        }
-    }
+//    void toogleNfc(Boolean enable) {
+//        if(enable){
+//            final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
+//
+//            mAdapter.enableReaderMode(this, new NfcAdapter.ReaderCallback() {
+//                @Override
+//                public void onTagDiscovered(final Tag tag) {
+//                    runOnUiThread(() -> {
+//                        if(!scanEnCours){
+//                            hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
+//                            Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
+//                            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
+//                            ReadingTag(hexTagId);
+//                        }
+//                    });
+//
+//                }
+//            }, NfcAdapter.FLAG_READER_NFC_A |
+//                    NfcAdapter.FLAG_READER_NFC_B |
+//                    NfcAdapter.FLAG_READER_NFC_F |
+//                    NfcAdapter.FLAG_READER_NFC_V |
+//                    NfcAdapter.FLAG_READER_NFC_BARCODE |
+//                    NfcAdapter.FLAG_READER_NO_PLATFORM_SOUNDS, null);
+//        }else{
+//            mAdapter.disableReaderMode(this);
+//        }
+//    }
 
     private void chargement() {
 
@@ -230,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        adapter.setOnItemClickListener(onItemClickListener);
+//      adapter.setOnItemClickListener(onItemClickListener);
         adapter.notifyDataSetChanged();
     }
 
@@ -273,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
                             //finish();
                             Globals.MaterielEnCours = rMateriel;
                             startActivityForResult(new Intent(getApplicationContext(), UtilisationActivity.class), 0);
-                            Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " récupérée.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " recovered.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
@@ -292,10 +342,10 @@ public class MainActivity extends AppCompatActivity {
                     Globals.listeClient = new JsonTaskClients().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Le tag " + hexTagId + " est inconnu, que souhaitez-vous enregistrer ?")
-                            .setNeutralButton("Lieu", dialogClickListener)
-                            .setNegativeButton("Matériel", dialogClickListener)
-                            .setPositiveButton("Annuler", dialogClickListener)
+                    builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record ?")
+                            .setNeutralButton("Place", dialogClickListener)
+                            .setNegativeButton("Material", dialogClickListener)
+                            .setPositiveButton("Cancel", dialogClickListener)
                             .show();
                 }
             } catch (ExecutionException e) {
@@ -305,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
             }
             scanEnCours = false;
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Erreur lors de la lecture du tag.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error reading tag.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -320,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
         final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
 
         AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Sélection du client")
+                .setTitle("Customer selection")
                 .setItems(csClientsNom, (dialog, which) -> {
                     dialogNomMateriel(hexTagId, Integer.parseInt(lClientId.get(which)));
                 });
@@ -349,14 +399,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (result == 0) {
-                    Toast.makeText(getApplicationContext(), "Le matériel est associé au tag.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The material is associated with the tag.", Toast.LENGTH_SHORT).show();
                     ReadingTag(hexTagId);
                 } else {
-                    Toast.makeText(getApplicationContext(), "L'enregistrement du matériel a échoué.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Hardware registration failed.", Toast.LENGTH_SHORT).show();
                 }
                 dialogNomMateriel.dismiss();
             }else{
-                Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.noconnection, Toast.LENGTH_LONG).show();
             }
 
         });
@@ -373,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
         final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
 
         AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Sélection du client")
+                .setTitle("Customer selection")
                 .setItems(csClientsNom, (dialog, which) -> {
                     dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
                 });
@@ -402,16 +452,15 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (result == 0) {
-                    Toast.makeText(getApplicationContext(), "Le nom est associé au tag.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The name is associated with the tag.", Toast.LENGTH_SHORT).show();
                     ReadingTag(hexTagId);
                 } else {
-                    Toast.makeText(getApplicationContext(), "L'enregistrement du nom a échoué.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to register name.", Toast.LENGTH_SHORT).show();
                 }
                 dialogNomLieu.dismiss();
             }else{
-                Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.noconnection, Toast.LENGTH_LONG).show();
             }
-
         });
     }
 }
