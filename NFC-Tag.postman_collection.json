@@ -1,0 +1,617 @@
+{
+	"info": {
+		"_postman_id": "a9bca3be-74f1-4308-b084-1b6e1e4a7409",
+		"name": "NFC-Tag",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26044673"
+	},
+	"item": [
+		{
+			"name": "Server",
+			"item": [
+				{
+					"name": "ListeClient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/ListeClient",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"ListeClient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notify",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/Notify",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"Notify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/AgentLogin/00000",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"AgentLogin",
+								"00000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ScanLieu",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/ScanLieu/534E35AF016640",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"ScanLieu",
+								"534E35AF016640"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IdentificationTag",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/IdentificationTag/534E35AF016640",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"IdentificationTag",
+								"534E35AF016640"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassageEffectue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/PassageEffectue?PassageEffectue&dhDebut",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"PassageEffectue"
+							],
+							"query": [
+								{
+									"key": "PassageEffectue",
+									"value": null
+								},
+								{
+									"key": "dhDebut",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "ListeClient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:44328/api/clinotag/ListeClient",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "44328",
+							"path": [
+								"api",
+								"clinotag",
+								"ListeClient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notify",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://127.0.0.1:44328/api/clinotag/Notify",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "44328",
+							"path": [
+								"api",
+								"clinotag",
+								"Notify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://127.0.0.1:44328/api/clinotag/AgentLogin/00000",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "44328",
+							"path": [
+								"api",
+								"clinotag",
+								"AgentLogin",
+								"00000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ScanLieu",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://127.0.0.1:44328/api/clinotag/ScanLieu/534E35AF016640",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "44328",
+							"path": [
+								"api",
+								"clinotag",
+								"ScanLieu",
+								"534E35AF016640"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LastVisit",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/LastVisit?location=\"Bât B - Sanitaire\"",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"LastVisit"
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "\"Bât B - Sanitaire\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Satisfaction",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://127.0.0.1:44328/api/clinotag/Satisfatcion?location=\"Bât B - Sanitaire\"&satisfaction=4",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "44328",
+							"path": [
+								"api",
+								"clinotag",
+								"Satisfatcion"
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "\"Bât B - Sanitaire\""
+								},
+								{
+									"key": "satisfaction",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IdentificationTag",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/IdentificationTag/534E35AF016640",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"IdentificationTag",
+								"534E35AF016640"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PassageEffectue",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idPassage\" :1,\r\n    \"dhDebut\": 1003235,\r\n    \"dhFin\":1054548,\r\n    \"idLieu\" :3,\r\n    \"idAgent\": 3,\r\n    \"commentaire\": \"this is a test\",\r\n    \"photo\":\"base64string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinotag/PassageEffectue",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinotag",
+								"PassageEffectue"
+							],
+							"query": [
+								{
+									"key": "PassageEffectue",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "dhDebut",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AjoutLieu",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uidTag\":\"1010000000\",\r\n    \"idClient\":9,\r\n    \"nom\": \"test uid\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://127.0.0.1:44328/api/clinotag/AjoutLieu",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "44328",
+							"path": [
+								"api",
+								"clinotag",
+								"AjoutLieu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AskClean",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinoTag/link?location=603/129&clean=yes",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinoTag",
+								"link"
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "603/129"
+								},
+								{
+									"key": "clean",
+									"value": "yes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ScanMateriel",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinoTag/ScanMateriel?uidMateriel=534E35AF016640",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinoTag",
+								"ScanMateriel"
+							],
+							"query": [
+								{
+									"key": "uidMateriel",
+									"value": "534E35AF016640"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AgentLogin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://demo.clinotag.com/api/clinoTag/AgentLogin?codeagent=000000",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"clinoTag",
+								"AgentLogin"
+							],
+							"query": [
+								{
+									"key": "codeagent",
+									"value": "000000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

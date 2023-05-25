@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_200"
+    tools:context=".LoginActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:scaleX="1.8"
+        android:scaleY="1.8"
+        android:visibility="invisible"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/labTitreLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Veuillez saisir votre code d'accès"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnUn7"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="10dp"
+        android:onClick="SaisieCode"
+        android:text="7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn4" />
+
+    <Button
+        android:id="@+id/btnUn5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="SaisieCode"
+        android:text="5"
+        app:layout_constraintStart_toEndOf="@+id/btnUn4"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn2" />
+
+    <Button
+        android:id="@+id/btnUn4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="10dp"
+        android:onClick="SaisieCode"
+        android:text="4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn1" />
+
+    <Button
+        android:id="@+id/btnUn3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:onClick="SaisieCode"
+        android:text="3"
+        app:layout_constraintStart_toEndOf="@+id/btnUn2"
+        app:layout_constraintTop_toBottomOf="@+id/labTitreLogin" />
+
+    <Button
+        android:id="@+id/btnUn9"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="SaisieCode"
+        android:text="9"
+        app:layout_constraintStart_toEndOf="@+id/btnUn8"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn6" />
+
+    <Button
+        android:id="@+id/btnUn1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:onClick="SaisieCode"
+        android:text="1"
+        app:layout_constraintBottom_toTopOf="@+id/btnUn4"
+        app:layout_constraintEnd_toStartOf="@+id/btnUn2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labTitreLogin" />
+
+    <Button
+        android:id="@+id/btnUn6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="SaisieCode"
+        android:text="6"
+        app:layout_constraintStart_toEndOf="@+id/btnUn5"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn3" />
+
+    <Button
+        android:id="@+id/btnUn8"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:onClick="SaisieCode"
+        android:text="8"
+        app:layout_constraintStart_toEndOf="@+id/btnUn7"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn5" />
+
+    <Button
+        android:id="@+id/btnUn0"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="10dp"
+        android:onClick="SaisieCode"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn8" />
+
+    <Button
+        android:id="@+id/btnUn2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
+        android:onClick="SaisieCode"
+        android:text="2"
+        app:layout_constraintStart_toEndOf="@+id/btnUn1"
+        app:layout_constraintTop_toBottomOf="@+id/labTitreLogin" />
+
+    <TextView
+        android:id="@+id/labCodeLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
