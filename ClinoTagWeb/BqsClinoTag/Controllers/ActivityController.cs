@@ -96,16 +96,21 @@ namespace BqsClinoTag.Controllers
 
                 foreach (var taskId in taskIds)
                 {
-                    var temp = new TaskVM();
+                    var passItem = taskId.PassageTaches.Where(x => x.Fait == true);
 
-                    var temps = _context.Taches.Where(x => x.IdTache == taskId.IdTache).FirstOrDefault();
-
-                    if (temps != null)
+                    if (passItem == null)
                     {
-                        temp.IdTask = temps.IdTache;
-                        temp.Description = temps.Description ?? new string("");
+                        var temp = new TaskVM();
 
-                        datas.tasks.Add(temp);
+                        var temps = _context.Taches.Where(x => x.IdTache == taskId.IdTache).FirstOrDefault();
+
+                        if (temps != null)
+                        {
+                            temp.IdTask = temps.IdTache;
+                            temp.Description = temps.Description ?? new string("");
+
+                            datas.tasks.Add(temp);
+                        }
                     }
                 }
             }

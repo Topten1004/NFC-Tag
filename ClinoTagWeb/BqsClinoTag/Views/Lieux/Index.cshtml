@@ -43,6 +43,9 @@
                 </div>
             </th>
             <th>
+                Inventory
+            </th>
+            <th>
                 Stock
             </th>
             <th></th>
@@ -75,6 +78,13 @@
             </td>
             <td>
                     @if(item.Inventory == true){
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
+                        </div>
+                    }
+            </td>
+            <td>
+                    @if(item.Stock == true){
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
                         </div>

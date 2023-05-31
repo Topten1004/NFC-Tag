@@ -38,6 +38,10 @@ namespace BqsClinoTag.Models
         [Column("INVENTORY")]
         public bool Inventory { get; set; } = false!;
 
+        [Column("STOCK")]
+        public bool Stock { get; set; } = false!;
+
+
         [Column("PUBLIC_LINK")]
         public string PublicLink { get; set; } = null!;
 

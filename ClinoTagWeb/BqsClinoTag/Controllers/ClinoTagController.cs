@@ -310,10 +310,9 @@ namespace BqsClinoTag.Controllers
         [HttpGet]
         [Route("LastVisit")]
 
-        public async Task<LastVisit> LastVisit([FromQuery(Name = "location")] string lieuName)
+        public async Task<LastVisit> LastVisit([FromQuery(Name = "uidTag")] string uidTag)
         {
-            lieuName = lieuName.Substring(1, lieuName.Length - 2);
-            var lieu = await db.Lieus.Where(x => x.Nom == lieuName).Include( p => p.Passages).ThenInclude(t => t.PassageTaches).FirstOrDefaultAsync();
+            var lieu = await db.Lieus.Where(x => x.UidTag == uidTag).Include( p => p.Passages).ThenInclude(t => t.PassageTaches).FirstOrDefaultAsync();
             var checks = await db.PassageTaches.ToListAsync();
 
             if (lieu != null)

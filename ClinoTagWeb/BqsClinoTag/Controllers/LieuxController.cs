@@ -123,7 +123,6 @@ namespace BqsClinoTag.Controllers
             chargeListeCLient();            
             return View();
         }
-
         private void chargeListeCLient()
         {
             string? userRole = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -149,6 +148,11 @@ namespace BqsClinoTag.Controllers
         {
             if (lieu.IdClient > 0 && lieu.UidTag != null)
             {
+                if (lieu.Inventory == true && lieu.Stock == true)
+                {
+                    lieu.Stock = false;
+                }
+
                 lieu.Nom = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lieu.Nom.ToLower());
 
                 lieu.PublicLink = PublicLink + "location=" + '"' + lieu.Nom + '"';
@@ -186,11 +190,16 @@ namespace BqsClinoTag.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdLieu,Nom,UidTag,IdClient,Inventory")] Lieu lieu)
+        public async Task<IActionResult> Edit(int id, [Bind("IdLieu,Nom,UidTag,IdClient,Inventory,Stock")] Lieu lieu)
         {
             if (id != lieu.IdLieu)
             {
                 return NotFound();
+            }
+
+            if(lieu.Inventory == true && lieu.Stock == true)
+            {
+                lieu.Stock = false;
             }
 
             if (lieu.IdClient > 0 && lieu.UidTag != null)

@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
         Button btn = this.findViewById(R.id.Notification);
-        TextView txtInstructions = this.findViewById(R.id.txtInstructions);
+//        TextView txtInstructions = this.findViewById(R.id.txtInstructions);
 
         if(Globals.isWorking == true)
         {
@@ -79,18 +79,25 @@ public class MainActivity extends AppCompatActivity {
             btn.setVisibility(View.VISIBLE);
         }
 
-        if(mAdapter == null){
-            txtInstructions.setText("Appuyer sur l'image");
-            txtInstructions.setTextColor(getResources().getColor(R.color.white));
-        } else {
-            if (!mAdapter.isEnabled()) {
-                txtInstructions.setText("Le NFC n'est pas activé/disponible.");
-                txtInstructions.setTextColor(getResources().getColor(R.color.rougeDoux));
-            } else {
-                txtInstructions.setText("Scanner un tag nom ou matériel.");
-                txtInstructions.setTextColor(getResources().getColor(R.color.black));
+
+//        if(mAdapter == null){
+//            txtInstructions.setText("Appuyer sur l'image");
+//            txtInstructions.setTextColor(getResources().getColor(R.color.white));
+//        } else {
+//            if (!mAdapter.isEnabled()) {
+//                txtInstructions.setText("Le NFC n'est pas activé/disponible.");
+//                txtInstructions.setTextColor(getResources().getColor(R.color.rougeDoux));
+//            } else {
+//                txtInstructions.setText("Scanner un tag nom ou matériel.");
+//                txtInstructions.setTextColor(getResources().getColor(R.color.black));
+//                toogleNfc(true);
+//            }
+//        }
+
+        if(mAdapter != null)
+        {
+            if(mAdapter.isEnabled())
                 toogleNfc(true);
-            }
         }
 
         chargement();

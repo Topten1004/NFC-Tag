@@ -93,11 +93,20 @@
                     @if (Model.flag == 1)
                     {
                         <div style="padding-left:20px">
+                            <h3>@Html.DisplayFor(modelItem => Model.lieu)</h3>
+                        </div>
+
+                        <div style="padding-left:20px">
                             <h3>@Html.DisplayFor(modelItem => Model.comment)</h3>
                         </div>
                     }
                     else if (Model.flag == 2)
                     {
+
+                        <div style="padding-left:20px">
+                            <h3>@Html.DisplayFor(modelItem => Model.lieu)</h3>
+                        </div>
+
                         <img style="width:340px;height:240px" src="@Model.photo" alt="Image"/>
                     }
                     else if (Model.flag == 3)
