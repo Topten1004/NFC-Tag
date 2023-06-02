@@ -84,11 +84,34 @@ namespace BqsClinoTag.Controllers
                 newL.Ask = string.Empty;
                 newL.Contact = string.Empty;
                 newL.PublicLink = "https://demo.clinotag.com/api/Clinotag/link?" + "location=" + '"' + lieu.nom + '"';
+                newL.Count = 0;
+                newL.Qty = false;
 
                 db.Lieus.Add(newL);
                 await db.SaveChangesAsync();
                 return 0;
             }
+            return -999;
+        }
+
+        [HttpPost]
+        [Route("AjoutQTY")]
+        public async Task<int> AjoutQTY(QtyPost qty)
+        {
+
+            Lieu? lieu = await db.Lieus.Where(x => x.UidTag == qty.uidTag).FirstOrDefaultAsync();
+
+            if (lieu != null)
+            {
+                lieu.Count = qty.count;
+                lieu.QtyDate = DateTime.UtcNow.Date;
+
+                db.Update(lieu);
+                await db.SaveChangesAsync();
+
+                return 0;
+            }
+
             return -999;
         }
 
@@ -210,7 +233,13 @@ namespace BqsClinoTag.Controllers
         public async Task<string?> IdentificationTag(string uid)
         {
             Lieu? unL = await db.Lieus.Where(l => l.UidTag == uid).FirstOrDefaultAsync();
-            if (unL != null) return "LIEU";
+            if (unL != null)
+            {
+                if (unL.Qty == false)
+                    return "LIEU";
+                else
+                    return "QTY";
+            }
             else
             {
                 Materiel? unM = await db.Materiels.Where(m => m.UidTag == uid).FirstOrDefaultAsync();

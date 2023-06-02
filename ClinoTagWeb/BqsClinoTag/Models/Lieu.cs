@@ -41,6 +41,13 @@ namespace BqsClinoTag.Models
         [Column("STOCK")]
         public bool Stock { get; set; } = false!;
 
+        [Column("QTY")]
+
+        public bool Qty { get; set; } = false!;
+
+        [Column("Count")]
+        public int Count { get; set; } = 0!;
+
 
         [Column("PUBLIC_LINK")]
         public string PublicLink { get; set; } = null!;
@@ -56,6 +63,10 @@ namespace BqsClinoTag.Models
         [Column("CONTACT")]
 
         public string? Contact { get; set; } = null!;
+
+        [Column("QTY_DATE")]
+
+        public DateTime QtyDate { get; set; }
 
 
         [ForeignKey("IdClient")]

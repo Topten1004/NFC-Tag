@@ -144,13 +144,13 @@ namespace BqsClinoTag.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdLieu,Nom,UidTag,IdClient,Inventory")] Lieu lieu)
+        public async Task<IActionResult> Create([Bind("IdLieu,Nom,UidTag,IdClient,Inventory,Qty")] Lieu lieu)
         {
             if (lieu.IdClient > 0 && lieu.UidTag != null)
             {
-                if (lieu.Inventory == true && lieu.Stock == true)
+                if (lieu.Inventory == true && lieu.Qty == true)
                 {
-                    lieu.Stock = false;
+                    lieu.Qty = false;
                 }
 
                 lieu.Nom = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lieu.Nom.ToLower());
@@ -190,24 +190,37 @@ namespace BqsClinoTag.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdLieu,Nom,UidTag,IdClient,Inventory,Stock")] Lieu lieu)
+        public async Task<IActionResult> Edit(int id, [Bind("IdLieu,Nom,UidTag,IdClient,Inventory,Qty")] Lieu lieu)
         {
             if (id != lieu.IdLieu)
             {
                 return NotFound();
             }
 
-            if(lieu.Inventory == true && lieu.Stock == true)
+            var tempLieu = await _context.Lieus.Where( x => x.IdLieu == lieu.IdLieu).FirstOrDefaultAsync();
+
+            if (tempLieu == null)
             {
-                lieu.Stock = false;
+                return NotFound();
             }
 
-            if (lieu.IdClient > 0 && lieu.UidTag != null)
+            if (lieu.Inventory == true && lieu.Qty == true)
+            {
+                lieu.Qty = false;
+            }
+
+            tempLieu.Nom = lieu.Nom;
+            tempLieu.UidTag = lieu.UidTag;
+            tempLieu.IdClient = lieu.IdClient;
+            tempLieu.Inventory = lieu.Inventory;
+            tempLieu.Qty = lieu.Qty;
+
+            if (tempLieu.IdClient > 0 && tempLieu.UidTag != null)
             {
                 try
                 {
-                    lieu.Nom = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lieu.Nom.ToLower());
-                    _context.Update(lieu);
+                    tempLieu.Nom = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(lieu.Nom.ToLower());
+                    _context.Update(tempLieu);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

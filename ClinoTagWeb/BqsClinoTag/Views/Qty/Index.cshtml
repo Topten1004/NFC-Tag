@@ -1,0 +1,50 @@
+﻿@using System.Security.Claims
+@using BqsClinoTag.Grool
+@model BqsClinoTag.ViewModel.Qty.QtyVM
+
+@{
+    ViewData["Title"] = "Qty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/col-exp-panel.css" />
+}
+<h1>QTY</h1>
+@if (User.IsInRole(nameof(Droits.Roles.SUPERADMIN)) || User.IsInRole(nameof(Droits.Roles.ADMIN)))
+{
+    @await Html.PartialAsync("../Shared/_RechercheDates")
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Count
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.datas)
+        {
+            <tr>
+                <td>
+                    @item.Created.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.count)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script src="~/js/col-exp-panel.js"></script>
+}

@@ -46,9 +46,8 @@
                 Inventory
             </th>
             <th>
-                Stock
+                QTY
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -83,13 +82,14 @@
                         </div>
                     }
             </td>
-            <td>
-                    @if(item.Stock == true){
+                <td>
+                    @if (item.Qty == true)
+                    {
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
                         </div>
                     }
-            </td>
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdLieu">Modifier</a> |
                 <a asp-action="Details" asp-route-id="@item.IdLieu">Details</a> |

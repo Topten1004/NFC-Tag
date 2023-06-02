@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickNotification(View v) {
+        
         String req = Globals.urlAPIClinoTag + "Notify/" ;
         try {
             List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
@@ -282,6 +283,17 @@ public class MainActivity extends AppCompatActivity {
                             startActivityForResult(new Intent(getApplicationContext(), UtilisationActivity.class), 0);
                             Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " récupérée.", Toast.LENGTH_SHORT).show();
                         }
+                    } else if(result.equals("QTY"))
+                    {
+                        req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
+                        Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+                        Globals.LieuEnCours = rLieu;
+
+                        // find location from Uid Tag
+                        if (rLieu != null) {
+                            startActivityForResult(new Intent(getApplicationContext(), QtyActivity.class), 0);
+                        }
                     }
                 } else {
                     DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
@@ -356,10 +368,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (result == 0) {
-                    Toast.makeText(getApplicationContext(), "Le matériel est associé au tag.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The material is associated with the tag.", Toast.LENGTH_SHORT).show();
                     ReadingTag(hexTagId);
                 } else {
-                    Toast.makeText(getApplicationContext(), "L'enregistrement du matériel a échoué.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Hardware registration failed.", Toast.LENGTH_SHORT).show();
                 }
                 dialogNomMateriel.dismiss();
             }else{
@@ -388,6 +400,25 @@ public class MainActivity extends AppCompatActivity {
         dialogPubliBuilder.create().show();
     }
 
+    private void DialogNewQTY(String hexTagId) {
+        List<String> lClientId = new ArrayList<String>();
+        List<String> lClientNom = new ArrayList<String>();
+        for(Client p : Globals.listeClient){
+            lClientId.add(String.valueOf(p.idClient));
+            lClientNom.add(p.nom);
+        }
+
+        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
+
+        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
+                .setTitle("Customer selection")
+                .setItems(csClientsNom, (dialog, which) -> {
+                    dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
+                });
+
+        dialogPubliBuilder.create().show();
+    }
+
     void dialogNomLieu(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomLieu = DialogTexte.creerDialogTexte(MainActivity.this);
@@ -409,10 +440,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (result == 0) {
-                    Toast.makeText(getApplicationContext(), "Le nom est associé au tag.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The name is associated with the tag.", Toast.LENGTH_SHORT).show();
                     ReadingTag(hexTagId);
                 } else {
-                    Toast.makeText(getApplicationContext(), "L'enregistrement du nom a échoué.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to register name.", Toast.LENGTH_SHORT).show();
                 }
                 dialogNomLieu.dismiss();
             }else{

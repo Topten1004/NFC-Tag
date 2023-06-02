@@ -43,8 +43,8 @@ namespace BqsClinoTag.Models
                 //              optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
                 //              optionsBuilder.UseMySql("server=127.0.0.1;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=127.0.0.1;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
                 //              optionsBuilder.UseMySql("server=172.16.75.101;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
-                //               optionsBuilder.UseMySql("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True"));
-                              optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
+                              optionsBuilder.UseMySql("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True"));
+                //              optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
             }
         }   
 

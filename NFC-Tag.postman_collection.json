@@ -198,6 +198,38 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "https://demo.clinotag.com/api/Clinotag/link?location=603/129&clean=no",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://demo.clinotag.com/api/Clinotag/link?location=603/129&clean=no",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"clinotag",
+								"com"
+							],
+							"path": [
+								"api",
+								"Clinotag",
+								"link"
+							],
+							"query": [
+								{
+									"key": "location",
+									"value": "603/129"
+								},
+								{
+									"key": "clean",
+									"value": "no"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -384,24 +416,22 @@
 							}
 						},
 						"url": {
-							"raw": "https://127.0.0.1:44328/api/clinotag/Satisfatcion?location=\"Bât B - Sanitaire\"&satisfaction=4",
+							"raw": "https://demo.clinotag.com/api/clinotag/Satisfaction?location=\"603/129\"&satisfaction=4",
 							"protocol": "https",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"demo",
+								"clinotag",
+								"com"
 							],
-							"port": "44328",
 							"path": [
 								"api",
 								"clinotag",
-								"Satisfatcion"
+								"Satisfaction"
 							],
 							"query": [
 								{
 									"key": "location",
-									"value": "\"Bât B - Sanitaire\""
+									"value": "\"603/129\""
 								},
 								{
 									"key": "satisfaction",
@@ -430,13 +460,15 @@
 							}
 						},
 						"url": {
-							"raw": "https://demo.clinotag.com/api/clinotag/IdentificationTag/534E35AF016640",
+							"raw": "https://127.0.0.1:44328/api/clinotag/IdentificationTag/534E35AF016640",
 							"protocol": "https",
 							"host": [
-								"demo",
-								"clinotag",
-								"com"
+								"127",
+								"0",
+								"0",
+								"1"
 							],
+							"port": "44328",
 							"path": [
 								"api",
 								"clinotag",
@@ -524,12 +556,45 @@
 					"response": []
 				},
 				{
+					"name": "AjoutQTY",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uidTag\":\"1010000000\",\r\n    \"idClient\":9,\r\n    \"nom\": \"test uid\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://127.0.0.1:44328/api/clinotag/AjoutQTY",
+							"protocol": "https",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "44328",
+							"path": [
+								"api",
+								"clinotag",
+								"AjoutQTY"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "AskClean",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://demo.clinotag.com/api/clinoTag/link?location=603/129&clean=yes",
+							"raw": "https://demo.clinotag.com/api/clinoTag/link?location=603/129&clean=no&contact=grey.groe@gmail.com&ask=hello",
 							"protocol": "https",
 							"host": [
 								"demo",
@@ -548,7 +613,15 @@
 								},
 								{
 									"key": "clean",
-									"value": "yes"
+									"value": "no"
+								},
+								{
+									"key": "contact",
+									"value": "grey.groe@gmail.com"
+								},
+								{
+									"key": "ask",
+									"value": "hello"
 								}
 							]
 						}

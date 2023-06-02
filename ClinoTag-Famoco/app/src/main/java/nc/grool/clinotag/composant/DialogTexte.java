@@ -20,12 +20,12 @@ public class DialogTexte {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static AlertDialog creerDialogTexte(Context _context) {
-        String titre = "Enregistrement du tag";
+        String titre = "Tag registration";
         AlertDialog dialogTexte = new MaterialAlertDialogBuilder(_context)
                 .setTitle(titre)
                 .setMessage("Nom")
-                .setPositiveButton("Enregistrer", null)
-                .setNegativeButton("Annuler", null)
+                .setPositiveButton("Register", null)
+                .setNegativeButton("Cancel", null)
                 .create();
 
         LinearLayout layout = new LinearLayout(_context);
