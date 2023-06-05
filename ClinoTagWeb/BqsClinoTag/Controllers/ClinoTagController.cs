@@ -312,7 +312,7 @@ namespace BqsClinoTag.Controllers
         [HttpGet]
         [Route("Satisfaction")]
 
-        public async Task<string> SatisfactionSurvey([FromQuery(Name ="location")]string lieuName, [FromQuery(Name = "satisfaction")]int satisfaction)
+        public async Task<string> SatisfactionSurvey([FromQuery(Name ="location")]string lieuName, [FromQuery(Name = "satisfaction")]int satisfaction, [FromQuery(Name = "name")] string name, [FromQuery(Name = "contact")] string contact)
         {
             lieuName = lieuName.Substring(1, lieuName.Length - 2);
             var lieu = await db.Lieus.Where(x => x.Nom == lieuName).Include(p => p.Passages).ThenInclude(t => t.PassageTaches).FirstOrDefaultAsync();
@@ -321,7 +321,21 @@ namespace BqsClinoTag.Controllers
             {
                 if(lieu.Passages.LastOrDefault() != null)
                 {
+                    SatisfactionLog item = new SatisfactionLog
+                    {
+                        Contact = contact,
+                        LieuName = lieuName,
+                        Name = name,
+                        Satisfaction = satisfaction,
+                    };
+
+                    db.SatisfactionLogs.Add(item);
                     lieu.Passages.LastOrDefault().Satisfaction = satisfaction;
+                    
+                    var satisfactionLogs = await db.SatisfactionLogs.Where( x => x.LieuName == lieuName ).ToListAsync();
+
+                    lieu.Satisfaction = (int)satisfactionLogs.Average(p => p.Satisfaction);
+
                     await db.SaveChangesAsync();
 
                     return "Successfully set.";
