@@ -54,8 +54,19 @@ public class PassageActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         mAdapter = NfcAdapter.getDefaultAdapter(this);
-        if(mAdapter != null){
-            toogleNfc(true);
+
+//        if(mAdapter != null)
+//        {
+//            if(mAdapter.isEnabled())
+//                toogleNfc(true);
+//        }
+
+        if(mAdapter == null){
+        } else {
+            if (!mAdapter.isEnabled()) {
+            } else {
+                toogleNfc(true);
+            }
         }
     }
 

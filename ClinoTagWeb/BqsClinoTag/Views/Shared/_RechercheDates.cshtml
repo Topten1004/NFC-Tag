@@ -10,6 +10,19 @@
                 <input id="beginDate" name="beginDate" class="form-control" value="@ViewBag.beginDate.Date.ToString("yyyy-MM-dd")" type="date" />
             </div>
         </div>
+        <div class="form-row">
+            <div class="col-2">
+                <label class="control-label my-2">Au</label>
+                <input id="endDate" name="endDate" class="form-control" value="@ViewBag.endDate.Date.ToString("yyyy-MM-dd")" type="date" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-2">
+                <label class="control-label my-2">Lieu</label>
+                <input id="location" name="location" class="form-control" value="@ViewBag.location" type="text" />
+            </div>
+        </div>
+
         <div class="row">
             <div class="col p-2 text-center">
                 <input id="btnRechercher" type="submit" value="Rechercher" class="btn btn-primary" />

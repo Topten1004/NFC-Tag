@@ -103,7 +103,7 @@
                         <h3>@Html.DisplayFor(modelItem => Model.lieu)</h3>
                     </div>
 
-                    <img style="width:340px;height:240px" src="@Model.photo" alt="Image"/>
+                    <img style="width:340px;height:240px" src="data:image/jpeg;base64,@Model.photo" alt="Image" />
                 }
 
                 else if (Model.flag == 3)

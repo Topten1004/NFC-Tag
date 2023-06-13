@@ -22,7 +22,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 fond-menu">
             <div class="container">
-                <a class="navbar-brand" href="https://www.bqs.nc"><img class="moyen-logo" src="~/img/logobqs.png" /></a>
+                <a class="navbar-brand" href="https://demo.clinotag.com/"><img class="moyen-logo" src="~/img/logobqs.png" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -57,10 +57,11 @@
                                     <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Suivi
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                    
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                    
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Passages" asp-action="Index">Nettoyage</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Utilisations" asp-action="Index">Utilisat° Matériel</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">Notificat° Matériel</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Acknowledge" asp-action="Index">Acknowledge</a>
                                     </div>
                                 </li>
                             }
@@ -89,12 +90,16 @@
                             <li class="nav-item">
                                 <a class="nav-link active" asp-area="" asp-controller="Qty" asp-action="Index">QTY</a>
                             </li>
-
                         </ul>
                         <a href="/Home/Logout" >
                             <button class="btn btn-outline-danger my-2 my-sm-0">Déconnexion</button>
                         </a>
-                        @*<button type="button" class="button-image mx-1" data-toggle="modal" data-target="#ModalAide"><img class="img-icone-moyen" src="~/img/aide.48x48.png"></button>*@
+                        <a class="nav-link active" asp-area="" asp-controller="Settings" asp-action="Index">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                        </a>
                     }
                     else
                     {
@@ -105,7 +110,7 @@
                         </ul>
                         <a href="/Home/Login" >
                             <button class="btn btn-outline-success my-2 my-sm-0">Connexion</button>
-                        </a>                        
+                        </a>
                     }
                     
                     @*<partial name="_LoginPartial" />*@

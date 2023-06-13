@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model IEnumerable<BqsClinoTag.Models.Acknowledge>
+
+@{
+    ViewData["Title"] = "Notification and Acknowledge";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Notification and Acknowledge</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                notificaiton date/Hour
+            </th>
+            <th>
+                acknowledge date/hour
+            </th>
+            <th>
+                lieu
+            </th>
+            <th>
+                notification
+            </th>
+            <th>
+                name
+            </th>
+            <th>
+                contact
+            </th>
+            <th>
+                acknowledge by
+            </th>
+            <th>
+                duration in min
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotificationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcknowledgeDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lieu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contact)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.AcknowledgeBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section styles {
+    <link rel="stylesheet" href="~/css/col-exp-panel.css" />
+}

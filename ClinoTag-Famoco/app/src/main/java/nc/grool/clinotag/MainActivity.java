@@ -80,25 +80,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//        if(mAdapter == null){
-//            txtInstructions.setText("Appuyer sur l'image");
-//            txtInstructions.setTextColor(getResources().getColor(R.color.white));
-//        } else {
-//            if (!mAdapter.isEnabled()) {
-//                txtInstructions.setText("Le NFC n'est pas activé/disponible.");
-//                txtInstructions.setTextColor(getResources().getColor(R.color.rougeDoux));
-//            } else {
-//                txtInstructions.setText("Scanner un tag nom ou matériel.");
-//                txtInstructions.setTextColor(getResources().getColor(R.color.black));
-//                toogleNfc(true);
-//            }
-//        }
-
-        if(mAdapter != null)
-        {
-            if(mAdapter.isEnabled())
+        if(mAdapter == null){
+        } else {
+            if (!mAdapter.isEnabled()) {
+            } else {
                 toogleNfc(true);
+            }
         }
+
+//        if(mAdapter != null)
+//        {
+//            if(mAdapter.isEnabled())
+//                toogleNfc(true);
+//        }
 
         chargement();
     }
@@ -400,25 +394,6 @@ public class MainActivity extends AppCompatActivity {
         dialogPubliBuilder.create().show();
     }
 
-    private void DialogNewQTY(String hexTagId) {
-        List<String> lClientId = new ArrayList<String>();
-        List<String> lClientNom = new ArrayList<String>();
-        for(Client p : Globals.listeClient){
-            lClientId.add(String.valueOf(p.idClient));
-            lClientNom.add(p.nom);
-        }
-
-        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
-
-        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Customer selection")
-                .setItems(csClientsNom, (dialog, which) -> {
-                    dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
-                });
-
-        dialogPubliBuilder.create().show();
-    }
-
     void dialogNomLieu(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomLieu = DialogTexte.creerDialogTexte(MainActivity.this);
@@ -449,7 +424,6 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_LONG).show();
             }
-
         });
     }
 }

@@ -40,9 +40,9 @@
 
     <Button
         android:id="@+id/btnUn7"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:onClick="SaisieCode"
         android:text="7"
@@ -51,7 +51,7 @@
 
     <Button
         android:id="@+id/btnUn5"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -62,9 +62,9 @@
 
     <Button
         android:id="@+id/btnUn4"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:onClick="SaisieCode"
         android:text="4"
@@ -73,7 +73,7 @@
 
     <Button
         android:id="@+id/btnUn3"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="120dp"
@@ -84,7 +84,7 @@
 
     <Button
         android:id="@+id/btnUn9"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -95,9 +95,9 @@
 
     <Button
         android:id="@+id/btnUn1"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="120dp"
         android:layout_marginEnd="10dp"
         android:onClick="SaisieCode"
@@ -108,7 +108,7 @@
 
     <Button
         android:id="@+id/btnUn6"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -119,7 +119,7 @@
 
     <Button
         android:id="@+id/btnUn8"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -130,47 +130,44 @@
 
     <Button
         android:id="@+id/btnUn0"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
         android:onClick="SaisieCode"
         android:text="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnUn8" />
+        app:layout_constraintStart_toEndOf="@+id/btnClose"
+        app:layout_constraintTop_toBottomOf="@id/btnUn8" />
 
     <ImageButton
         android:id="@+id/btnRemove"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
-        android:layout_marginStart="160dp"
+        android:layout_marginStart="10dp"
         android:onClick="onRemove"
         android:src="@android:drawable/ic_input_delete"
-        app:layout_constraintLeft_toRightOf="@id/btnClose"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnUn0" />
+        app:layout_constraintStart_toEndOf="@+id/btnClose"
+        app:layout_constraintTop_toBottomOf="@+id/btnUn0" />
 
 
     <ImageButton
         android:id="@+id/btnDone"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="100dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="41dp"
+        android:layout_marginTop="25dp"
         android:onClick="onCheck"
         android:src="?android:attr/textCheckMark"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnUn0"
         app:layout_constraintTop_toBottomOf="@id/btnUn9"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/btnClose"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="100dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
         android:onClick="onClose"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
         app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +175,7 @@
 
     <Button
         android:id="@+id/btnUn2"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="120dp"

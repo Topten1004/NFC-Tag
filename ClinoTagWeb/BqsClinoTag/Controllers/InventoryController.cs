@@ -38,6 +38,11 @@ namespace BqsClinoTag.Controllers
 
             var model = new InventoryVM();
 
+            if (flag != null && flag != 0)
+            {
+                model.flag = flag;
+            }
+
             foreach (var item in lieus)
             {
                 var tempItem = new InventoryItem();
@@ -81,34 +86,31 @@ namespace BqsClinoTag.Controllers
 
                     string base64String = Convert.ToBase64String(passages?.Photo ?? new byte[0]);
 
-                    byte[] bytes = System.Convert.FromBase64String(base64String);
-                    string normalString = System.Text.Encoding.UTF8.GetString(bytes);
-
-                    model.photo = normalString;
+                    model.photo = base64String;
                 }
 
                 var taskIds = await _context.TacheLieus.Where(x => x.IdLieu == id).Include(c => c.PassageTaches).ToListAsync();
-                
+
                 foreach (var taskId in taskIds)
                 {
-                    var temp = new TaskVM();
+                    var passItem = taskId.PassageTaches.Where(x => x.Fait == false);
 
-                    var temps = _context.Taches.Where(x => x.IdTache == taskId.IdTache).FirstOrDefault();
-
-                    if(temps != null)
+                    if (passItem != null)
                     {
-                        temp.IdTask = temps.IdTache;
-                        temp.Description = temps.Description ?? new string("");
+                        var temp = new TaskVM();
 
-                        model.tasks.Add(temp);
+                        var temps = _context.Taches.Where(x => x.IdTache == taskId.IdTache).FirstOrDefault();
+
+                        if (temps != null)
+                        {
+                            temp.IdTask = temps.IdTache;
+                            temp.Description = temps.Description ?? new string("");
+
+                            model.tasks.Add(temp);
+                        }
                     }
                 }
             }
-
-            if (flag != null && flag != 0)
-            {
-                model.flag = flag;
-            }    
 
             return View(model);
         }

@@ -34,7 +34,7 @@ namespace BqsClinoTag.Controllers
                 idUtilisateur = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             }
 
-            var lieus = await _context.Lieus.Where(x => x.Inventory == false && (filter == null || x.Nom.Contains(filter)) && (idUtilisateur == 0 || x.IdClient == idUtilisateur)).OrderBy( x => x.Nom).ToListAsync();
+            var lieus = await _context.Lieus.Where(x => x.Inventory == false && x.Qty == false && (filter == null || x.Nom.Contains(filter)) && (idUtilisateur == 0 || x.IdClient == idUtilisateur)).OrderBy( x => x.Nom).ToListAsync();
 
             var datas = new ActivityVM();
             
@@ -86,19 +86,16 @@ namespace BqsClinoTag.Controllers
 
                     string base64String = Convert.ToBase64String(passages?.Photo ?? new byte[0]);
 
-                    byte[] bytes = System.Convert.FromBase64String(base64String);
-                    string normalString = System.Text.Encoding.UTF8.GetString(bytes);
-
-                    datas.photo = normalString;
+                    datas.photo = base64String;
                 }
 
                 var taskIds = await _context.TacheLieus.Where(x => x.IdLieu == id).Include(c => c.PassageTaches).ToListAsync();
 
                 foreach (var taskId in taskIds)
                 {
-                    var passItem = taskId.PassageTaches.Where(x => x.Fait == true);
+                    var passItem = taskId.PassageTaches.Where(x => x.Fait == false);
 
-                    if (passItem == null)
+                    if (passItem != null)
                     {
                         var temp = new TaskVM();
 
@@ -126,12 +123,12 @@ namespace BqsClinoTag.Controllers
             if( lieu == null )
                 return NotFound();
 
-            if (lieu.Progress != 1 && lieu.ActionType == 0)
+            if ( lieu.ActionType == 0)
             {
                 lieu.ActionType = 1;
             }
-
-            else if (lieu.Progress != 1 && lieu.ActionType == 1)
+                
+            else if ( lieu.ActionType == 1)
             {
                 lieu.ActionType = 0;
             }

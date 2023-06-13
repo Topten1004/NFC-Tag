@@ -1,6 +1,7 @@
 ﻿using BqsClinoTag.Grool;
 using BqsClinoTag.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -10,7 +11,6 @@ namespace BqsClinoTag.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         readonly CLINOTAGBQSContext _db = new CLINOTAGBQSContext();
-
         public HomeController(CLINOTAGBQSContext db, ILogger<HomeController> logger)
         {
             _db = db;

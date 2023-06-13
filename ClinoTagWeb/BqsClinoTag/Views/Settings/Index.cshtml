@@ -1,0 +1,64 @@
+﻿@model BqsClinoTag.Models.SettingsModel
+
+@{
+}
+<h1>Settings</h1>
+
+<div class="my-container">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8">
+        <form asp-action="Edit">
+            <div class="form-group" style="display:flex">
+                <label asp-for="Language" class="control-label" style="padding-right:50px">Languages</label>
+                <div class="form-check">
+                    <input asp-for="Language" class="form-check-input" value="@Model.Language" type="checkbox" id="flexCheckChecked">
+                </div>
+            </div>
+            <div class="form-group" style="display:flex">
+                <label asp-for="Task" class="control-label;" style="padding-right:30px">Only for Tasks</label>
+                <div class="form-check">
+                    <input asp-for="Task" class="form-check-input" value="@Model.Task" type="checkbox" id="flexCheckChecked">
+                </div>
+            </div>
+            <div class="form-group" style="display:flex;margin-top:20px">
+                <label style="padding-right:30px;text-align:center;margin:auto" asp-for="LanguageOne" class="control-label"></label>
+                <input asp-for="LanguageOne" class="form-control" value="@Model.LanguageOne"/>
+                <span asp-validation-for="LanguageOne" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display:flex;margin-top:20px">
+                <label style="padding-right:30px;text-align:center;margin:auto" asp-for="LanguageTwo" class="control-label"></label>
+                <input asp-for="LanguageTwo" class="form-control" value="@Model.LanguageTwo"/>
+                <span asp-validation-for="LanguageTwo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display:flex;margin-top:20px">
+                <label style="padding-right:30px;text-align:center;margin:auto" asp-for="LanguageThird" class="control-label"></label>
+                <input asp-for="LanguageThird" class="form-control" value="@Model.LanguageThird"/>
+                <span asp-validation-for="LanguageThird" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display:flex;margin-top:20px">
+                <label style="margin:auto;width:240px" asp-for="EmailAPI" class="control-label">Email API</label>
+                <input asp-for="EmailAPI" class="form-control" value="@Model.EmailAPI"/>
+                <span asp-validation-for="EmailAPI" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display:flex;margin-top:20px">
+                <label style="padding-right:30px;text-align:center;margin:auto" asp-for="Logo" class="control-label">Logo</label>
+                <input asp-for="Logo" type= "file" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display:flex;margin-top:20px">
+                <label style="margin:auto;width:240px" asp-for="ResetTime" class="control-label">Reset Time</label>
+                <input asp-for="ResetTime" class="form-control" value="@Model.ResetTime"/>
+                <span asp-validation-for="ResetTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary my-2" />
+            </div>
+
+        </form>
+    </div>
+</div>

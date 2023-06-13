@@ -103,8 +103,16 @@ namespace BqsClinoTag.Controllers
 
             if (lieu != null)
             {
-                lieu.Count = qty.count;
-                lieu.QtyDate = DateTime.UtcNow.Date;
+
+                if (lieu.QtyDate.Date == DateTime.Today.Date)
+                {
+                    lieu.Count += qty.count;
+                }
+                else
+                {
+                    lieu.Count = qty.count;
+                    lieu.QtyDate = DateTime.UtcNow.Date;
+                }
 
                 db.Update(lieu);
                 await db.SaveChangesAsync();
@@ -275,7 +283,7 @@ namespace BqsClinoTag.Controllers
             List<Lieu>? unL = await db.Lieus
                 .Include(l => l.IdClientNavigation)
                 .Include(l => l.TacheLieus).ThenInclude(tl => tl.IdTacheNavigation)
-                .Where(l => l.ActionType != 0).ToListAsync();
+                .Where(l => l.ActionType != 0).OrderBy(x => x.Nom).ToListAsync();
 
             var model = new List<LieuLight>();
 
@@ -385,6 +393,34 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpGet]
+        [Route("Notification")]
+        public async Task<string> Notification([FromQuery(Name = "location")] string lieuName, [FromQuery(Name = "notification")] string notification, [FromQuery(Name = "name")] string? name, [FromQuery(Name = "contact")] string? contact)
+        {
+            lieuName = lieuName.Substring(1, lieuName.Length - 2);
+            notification = notification.Substring(1, notification.Length - 2);
+
+            Lieu? lieu = await db.Lieus.Where(x => x.Nom == lieuName).FirstOrDefaultAsync();
+            if(lieu != null)
+            {
+                Acknowledge item = new Acknowledge();
+
+                item.Lieu = lieuName;
+                item.Notification = notification;
+                item.Name = name;
+                item.Contact = contact;
+                item.NotificationDate = DateTime.Now;
+
+                db.Acknowledges.Add(item);
+                await db.SaveChangesAsync();
+
+                return "Sucessfully set notification";
+            } else
+            {
+                return "Not found location";
+            }
+        }
+
+        [HttpGet]
         [Route("link")]
         public async Task<string> AskClean([FromQuery(Name = "location")] string lieuName, [FromQuery(Name = "clean")] string? clean, [FromQuery(Name = "contact")] string? contact, [FromQuery(Name = "satisfaction")] int? satisfaction)
         {
@@ -396,7 +432,7 @@ namespace BqsClinoTag.Controllers
                 {
                     lieu.Progress = 0;
                     lieu.ActionType = 2;
-                } 
+                }
                 else if(clean == "yes")
                 {
                     lieu.Progress = 0;
