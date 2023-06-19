@@ -1,7 +1,10 @@
 ﻿using BqsClinoTag.Grool;
+using BqsClinoTag.Hubs;
 using BqsClinoTag.Models;
 using BqsClinoTag.Models.LightObject;
+using BqsClinoTag.ViewModel.Acknowledge;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
@@ -12,10 +15,12 @@ namespace BqsClinoTag.Controllers
     public class ClinoTagController : ControllerBase
     {
         private readonly CLINOTAGBQSContext db;
+        private IHubContext<NotificationHub, INotificationHub> hub;
 
-        public ClinoTagController(CLINOTAGBQSContext context)
+        public ClinoTagController(CLINOTAGBQSContext context, IHubContext<NotificationHub, INotificationHub> _hub)
         {
             db = context;
+            hub = _hub;
         }
 
         [HttpGet]
@@ -408,10 +413,23 @@ namespace BqsClinoTag.Controllers
                 item.Notification = notification;
                 item.Name = name;
                 item.Contact = contact;
-                item.NotificationDate = DateTime.Now;
+                item.NotificationDate = DateTime.UtcNow;
 
                 db.Acknowledges.Add(item);
+
                 await db.SaveChangesAsync();
+
+                NotificationVM model = new NotificationVM();
+
+                model.NotificationDate = item.NotificationDate;
+                model.Notification = item.Notification;
+                model.Lieu = item.Lieu;
+                model.IdAcknowledge = item.IdAcknowledge;
+
+                if (hub != null)
+                {
+                    await hub.Clients.All.NewNotification(model);
+                }
 
                 return "Sucessfully set notification";
             } else

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BqsClinoTag.Models.BqsClinoTag.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -34,10 +35,10 @@ namespace BqsClinoTag.Models
         public virtual DbSet<Utilisateur> Utilisateurs { get; set; } = null!;
         public virtual DbSet<Utilisation> Utilisations { get; set; } = null!;
         public virtual DbSet<SatisfactionLog> SatisfactionLogs { get; set; } = null!;
-
         public virtual DbSet<SettingsModel> AdminSettings { get; set; } = null!;
-
         public virtual DbSet<Acknowledge> Acknowledges { get; set; } = null!;
+        
+        public virtual DbSet<AcknowledgeLog> AcknowledgeLogs { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -47,8 +48,8 @@ namespace BqsClinoTag.Models
                 //              optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
                 //              optionsBuilder.UseMySql("server=127.0.0.1;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=127.0.0.1;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
                 //              optionsBuilder.UseMySql("server=172.16.75.101;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=root;database=CLINOTAG-BQS;port=3306;password=000000;ConvertZeroDateTime=True"));
-                //                optionsBuilder.UseMySql("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True"));
-                              optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
+                                optionsBuilder.UseMySql("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True"));
+                //              optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
             }
         }   
 

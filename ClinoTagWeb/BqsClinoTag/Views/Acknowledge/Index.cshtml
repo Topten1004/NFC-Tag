@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Rendering
-@model IEnumerable<BqsClinoTag.Models.Acknowledge>
+@using System.Globalization;
+@model IEnumerable<BqsClinoTag.ViewModel.Acknowledge.AcknowledgeWebVM>
 
 @{
     ViewData["Title"] = "Notification and Acknowledge";
@@ -40,12 +41,18 @@
     <tbody>
     @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NotificationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AcknowledgeDate)
-            </td>
+                <td>
+                    @{
+                        string formattedNotificationDate = item.NotificationDate.ToString("MM/dd HH:mm");
+                    }
+                    @formattedNotificationDate
+                </td>
+                <td>
+                    @{
+                        string formattedAcknowledgeDate = item.AcknowledgeDate.ToString("MM/dd HH:mm");
+                    }
+                    @formattedAcknowledgeDate
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Lieu)
             </td>
@@ -58,7 +65,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Contact)
             </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.AcknowledgeBy)
             </td>

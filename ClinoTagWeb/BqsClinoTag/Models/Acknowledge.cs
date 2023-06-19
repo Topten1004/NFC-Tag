@@ -11,15 +11,11 @@ namespace BqsClinoTag.Models
     {
 
         [Key]
-        [Column("ID_NOTIFICATION")]
-        public int IdLieu { get; set; }
+        [Column("ID_ACKNOWLEDGE")]
+        public int IdAcknowledge { get; set; }
 
         [Column("NOTIFICATION_DATE")]
         public DateTime NotificationDate { get; set; }
-
-        [Column("ACKNOWLEDGE_DATE")]
-        public DateTime AcknowledgeDate { get; set; }
-
 
         [Column("LIEU")]
         public string Lieu { get; set; } = null!;
@@ -27,16 +23,11 @@ namespace BqsClinoTag.Models
         [Column("NOTIFICATION")]
         public string Notification { get; set; } = null!;
 
-        [Column("Name")]
+        [Column("NAME")]
         public string? Name { get; set; } = null!;
 
-        [Column("Contact")]
+        [Column("CONTACT")]
         public string? Contact { get; set; } = null!;
 
-        [Column("Acknowledge_By")]
-        public string?  AcknowledgeBy{ get; set; } = null!;
-
-        [Column("Duration")]
-        public int? Duration { get; set; }  
     }
 }

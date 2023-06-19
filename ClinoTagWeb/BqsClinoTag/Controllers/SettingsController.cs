@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using BqsClinoTag.Hubs;
 using BqsClinoTag.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Mozilla;
 using System.Globalization;

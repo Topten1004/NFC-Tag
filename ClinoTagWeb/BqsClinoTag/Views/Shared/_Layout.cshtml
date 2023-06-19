@@ -95,11 +95,20 @@
                             <button class="btn btn-outline-danger my-2 my-sm-0">Déconnexion</button>
                         </a>
                         <a class="nav-link active" asp-area="" asp-controller="Settings" asp-action="Index">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                                 <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
                                 <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
                             </svg>
                         </a>
+                        <a href="#" id="notificationLink" class="notification-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell notification-icon" viewBox="0 0 16 16">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
+                            </svg>
+                            <span class="badge badge-danger notification-badge"></span>
+                        </a>
+
+                        <div id="notificationContainer" style="display:none">
+                        </div>
                     }
                     else
                     {
@@ -132,8 +141,144 @@
     
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Your code here
+            var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
+            var notifications;
+            
+            connection.on("SendNotification", function (notification) {
+
+                console.log("SendNotification", notification);
+                notifications = notification;
+                displayNotification(notification);
+
+            });
+
+            connection.on("NewNotification", function (notification) {
+
+                console.log("New Notification", notification);
+
+                ++notifications.notificationCount;
+                notifications.notifications.push(notification);
+                displayNotification(notifications);
+            });
+
+            connection.start().then(function () {
+                console.log("SignalR connected.");
+            }).catch(function (err) {
+                console.error(err.toString());
+            });
+
+            function displayNotification(notification) {
+                // Update UI to display the received notification
+                var notificationElement = document.createElement("div");
+                var badge = document.querySelector('.notification-badge');
+                
+                console.log(notification);
+
+                if (notification.notificationCount == 0 || notification.notificationCount == undefined) {
+                    badge.hide();
+                    container.hide();
+                } 
+                else{
+                    badge.innerText = notification.notificationCount;
+                }
+            }
+
+            function fetchAndUpdateNotification() {
+                
+                connection.invoke("SendNotification")
+                    .then(function (aaaa) {
+                        var container = $("#notificationContainer");
+
+                        container.toggle();
+                        container.empty();
+
+                        var badge = $(".notification-badge");
+
+                        if (notifications.notificationCount == 0 || notifications.notificationCount == undefined) {
+                            badge.hide();
+                            container.hide();
+                        } else {
+                            badge.text(notifications.notificationCount);
+                        }
+                        
+                        for (var i = 0; i < notifications.notifications.length; i++) {
+                            var notification = notifications.notifications[i];
+
+                            var notificationElement = $("<tr class='notification-item'></tr>");
+                            var titleElement = $("<td class='notification-title' style='padding-left:15px'></td>").text(notification.lieu);
+                            var dateElement = $("<td class='notification-date' style='padding-left:15px'></td>").text(notification.notificationDate);
+                            var messageElement = $("<td class='notification-message' style='padding-left:15px'></td>").text(notification.notification);
+                            var acknowledgeButton = $("<td><button class='btn btn-primary btn-sm acknowledge-button'  style='padding-left:15px'>Acknowledge</button></td>");
+
+                            // Set the button ID to the lieu name
+                            acknowledgeButton.find('.acknowledge-button').attr('id', notification.idAcknowledge);
+
+                            // Add click event handler to the acknowledge button
+                            acknowledgeButton.find('.acknowledge-button').on('click', function () {
+                                var buttonId = $(this).attr('id');
+                                console.log("Button ID: " + buttonId);
+
+                                // Add your code to handle the button click here
+
+                                var url = '/Acknowledge/ConfirmAcknowledge?AcknowledgeId=' + encodeURIComponent(buttonId);
+
+                                // Make the AJAX request to call the ConfirmAcknowledge action
+                                $.ajax({
+                                    url: url,
+                                    type: 'GET',
+                                    success: function (data) {
+                                        fetchAndUpdateNotification();
+                                        // Handle the success response
+                                        // 'data' contains the response from the server
+                                        // You can update the UI or perform further actions as needed
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // Handle the error response
+                                        // 'xhr' contains the XMLHttpRequest object
+                                        // 'status' contains the error status
+                                        // 'error' contains the error message
+                                    }
+                                });
+                            });
+
+                            notificationElement.append(titleElement, dateElement, messageElement, acknowledgeButton);
+                            container.append(notificationElement);
+                        }
+                    })
+                    .catch(function (err) {
+                        console.error(err.toString());
+                    });
+            }
+
+            $('#notificationLink').click(function (e) {
+                e.preventDefault();
+
+                fetchAndUpdateNotification();
+            });
+
+            // Click outside the notification container
+            $(document).click(function (event) {
+                var target = $(event.target);
+                if (!target.closest('#notificationLink').length && !target.closest('#notificationContainer').length) {
+                    $('#notificationContainer').hide();
+                }
+            });
+
+            // Prevent container from closing when clicking inside it
+            $('#notificationContainer').click(function (event) {
+                event.stopPropagation();
+            });
+        });
+
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 
     @await Html.PartialAsync("../Shared/_Message")
+
 </body>
 </html>

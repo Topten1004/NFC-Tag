@@ -1,10 +1,12 @@
 
 using BqsClinoTag;
 using BqsClinoTag.Grool;
+using BqsClinoTag.Hubs;
 using BqsClinoTag.Models;
 using BqsClinoTag.Services;
 using BqsClinoTag.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Text;
@@ -77,6 +79,8 @@ builder.Services.Configure<MailSettings>(config.GetSection("MailSettings"));
 builder.Services.AddSingleton<ScheduleService>();
 builder.Services.AddHostedService<ScheduleService>();
 
+builder.Services.AddSignalR();
+
 var startup = new Startup(builder.Configuration);
 
 startup.ConfigureServices(builder.Services);
@@ -122,9 +126,15 @@ app.UseAuthorization();
 
 app.UseSession();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapHub<NotificationHub>("/notificationHub");
+});
+
 app.MapRazorPages();
 
 app.Run();

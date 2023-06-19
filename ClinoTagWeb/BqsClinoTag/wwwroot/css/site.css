@@ -112,3 +112,36 @@ body {
     width: auto; /* Allow the tooltip to expand beyond the max-width if necessary */
     background: white;
 }
+
+.notification-link {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    padding: 4px 8px;
+    padding: 4px 8px;
+    border-radius: 50%;
+    background-color: red;
+    font-size: 12px;
+    color: white;
+}
+
+#notificationContainer {
+    position: absolute;
+    top: 80px;
+    right: 80px;
+    z-index: 100;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
