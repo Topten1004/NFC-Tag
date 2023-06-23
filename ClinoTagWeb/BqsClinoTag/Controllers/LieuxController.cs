@@ -215,6 +215,19 @@ namespace BqsClinoTag.Controllers
             tempLieu.Inventory = lieu.Inventory;
             tempLieu.Qty = lieu.Qty;
 
+
+            string originalUrl = tempLieu.PublicLink;
+            string newWord = lieu.Nom;
+
+            int startIndex = originalUrl.IndexOf("\"") + 1; // Find the index of the first double quote
+            int endIndex = originalUrl.LastIndexOf("\""); // Find the index of the last double quote
+
+            string originalWord = originalUrl.Substring(startIndex, endIndex - startIndex); // Extract the original word
+
+            string updatedUrl = originalUrl.Replace(originalWord, newWord);
+
+            tempLieu.PublicLink = updatedUrl;
+
             if (tempLieu.IdClient > 0 && tempLieu.UidTag != null)
             {
                 try

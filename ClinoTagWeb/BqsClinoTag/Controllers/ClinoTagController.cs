@@ -75,6 +75,11 @@ namespace BqsClinoTag.Controllers
         public async Task<int> AjoutLieu(LieuOuMaterielPost lieu)
         {
             Client unC = await db.Clients.FindAsync(lieu.idClient);
+            
+            var checkLieu = await db.Lieus.Where(x => x.UidTag ==  lieu.uidTag).FirstOrDefaultAsync();
+
+            if (checkLieu != null)
+                return -999;
 
             if(unC != null)
             {
@@ -136,6 +141,56 @@ namespace BqsClinoTag.Controllers
             List<ClientLight> list = new List<ClientLight>();
             foreach (Client c in lClient) list.Add(new ClientLight(c));
             return list;
+        }
+
+        [HttpGet]
+        [Route("Table/Lieu")]
+        public async Task<List<Lieu>> GetAllLieus()
+        {
+
+            var lieus = db.Lieus.ToList();
+
+            return lieus;
+        }
+
+        [HttpGet]
+        [Route("Table/Satisfaction")]
+        public async Task<List<SatisfactionLog>> GetAllSatisfactionLog()
+        {
+
+            var logs = db.SatisfactionLogs.ToList();
+
+            return logs;
+        }
+
+        [HttpGet]
+        [Route("Table/Acknowledge")]
+        public async Task<List<Acknowledge>> GetAllAcknowledges()
+        {
+
+            var logs = db.Acknowledges.ToList();
+
+            return logs;
+        }
+
+        [HttpGet]
+        [Route("Table/Tache")]
+        public async Task<List<Tache>> GetAllTaches()
+        {
+
+            var logs = db.Taches.ToList();
+
+            return logs;
+        }
+
+        [HttpGet]
+        [Route("Table/material")]
+        public async Task<List<Materiel>> GetAllMaterial()
+        {
+
+            var logs = db.Materiels.ToList();
+
+            return logs;
         }
 
         [HttpPost]
