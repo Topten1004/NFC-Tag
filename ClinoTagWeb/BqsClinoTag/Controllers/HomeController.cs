@@ -23,7 +23,7 @@ namespace BqsClinoTag.Controllers
         public ActionResult Logout()
         {
             HttpContext.Session.Clear();
-            Response.Cookies.Delete("Bqs-ClinoTag-Access-Token");
+            Response.Cookies.Delete("Demo-ClinoTag-Access-Token");
             return RedirectToAction("Login", "Home");
         }
 
@@ -38,7 +38,7 @@ namespace BqsClinoTag.Controllers
                 if (token != null)
                 {
                     Response.Cookies.Append(
-                        "Bqs-ClinoTag-Access-Token",
+                        "Demo-ClinoTag-Access-Token",
                         new JwtSecurityTokenHandler().WriteToken(token),
                         new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict }
                     );

@@ -370,7 +370,7 @@ namespace BqsClinoTag.Controllers
 
         [HttpGet]
         [Route("AgentLogin/{codeagent}")]
-        public async Task<AgentLight> AgentLogin(string codeagent)
+        public async Task<AgentLight?> AgentLogin(string codeagent)
         {
             Agent? unA = await db.Agents.Where(a => a.Code == codeagent).FirstOrDefaultAsync();
             if (unA != null) return new AgentLight(unA);

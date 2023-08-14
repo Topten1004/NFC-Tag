@@ -146,7 +146,7 @@ namespace BqsClinoTag.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdLieu,Nom,UidTag,IdClient,Inventory,Qty")] Lieu lieu)
         {
-            if (lieu.IdClient > 0 && lieu.UidTag != null)
+            if (lieu.IdClient > 0)
             {
                 if (lieu.Inventory == true && lieu.Qty == true)
                 {

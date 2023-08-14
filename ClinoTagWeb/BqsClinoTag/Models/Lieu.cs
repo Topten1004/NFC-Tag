@@ -27,7 +27,7 @@ namespace BqsClinoTag.Models
         public int IdClient { get; set; }
         [Column("UID_TAG")]
         [StringLength(50)]
-        public string UidTag { get; set; } = null!;
+        public string UidTag { get; set; } = string.Empty;
 
         [Column("ACTION_TYPE")]
         public int ActionType { get; set; } = 0!;

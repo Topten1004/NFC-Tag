@@ -124,7 +124,7 @@ namespace BqsClinoTag.Services
             
         }
 
-        private async Task ChangeColor()
+        private async Task<bool> ChangeColor()
         {
             try
             {
@@ -133,14 +133,16 @@ namespace BqsClinoTag.Services
                 foreach (var item in lieus)
                 {
                     item.Progress = 0;
+                    context.Update(item);
                 }
 
                 await context.SaveChangesAsync();
 
+                return true;
             }
             catch (Exception ex)
             {
-
+                return false;
             }
         }
 

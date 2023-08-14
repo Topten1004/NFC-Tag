@@ -64,7 +64,7 @@ builder.Services.AddAuthentication(options =>
         {
             OnMessageReceived = context =>
             {
-                context.Token = context.Request.Cookies["Bqs-ClinoTag-Access-Token"];
+                context.Token = context.Request.Cookies["Demo-ClinoTag-Access-Token"];
                 return Task.CompletedTask;
             }
         };
