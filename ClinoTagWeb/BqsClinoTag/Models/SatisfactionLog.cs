@@ -13,6 +13,7 @@ namespace BqsClinoTag.Models
 
         [Key]
         [Column("ID_SATISFACTION")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdSatisfaction { get; set; }
 
         [Column("LIEU_NAME")]

@@ -2,10 +2,12 @@
 using BqsClinoTag.Hubs;
 using BqsClinoTag.Models;
 using BqsClinoTag.Models.LightObject;
+using BqsClinoTag.ViewModel;
 using BqsClinoTag.ViewModel.Acknowledge;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using System.Text.RegularExpressions;
 
 namespace BqsClinoTag.Controllers
@@ -297,6 +299,67 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpGet]
+        [Route("Passage/{lieu}")]
+        public async Task<PassageLogVM> GetPassageLog(string lieu)
+        {
+            PassageLogVM result = new PassageLogVM();
+
+            List<PassageVM> passageList = new List<PassageVM>();
+            List<LocationTaskVM> locationTaskLists = new List<LocationTaskVM>();
+
+            //Lieu location = await db.Lieus.Where(x => x.Nom.ToLower() == lieu.ToLower()).Include(i => i.ClientLieu).Include(i => i.Passages).ThenInclude(u => u.PassageTaches).Include(i => i.TacheLieus).FirstOrDefaultAsync();
+
+            Lieu? location = await db.Lieus
+                .Include(l => l.IdClientNavigation)
+                .Include(l => l.TacheLieus).ThenInclude(tl => tl.IdTacheNavigation)
+                .Include(l => l.Passages).ThenInclude(tp => tp.PassageTaches)
+                .Where(l => l.Nom.ToLower() == lieu.ToLower()).FirstOrDefaultAsync();
+
+            if (location != null)
+            {
+
+                foreach(var  passage in location.Passages)
+                {
+                    PassageVM item = new PassageVM();
+
+                    item.Id = passage.IdPassage;
+                    item.Agent = db.Agents.Where(x => x.IdAgent == passage.IdAgent).FirstOrDefault().Nom;
+                    item.LogTime = passage.DhFin;
+
+                    foreach(var task in passage.PassageTaches)
+                    {
+                        TaskAPIVM taskVM = new TaskAPIVM();
+                        Tache? taskLocation = db.Taches.Where(x => task.IdTl == x.IdTache).FirstOrDefault();
+
+                        taskVM.Id = task.IdTl;
+                        taskVM.Done = task.Fait;
+                        taskVM.TaskName = taskLocation.Nom;
+
+                        item.Tasks.Add(taskVM);
+                    }
+
+                    passageList.Add(item);
+                }
+
+                foreach(var task in location.TacheLieus)
+                {
+                    LocationTaskVM locationTaskVM = new LocationTaskVM();
+
+                    locationTaskVM.Id = task.IdTacheNavigation.IdTache;
+                    locationTaskVM.Name = task.IdTacheNavigation.Nom;
+                    locationTaskVM.Description = task.IdTacheNavigation.Description;
+
+                    locationTaskLists.Add(locationTaskVM);
+                }
+            }
+
+            result.PassageLogs = passageList;
+            result.LocationTasks = locationTaskLists;
+
+            return result;
+        }
+
+        [HttpGet]
         [Route("IdentificationTag/{uid}")]
         public async Task<string?> IdentificationTag(string uid)
         {
@@ -398,13 +461,14 @@ namespace BqsClinoTag.Controllers
                     };
 
                     db.SatisfactionLogs.Add(item);
+
+                    await db.SaveChangesAsync();
+
                     lieu.Passages.LastOrDefault().Satisfaction = satisfaction;
-                    
+
                     var satisfactionLogs = await db.SatisfactionLogs.Where( x => x.LieuName == lieuName ).ToListAsync();
 
                     lieu.Satisfaction = (int)satisfactionLogs.Average(p => p.Satisfaction);
-
-                    await db.SaveChangesAsync();
 
                     return "Successfully set.";
                 } else
@@ -416,6 +480,8 @@ namespace BqsClinoTag.Controllers
             {
                 return "Can't found location.";
             }
+
+            await db.SaveChangesAsync();
         }
 
         [HttpGet]
