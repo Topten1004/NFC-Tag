@@ -35,7 +35,7 @@
                 <span asp-validation-for="Expiration" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Client</label>
+                <label class="control-label">Customer</label>
                 <select asp-for="IdClient" class="form-control" asp-items="ViewBag.IdClient"></select>
                 <span asp-validation-for="IdClient" class="text-danger"></span>
             </div>
@@ -47,7 +47,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Retour à la liste</a>
+    <a asp-action="Index">Back</a>
 </div>
 
 @section Scripts {

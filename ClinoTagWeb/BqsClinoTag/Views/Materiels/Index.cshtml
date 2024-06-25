@@ -21,7 +21,7 @@
     <thead>
         <tr>
             <th>
-                Client
+                Customer
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nom)
@@ -57,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.Expiration)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdMateriel">Modifier</a> |
+                <a asp-action="Edit" asp-route-id="@item.IdMateriel">Modify</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdMateriel">Supprimer</a>
             </td>
         </tr>

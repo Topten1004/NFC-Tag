@@ -1,24 +1,26 @@
 ﻿@using System.Security.Claims
 @using BqsClinoTag.Grool
 
-<button type="button" class="rechcollapsible">Recherche</button>
+<button type="button" class="rechcollapsible">
+    Search
+</button>
 <div class="rechcontent">
     <form>
         <div class="form-row">
             <div class="col-2">
-                <label class="control-label my-2">Du</label>
+                <label class="control-label my-2">From</label>
                 <input id="beginDate" name="beginDate" class="form-control" value="@ViewBag.beginDate.Date.ToString("yyyy-MM-dd")" type="date" />
             </div>
         </div>
         <div class="form-row">
             <div class="col-2">
-                <label class="control-label my-2">Au</label>
+                <label class="control-label my-2">To</label>
                 <input id="endDate" name="endDate" class="form-control" value="@ViewBag.endDate.Date.ToString("yyyy-MM-dd")" type="date" />
             </div>
         </div>
         <div class="form-row">
             <div class="col-2">
-                <label class="control-label my-2">Lieu</label>
+                <label class="control-label my-2">Location</label>
                 <input id="location" name="location" class="form-control" value="@ViewBag.location" type="text" />
             </div>
         </div>

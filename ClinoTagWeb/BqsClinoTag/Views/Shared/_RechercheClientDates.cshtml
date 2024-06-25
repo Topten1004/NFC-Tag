@@ -1,16 +1,18 @@
 ﻿@using System.Security.Claims
 @using BqsClinoTag.Grool
 
-<button type="button" class="rechcollapsible">Recherche</button>
+<button type="button" class="rechcollapsible">
+    Search
+</button>
 <div class="rechcontent">
     <form>
         <div class="form-row">
             <div class="col-2">
-                <label class="control-label my-2">Du</label>
+                <label class="control-label my-2">From</label>
                 <input id="dtDebut" name="dtDebut" class="form-control" value="@ViewBag.dtDebut.Date.ToString("yyyy-MM-dd")" type="date" />
             </div>
             <div class="col-2">
-                <label class="control-label my-2">Au</label>
+                <label class="control-label my-2">To</label>
                 <input id="dtFin" name="dtFin" class="form-control" value="@ViewBag.dtFin.Date.ToString("yyyy-MM-dd")" type="date" />
             </div>
             <script>
@@ -25,7 +27,7 @@
         {
             <div class="row">
                 <div class="col-4">
-                    <label class="control-label my-2">Client</label>
+                    <label class="control-label my-2">Customer</label>
                     <select name="idClient" class="form-control" asp-items="@ViewBag.IdClient"></select>
                 </div>
             </div>

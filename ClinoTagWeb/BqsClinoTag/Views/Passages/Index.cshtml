@@ -29,7 +29,7 @@
                 Agent
             </th>
             <th>
-                Client / Lieu
+                Customer / Location
             </th>
             <th>
                 Commentaire
@@ -75,7 +75,7 @@
             <td>
                 @if (!User.IsInRole(nameof(Droits.Roles.MANAGER)))
                 {
-                    <a asp-action="Edit" asp-route-id="@item.IdPassage">Modifier</a> Html.Raw(" | ");
+                    <a asp-action="Edit" asp-route-id="@item.IdPassage">Modify</a> Html.Raw(" | ");
                 }                
                 <a asp-action="Details" asp-route-id="@item.IdPassage">Details</a> @*|
                 <a asp-action="Delete" asp-route-id="@item.IdPassage">Supprimer</a>*@

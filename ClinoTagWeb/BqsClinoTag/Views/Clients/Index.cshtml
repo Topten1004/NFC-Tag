@@ -3,7 +3,7 @@
     ViewData["Title"] = "Client";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>Client</h1>
+<h1>Customer</h1>
 <p>
     <a asp-action="Create">Nouveau</a>
 </p>
@@ -25,7 +25,7 @@
             </td>
             <td>@item.Uclients.Count()</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdClient">Modifier</a> |
+                <a asp-action="Edit" asp-route-id="@item.IdClient">Modify</a> |
                 <a asp-action="Details" asp-route-id="@item.IdClient">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdClient">Supprimer</a>
             </td>
