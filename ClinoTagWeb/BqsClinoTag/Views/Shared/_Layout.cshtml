@@ -2,7 +2,7 @@
 @using BqsClinoTag.Grool
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,32 +35,32 @@
                             @if (User.IsInRole(nameof(Droits.Roles.SUPERADMIN)) || User.IsInRole(nameof(Droits.Roles.ADMIN))){
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Tiers
+                                        Customers
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="nav-link" asp-area="" asp-controller="Utilisateurs" asp-action="Index">Utilisateur</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Utilisateurs" asp-action="Index">User</a>
                                         <a class="nav-link" asp-area="" asp-controller="Clients" asp-action="Index">Customer</a>
                                         <a class="nav-link" asp-area="" asp-controller="Agents" asp-action="Index">Agent</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Métier
+                                        Work
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                    
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Lieux" asp-action="Index">Lieu</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Taches" asp-action="Index">Tâche</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Materiels" asp-action="Index">Matériel</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Lieux" asp-action="Index">Locations</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="Index">Tasks</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Hardwares" asp-action="Index">Hardware</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Suivi
+                                        Monitoring
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                    
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Passages" asp-action="Index">Nettoyage</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Utilisations" asp-action="Index">Utilisat° Matériel</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">Notificat° Matériel</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Passages" asp-action="Index">Cleaning</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Utilisations" asp-action="Index">Use of equipment</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Notifications" asp-action="Index">Hardware Notification</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Acknowledge" asp-action="Index">Acknowledge</a>
                                     </div>
                                 </li>
@@ -69,16 +69,16 @@
                             @if (User.IsInRole(nameof(Droits.Roles.MANAGER)))
                             {
                                 <li class="nav-item">
-                                  <a class="nav-link active" asp-area="" asp-controller="Lieux" asp-action="Index">Lieu</a>
+                                  <a class="nav-link active" asp-area="" asp-controller="Lieux" asp-action="Index">Location</a>
                                 </li>
                                 <li class="nav-item">
-                                  <a class="nav-link active" asp-area="" asp-controller="Passages" asp-action="Index">Nettoyage</a>
+                                  <a class="nav-link active" asp-area="" asp-controller="Passages" asp-action="Index">Cleaning</a>
                                 </li>
                                 <li class="nav-item">
-                                  <a class="nav-link active" asp-area="" asp-controller="Materiels" asp-action="Index">Matériel</a>
+                                  <a class="nav-link active" asp-area="" asp-controller="Hardwares" asp-action="Index">Hardware</a>
                                 </li>
                                 <li class="nav-item">
-                                  <a class="nav-link active" asp-area="" asp-controller="Utilisations" asp-action="Index">Utilisation</a>
+                                  <a class="nav-link active" asp-area="" asp-controller="Utilisations" asp-action="Index">Use</a>
                                 </li>
                             }
                             <li class="nav-item">
@@ -92,7 +92,7 @@
                             </li>
                         </ul>
                         <a href="/Home/Logout" >
-                            <button class="btn btn-outline-danger my-2 my-sm-0">Déconnexion</button>
+                            <button class="btn btn-outline-danger my-2 my-sm-0">Disconnect</button>
                         </a>
                         <a class="nav-link active" asp-area="" asp-controller="Settings" asp-action="Index">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
@@ -114,11 +114,11 @@
                     {
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Accueil</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                             </li>
                         </ul>
                         <a href="/Home/Login" >
-                            <button class="btn btn-outline-success my-2 my-sm-0">Connexion</button>
+                            <button class="btn btn-outline-success my-2 my-sm-0">Connect</button>
                         </a>
                     }
                 </div>

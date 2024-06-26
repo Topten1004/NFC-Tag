@@ -4,7 +4,7 @@
 @model IEnumerable<BqsClinoTag.Models.Passage>
 
 @{
-    ViewData["Title"] = "Nettoyage";
+    ViewData["Title"] = "Cleaning";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section styles {
@@ -13,9 +13,7 @@
 
 <h1>Prestation</h1>
 @await Html.PartialAsync("../Shared/_RechercheClientDates")
-@*<p>
-    <a asp-action="Create">Nouveau</a>
-</p>*@
+
 <table class="table">
     <thead>
         <tr>
@@ -32,10 +30,10 @@
                 Customer / Location
             </th>
             <th>
-                Commentaire
+                Comment
             </th>
             <th>
-                Tâches effectuées
+                Ended task
             </th>
             <th>Photo</th>
             <th></th>
@@ -61,10 +59,10 @@
             </td>
             <td>
                 @{
-                    int nbTacheFait = 0;
+                    int nbTaskFait = 0;
                 }
-                @foreach(PassageTache pt in item.PassageTaches){ if (pt.Fait) nbTacheFait++; }
-                @nbTacheFait / @item.PassageTaches.Count
+                @foreach(PassageTache pt in item.PassageTaches){ if (pt.Fait) nbTaskFait++; }
+                    @nbTaskFait / @item.PassageTaches.Count
             </td>
             <td>
                 @if (item.Photo != null)
@@ -78,7 +76,7 @@
                     <a asp-action="Edit" asp-route-id="@item.IdPassage">Modify</a> Html.Raw(" | ");
                 }                
                 <a asp-action="Details" asp-route-id="@item.IdPassage">Details</a> @*|
-                <a asp-action="Delete" asp-route-id="@item.IdPassage">Supprimer</a>*@
+                <a asp-action="Delete" asp-route-id="@item.IdPassage">Delete</a>*@
             </td>
         </tr>
 }

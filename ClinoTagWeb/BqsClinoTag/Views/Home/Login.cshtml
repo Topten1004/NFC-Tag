@@ -1,6 +1,6 @@
 ﻿@model BqsClinoTag.Models.Utilisateur
 @{
-    ViewData["Title"] = "Connexion";
+    ViewData["Title"] = "Connect";
     var rurl = (string)ViewData["returnUrl"];
 }
 
@@ -12,7 +12,7 @@
 }
 else
 {
-    <h1>Connexion</h1>
+    <h1>Connect</h1>
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Login" asp-route-returnurl="@rurl">
@@ -28,50 +28,50 @@ else
                     <span asp-validation-for="Mdp" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Valider" class="btn btn-primary my-2" />
+                    <input type="submit" value="OK" class="btn btn-primary my-2" />
                 </div>
             </form>
         </div>
     </div>
     <div>
-        <a href="" data-toggle="modal" data-target="#oubliModal">Mot de passe oublié</a>
+        <a href="" data-toggle="modal" data-target="#oubliModal">Forgotten password</a>
     </div>
     <!-- Modal Oubli Mdp -->
     <div class="modal fade" id="oubliModal" tabindex="-1" role="dialog" aria-labelledby="oubliModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header alert-primary">
-                    <h5 class="modal-title" id="oubliModalLabel">Mot de passe oublié</h5>
+                    <h5 class="modal-title" id="oubliModalLabel">Forgotten password</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label text-primary">Indiqué ici l'adresse avec laquelle vous recevez le courrier électronique de Totem.</label>
+                        <label class="control-label text-primary">Not enough rights to use this part.</label>
                         <input required id="txtAdresseMail" class="form-control" type="email" placeholder="votre adresse mail" />
                     </div>
                     <div class="alert alert-success" role="alert">
-                        Les identifiants ont étés envoyés.
+                        Your login detail has been sent
                     </div>
                     <div class="alert alert-info" role="alert">
-                        Adresse mail inconnue.
+                        Unknown mail
                     </div>
                     <div class="alert alert-warning" role="alert">
-                        Format d'adresse mail non reconnue.
+                        Unknown mail format
                     </div>
                     <div class="alert alert-danger" role="alert">
-                        Erreur lors de l'envoi du mot de passe.
+                        Error when sending the password
                     </div>
                 </div>
                 <div class="d-flex justify-content-center" style="margin-bottom:10px">
                     <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                        <span class="sr-only">Chargement...</span>
+                        <span class="sr-only">Downloading</span>
                     </div>
                 </div>
                 <div class="modal-footer alert-primary">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="btnEnvoyer" class="btn btn-primary my-2">Envoyer</button>
+                    <button id="btnSend" class="btn btn-primary my-2">Send</button>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@ else
 
             $(".alert").hide();
 
-            $('#btnEnvoyer').click(function (e) {
+            $('#btnSend').click(function (e) {
                 $(".alert").hide();
                 
                 if (ValidateEmail($("#txtAdresseMail").val())) {
@@ -90,7 +90,7 @@ else
                     .done(function (response, status, jqxhr) {
                         if (response === true) {
                             $(".alert-success").show();
-                            $("#btnEnvoyer")[0].disabled = true;
+                            $("#btnSend")[0].disabled = true;
                         } else $(".alert-info").show();
                         $(".spinner-border").hide();
                     })

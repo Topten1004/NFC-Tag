@@ -5,7 +5,7 @@
 }
 <h1>Customer</h1>
 <p>
-    <a asp-action="Create">Nouveau</a>
+    <a asp-action="Create">New</a>
 </p>
 <table class="table">
     <thead>
@@ -13,7 +13,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nom)
             </th>
-            <th>Nombre de manager</th>
+            <th>how many managers</th>
             <th></th>
         </tr>
     </thead>
@@ -27,7 +27,7 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdClient">Modify</a> |
                 <a asp-action="Details" asp-route-id="@item.IdClient">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdClient">Supprimer</a>
+                <a asp-action="Delete" asp-route-id="@item.IdClient">Delete</a>
             </td>
         </tr>}
     </tbody>

@@ -11,7 +11,7 @@
 }
 <h1>Matériel</h1>
 <p>
-    <a asp-action="Create">Nouveau</a>
+    <a asp-action="Create">New</a>
 </p>
 @if (User.IsInRole(nameof(Droits.Roles.SUPERADMIN)) || User.IsInRole(nameof(Droits.Roles.ADMIN)))
 {
@@ -58,7 +58,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdMateriel">Modify</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdMateriel">Supprimer</a>
+                <a asp-action="Delete" asp-route-id="@item.IdMateriel">Delete</a>
             </td>
         </tr>
 }

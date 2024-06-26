@@ -1,6 +1,6 @@
 ﻿@using BqsClinoTag.Models
 
-<div class="modal fade" id="tacheModal" tabindex="-1" role="dialog" aria-labelledby="tacheModalLabel" aria-hidden="true">
+<div class="modal fade" id="TaskModal" tabindex="-1" role="dialog" aria-labelledby="TaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,7 +11,7 @@
                 <div class="list-group">                      
                     @foreach (Tache tache in ViewBag.ListeTache)
                     {
-                        <a href="#" class="btnTacheChoisie list-group-item list-group-item-action" data-idtache="@tache.IdTache" >@tache.Nom</a>
+                        <a href="#" class="btnTaskChoisie list-group-item list-group-item-action" data-idTask="@tache.IdTache" >@tache.Nom</a>
                     }
                 </div>                 
             </div>
@@ -19,7 +19,6 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     Close
                 </button>
-                @*<button id="btnCreate" type="submit" class="btn btn-primary">Valider</button>*@
             </div>
         </div>
     </div>
@@ -28,9 +27,9 @@
 <script>
 
     $(".btnTacheChoisie").click(function(){
-        var idTache = $(this).data("idtache");
+        var idTask = $(this).data("idTask");
         var idLieu = $("#idLieu").val();
-        $.get("/Lieux/AjoutTacheLieu/" + idLieu + "/" + idTache, function (data) {
+        $.get("/Lieux/AjoutTaskLieu/" + idLieu + "/" + idTache, function (data) {
             if(data === true){
                 location.reload();
             }else{
@@ -38,7 +37,7 @@
                 $('#pMessage').html("Erreur lors de l'ajout de la tâche. Opération annulée");
                 $('#ModalMessage').modal("show");
             }
-            var modal = $("#tacheModal");
+            var modal = $("#TaskModal");
             modal.hide();
         });
     });

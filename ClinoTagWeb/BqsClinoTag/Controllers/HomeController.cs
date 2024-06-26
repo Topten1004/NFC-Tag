@@ -46,7 +46,7 @@ namespace BqsClinoTag.Controllers
                 else
                 {
                     if (returnUrl == null) returnUrl = Request.Path;
-                    return RedirectToAction("Erreur", "Home", new { msgErr = "Connexion refusée, mot de passe et/ou login incorrects.", urlRetour = returnUrl });
+                    return RedirectToAction("Erreur", "Home", new { msgErr = "Connect refused, incorrect password and/or login.", urlRetour = returnUrl });
                 }
             }
             catch (Exception ex)

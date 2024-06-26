@@ -45,7 +45,7 @@
 
             <div class="form-group">
                 <br />
-                <button type="button" class="button-image" data-bs-toggle="modal" data-bs-target="#tacheModal">
+                <button type="button" class="button-image" data-bs-toggle="modal" data-bs-target="#TaskModal">
                     <img class="img-24x24" src="~/img/plus.48x48.png">
                 </button><span>Tâche(s)</span>
                 <table class="table table-sm table-hover">
@@ -63,14 +63,14 @@
                                 @t.IdTacheNavigation.Nom
                             </td>
                             <td>
-                                    <a asp-controller="Lieux" asp-action="SupprTacheLieu" asp-route-id="@t.IdTl">
+                                    <a asp-controller="Lieux" asp-action="SupprTaskLieu" asp-route-id="@t.IdTl">
                                         <img class="img-24x24" src="~/img/suppr.48x48.png">
                                     </a>
                             </td>
 @*                            <td>
-                                @if (!t.PassageTaches.Any())
+                                @if (!t.PassageTasks.Any())
                                 {
-                                    <a asp-controller="Lieux" asp-action="SupprTacheLieu" asp-route-id="@t.IdTl">
+                                    <a asp-controller="Lieux" asp-action="SupprTaskLieu" asp-route-id="@t.IdTl">
                                         <img class="img-24x24" src="~/img/suppr.48x48.png">
                                     </a>
                                 }
@@ -83,7 +83,7 @@
                 <input type="submit" value="Enregistrer" class="btn btn-primary my-2" />
             </div>
         </form>
-        @await Html.PartialAsync("_ChoixTache")
+        @await Html.PartialAsync("_ChoixTask")
     </div>
 </div>
 

@@ -1,23 +1,23 @@
 ﻿@using BqsClinoTag.Models
 
-<div class="modal fade" id="uClientModal" tabindex="-1" role="dialog" aria-labelledby="tacheModalLabel" aria-hidden="true">
+<div class="modal fade" id="uClientModal" tabindex="-1" role="dialog" aria-labelledby="TaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ajouter un manager</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add a manager</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">                
                 <div class="list-group">                      
-                    @foreach (Utilisateur u in ViewBag.ListeUtilisateur)
+                    @foreach (Utilisateur u in ViewBag.ListeUser)
                     {
-                        <a href="#" class="btnUtilisateurChoisi list-group-item list-group-item-action" data-idu="@u.IdUtilisateur" >@u.Nom @u.Prenom</a>
+                        <a href="#" class="btnUserChoisi list-group-item list-group-item-action" data-idu="@u.IdUtilisateur" >@u.Nom @u.Prenom</a>
                     }
                 </div>                 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                @*<button id="btnCreate" type="submit" class="btn btn-primary">Valider</button>*@
+                @*<button id="btnCreate" type="submit" class="btn btn-primary">OK</button>*@
             </div>
         </div>
     </div>
@@ -25,15 +25,15 @@
 
 <script>
 
-    $(".btnUtilisateurChoisi").click(function(){
-        var idUtilisateur = $(this).data("idu");
+    $(".btnUserChoisi").click(function(){
+        var idUser = $(this).data("idu");
         var idClient = $("#idClient").val();
-        $.get("/Clients/AjoutUClient/" + idUtilisateur + "/" + idClient, function (data) {
+        $.get("/Clients/AjoutUClient/" + idUser + "/" + idClient, function (data) {
             if(data === true){
                 location.reload();
             }else{
                 $('#hTitreMessage').text("Erreur");
-                $('#pMessage').html("Erreur lors de l'ajout de l'utilisateur. Opération annulée");
+                $('#pMessage').html("Erreur lors de l'ajout de l'User. Opération annulée");
                 $('#ModalMessage').modal("show");
             }
             var modal = $("#uClientModal");

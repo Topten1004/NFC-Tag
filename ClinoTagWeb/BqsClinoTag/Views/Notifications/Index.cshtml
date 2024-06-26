@@ -11,7 +11,7 @@
 <h1>Notification</h1>
 @await Html.PartialAsync("../Shared/_RechercheClientDates")
 @*<p>
-    <a asp-action="Create">Nouveau</a>
+    <a asp-action="Create">New</a>
 </p>*@
 <table class="table">
     <thead>
@@ -23,13 +23,13 @@
                 Customer
             </th>
             <th>
-                Materiel
+                Hardware
             </th>
             <th>
-                Date/Heure début
+                Start date/time
             </th>
             <th>
-                Date/Heure expiration
+                End date/time
             </th>
             @*<th></th>*@
         </tr>
@@ -50,12 +50,12 @@
                 @Html.DisplayFor(modelItem => item.IdUtilisationNavigation.DhDebut)
             </td>
             <td>
-                @item.IdUtilisationNavigation.DhDebut.AddMinutes(item.IdUtilisationNavigation.IdMaterielNavigation.Expiration)
+                    @item.IdUtilisationNavigation.DhDebut.AddMinutes(item.IdUtilisationNavigation.IdMaterielNavigation.Expiration)
             </td>
             @*<td>
                 <a asp-action="Edit" asp-route-id="@item.IdNotification">Modify</a> |
                 <a asp-action="Details" asp-route-id="@item.IdNotification">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdNotification">Supprimer</a>
+                <a asp-action="Delete" asp-route-id="@item.IdNotification">Delete</a>
             </td>*@
         </tr>}
     </tbody>
