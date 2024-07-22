@@ -469,3 +469,4 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+ClinoTagWeb/BqsClinoTag/appsettings.json
