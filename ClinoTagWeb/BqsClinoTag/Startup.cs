@@ -25,6 +25,7 @@ namespace BqsClinoTag
         {
             services.AddSignalR();
             services.AddScoped<NotificationHub>();
+            services.AddScoped<ChatHub>();
             services.AddAutoMapper(typeof(AutoMapperProfiles));
         }
     }

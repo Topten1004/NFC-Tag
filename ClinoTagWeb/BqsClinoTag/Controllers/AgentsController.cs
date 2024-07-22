@@ -77,7 +77,7 @@ namespace BqsClinoTag.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAgent,Nom,Code")] Agent agent)
+        public async Task<IActionResult> Create([Bind("IdAgent,Nom,Code,TrainMode")] Agent agent)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +110,7 @@ namespace BqsClinoTag.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdAgent,Nom,Code")] Agent agent)
+        public async Task<IActionResult> Edit(int id, [Bind("IdAgent,Nom,Code,TrainMode")] Agent agent)
         {
             if (id != agent.IdAgent)
             {

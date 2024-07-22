@@ -12,10 +12,27 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nom)
+            Name
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Nom)
+        </dd>
+        <dt class="col-sm-2">
+            Code
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class="col-sm-2">
+            Train Mode
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.TrainMode == true)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
+                </div>
+            }
         </dd>
     </dl>
 </div>

@@ -10,7 +10,7 @@
 <p>
     <a asp-action="Create">New</a>
 </p>
-<table class="table">
+<table class="table text-nowrap table-primary">
     <thead>
         <tr>
             <th>
@@ -19,11 +19,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Code)
             </th>
-            <th></th>
+            <th>
+                Train Mode
+            </th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nom)
@@ -32,11 +37,19 @@
                 @Html.DisplayFor(modelItem => item.Code)
             </td>
             <td>
+                @if (item.TrainMode == true)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
+                    </div>
+                }
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.IdAgent">Modify</a> |
                 <a asp-action="Details" asp-route-id="@item.IdAgent">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdAgent">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

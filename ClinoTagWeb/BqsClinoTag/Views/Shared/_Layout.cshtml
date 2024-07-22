@@ -12,11 +12,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BqsClinoTag.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     @RenderSection("styles", false)
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 </head>
 <body>
     <header>
@@ -121,6 +122,13 @@
                             <button class="btn btn-outline-success my-2 my-sm-0">Connect</button>
                         </a>
                     }
+
+                    <a href="/Chat/Chat">
+                        <button class="btn btn-outline-danger my-2 my-sm-0">
+                                <i class="fas fa-sms"></i> Message
+                        </button>
+                    </a>
+
                 </div>
             </div>
         </nav>
@@ -130,6 +138,25 @@
             @RenderBody()
         </main>
     </div>
+
+    <!-- Add some styles for better visualization (optional) -->
+    <style>
+        .modal-md {
+            max-width: 80%; /* Adjust as needed for a smaller modal */
+        }
+
+        #chatContainer {
+            background-color: #ffffff;
+            border: 1px solid red;
+            height: 500px; /* Adjust height as needed */
+            overflow-y: auto;
+        }
+
+        .list-group {
+            max-height: 500px; /* Adjust height to keep the room list scrollable if it gets too long */
+            overflow-y: auto;
+        }
+    </style>
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -231,15 +258,8 @@
                                     type: 'GET',
                                     success: function (data) {
                                         fetchAndUpdateNotification();
-                                        // Handle the success response
-                                        // 'data' contains the response from the server
-                                        // You can update the UI or perform further actions as needed
                                     },
                                     error: function (xhr, status, error) {
-                                        // Handle the error response
-                                        // 'xhr' contains the XMLHttpRequest object
-                                        // 'status' contains the error status
-                                        // 'error' contains the error message
                                     }
                                 });
                             });

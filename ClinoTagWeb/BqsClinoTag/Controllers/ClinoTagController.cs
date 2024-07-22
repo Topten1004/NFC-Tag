@@ -150,9 +150,9 @@ namespace BqsClinoTag.Controllers
         public async Task<List<Lieu>> GetAllLieus()
         {
 
-            var lieus = db.Lieus.ToList();
+            var locations = await db.Lieus.ToListAsync();
 
-            return lieus;
+            return locations;
         }
 
         [HttpGet]
@@ -160,7 +160,7 @@ namespace BqsClinoTag.Controllers
         public async Task<List<SatisfactionLog>> GetAllSatisfactionLog()
         {
 
-            var logs = db.SatisfactionLogs.ToList();
+            var logs = await db.SatisfactionLogs.ToListAsync();
 
             return logs;
         }
@@ -180,7 +180,7 @@ namespace BqsClinoTag.Controllers
         public async Task<List<Tache>> GetAllTaches()
         {
 
-            var logs = db.Taches.ToList();
+            var logs = await db.Taches.ToListAsync();
 
             return logs;
         }
@@ -190,9 +190,9 @@ namespace BqsClinoTag.Controllers
         public async Task<List<Materiel>> GetAllMaterial()
         {
 
-            var logs = db.Materiels.ToList();
+            var materials = await db.Materiels.ToListAsync();
 
-            return logs;
+            return materials;
         }
 
         [HttpPost]

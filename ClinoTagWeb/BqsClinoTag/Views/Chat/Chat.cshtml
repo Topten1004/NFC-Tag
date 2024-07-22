@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="row">
+    <div class="col-md-4">
+        <div class="mb-3" id="roomListContainer">
+            <label for="roomList" class="form-label">Room List</label>
+            <ul class="list-group" id="roomList">
+                <!-- Room list items will be appended here -->
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="row mb-3">
+            <label for="roomName" class="form-label">Room Name</label>
+            <input type="text" class="form-control" id="roomName" placeholder="Enter Room Name" style="margin:12px;width:80%">
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div id="chatContainer" class="chat-container">
+                    <!-- Chat messages will be appended here -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                <textarea class="form-control" id="chatMessage" rows="3" placeholder="Type your message..."></textarea> <!-- Changed to textarea -->
+            </div>
+            <div class="col-3">
+                <button class="btn btn-primary" id="sendMessageButton">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

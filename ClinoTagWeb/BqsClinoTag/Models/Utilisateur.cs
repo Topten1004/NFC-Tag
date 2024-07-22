@@ -17,21 +17,33 @@ namespace BqsClinoTag.Models
         [Key]
         [Column("ID_UTILISATEUR")]
         public int IdUtilisateur { get; set; }
+        
+        
         [Column("NOM")]
         [StringLength(50)]
         public string Nom { get; set; } = null!;
+
+
         [Column("PRENOM")]
         [StringLength(50)]
         public string Prenom { get; set; } = null!;
+
+
         [Column("LOGIN")]
         [StringLength(50)]
         public string Login { get; set; } = null!;
+        
+        
         [Column("EMAIL")]
         [StringLength(100)]
         public string Email { get; set; } = null!;
+        
+        
         [Column("MDP")]
         [StringLength(100)]
         public string Mdp { get; set; } = null!;
+        
+        
         [Column("ROLE")]
         [StringLength(10)]
         public string Role { get; set; } = null!;

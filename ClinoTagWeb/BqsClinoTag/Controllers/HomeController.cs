@@ -61,7 +61,9 @@ namespace BqsClinoTag.Controllers
 
         public ActionResult Login(string returnUrl)
         {
-            if (User.Identity.IsAuthenticated && returnUrl == null) return NotFound();
+            if (User.Identity.IsAuthenticated && returnUrl == null) 
+                return NotFound();
+
             //ViewBag.ReturnUrl = returnUrl;
             ViewData["returnUrl"] = returnUrl;
             var login = Request.Query.Where(q => q.Key == "login").FirstOrDefault();

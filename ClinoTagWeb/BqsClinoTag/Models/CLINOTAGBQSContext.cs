@@ -36,9 +36,10 @@ namespace BqsClinoTag.Models
         public virtual DbSet<Utilisation> Utilisations { get; set; } = null!;
         public virtual DbSet<SatisfactionLog> SatisfactionLogs { get; set; } = null!;
         public virtual DbSet<SettingsModel> AdminSettings { get; set; } = null!;
-        public virtual DbSet<Acknowledge> Acknowledges { get; set; } = null!;
-        
+        public virtual DbSet<Acknowledge> Acknowledges { get; set; } = null!;     
         public virtual DbSet<AcknowledgeLog> AcknowledgeLogs { get; set; } = null!;
+
+        public virtual DbSet<ChatHistory> ChatHistorys { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

@@ -9,7 +9,7 @@
 @section styles {
     <link rel="stylesheet" href="~/css/col-exp-panel.css" />
 }
-<h1>Matériel</h1>
+<h1>Hardwares</h1>
 <p>
     <a asp-action="Create">New</a>
 </p>
@@ -17,7 +17,7 @@
 {
     @await Html.PartialAsync("../Shared/_RechercheClient")
 }
-<table class="table">
+<table class="table text-nowrap table-primary">
     <thead>
         <tr>
             <th>
@@ -33,7 +33,7 @@
                 @Html.DisplayNameFor(model => model.Instruction)
             </th>  
             <th>
-                Expiration (en minutes)
+                Expiration (in minutes)
             </th>   
             <th></th>
         </tr>

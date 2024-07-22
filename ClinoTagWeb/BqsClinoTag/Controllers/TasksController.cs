@@ -13,11 +13,11 @@ using System.Globalization;
 namespace BqsClinoTag.Controllers
 {
     [Authorize(Roles = nameof(Droits.Roles.SUPERADMIN) + "," + nameof(Droits.Roles.ADMIN))]
-    public class TachesController : Controller
+    public class TasksController : Controller
     {
         private readonly CLINOTAGBQSContext _context;
 
-        public TachesController(CLINOTAGBQSContext context)
+        public TasksController(CLINOTAGBQSContext context)
         {
             _context = context;
         }

@@ -20,13 +20,19 @@ namespace BqsClinoTag.Models
         [Key]
         [Column("ID_AGENT")]
         public int IdAgent { get; set; }
+
+
         [Column("NOM")]
         [StringLength(100)]
         public string Nom { get; set; } = null!;
+
         [Column("CODE")]
         [StringLength(5)]
         [Unicode(false)]
         public string Code { get; set; } = null!;
+
+        [Column("train_mode")]
+        public bool TrainMode { get; set; } = false;
 
         [InverseProperty("IdAgentNavigation")]
         public virtual ICollection<GeolocAgent> GeolocAgents { get; set; }

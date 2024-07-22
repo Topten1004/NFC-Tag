@@ -14,11 +14,11 @@ using System.Globalization;
 namespace BqsClinoTag.Controllers
 {
     [Authorize(Roles = nameof(Droits.Roles.SUPERADMIN) + "," + nameof(Droits.Roles.ADMIN) + "," + nameof(Droits.Roles.MANAGER))]
-    public class MaterielsController : Controller
+    public class HardwaresController : Controller
     {
         private readonly CLINOTAGBQSContext _context;
 
-        public MaterielsController(CLINOTAGBQSContext context)
+        public HardwaresController(CLINOTAGBQSContext context)
         {
             _context = context;
         }
@@ -28,6 +28,7 @@ namespace BqsClinoTag.Controllers
         {
             string? userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             int idUtilisateur = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
             switch (userRole)
             {
                 case nameof(Droits.Roles.MANAGER):

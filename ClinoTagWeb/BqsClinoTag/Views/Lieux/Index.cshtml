@@ -9,7 +9,7 @@
 @section styles {
     <link rel="stylesheet" href="~/css/col-exp-panel.css" />
 }
-<h1>Lieu</h1>
+<h1>Location</h1>
 <p>
     <a asp-action="Create">New</a>
 </p>
@@ -17,11 +17,11 @@
 {
     @await Html.PartialAsync("../Shared/_RechercheClient")
 }
-<table class="table">
+<table class="table text-nowrap table-primary">
     <thead>
         <tr>
             <th>
-                Lieu
+                Location
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UidTag)
@@ -30,7 +30,7 @@
                 Client
             </th>
             <th>
-                Tâche(s)
+                Task(s)
             </th>
             <th style="display:flex; align-content:center">
                 Link for API
@@ -47,6 +47,9 @@
             </th>
             <th>
                 QTY
+            </th>
+            <th>
+
             </th>
         </tr>
     </thead>
@@ -76,20 +79,20 @@
                 </button>
             </td>
             <td>
-                    @if(item.Inventory == true){
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
-                        </div>
-                    }
+                @if(item.Inventory == true){
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
+                    </div>
+                }
             </td>
-                <td>
-                    @if (item.Qty == true)
-                    {
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
-                        </div>
-                    }
-                </td>
+            <td>
+                @if (item.Qty == true)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" checked disabled>
+                    </div>
+                }
+            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdLieu">Modify</a> |
                 <a asp-action="Details" asp-route-id="@item.IdLieu">Details</a> |
