@@ -29,15 +29,14 @@ public class Globals extends Application {
     public static Passage PassageEnCours = null;
     public static Utilisation UtilisationEnCours = null;
     public static List<Client> listeClient = new ArrayList<>();
-
     public static List<Lieu> listLieus = new ArrayList<>();
-
     public static List<String> lstCarteMaitresse = new ArrayList<>();
     public static String idConstructeur;
-
     public static String dns = "bqs-clinotag.square.nc";
+
     public static String url = "https://demo.clinotag.com";
 
+    public static Boolean trainMode = false;
     public static Boolean isWorking = false;
 
 //  public static String dns = "10.0.2.2";

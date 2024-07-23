@@ -73,7 +73,7 @@ public class UtilisationActivity extends AppCompatActivity {
                         Globals.urlAPIClinoTag + "NouvelleUtilisation",
                         new Gson().toJson(Globals.UtilisationEnCours)).get();
                 if(uneU == null && uneU.idUtilisation > 0){
-                    Toast.makeText(getApplicationContext(), "Erreur lors de l'enregistrement de l'utilisation", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error saving usage", Toast.LENGTH_LONG).show();
                     finish();
                     return;
                 } else {
@@ -97,7 +97,7 @@ public class UtilisationActivity extends AppCompatActivity {
 
             Globals.UtilisationEnCours.dateDebut = Format.DateMilliEpoch(Globals.UtilisationEnCours.dhDebut);
             labDateHeureUtilisation = (TextView) findViewById(R.id.labDateHeureUtilisation);
-            labDateHeureUtilisation.setText("Début : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
+            labDateHeureUtilisation.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
 
             labInstruction = (TextView) findViewById(R.id.labInstructions);
             String sInstruction = "aucune";
@@ -113,12 +113,12 @@ public class UtilisationActivity extends AppCompatActivity {
 
                 public void onFinish() {
                     setTitle(Globals.getCurrentTime() + " - " + Globals.MaterielEnCours.client + "/" + Globals.MaterielEnCours.nom);
-                    labDateHeureUtilisation.setText("Début : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
+                    labDateHeureUtilisation.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
                     this.start();
                 }
             }.start();
         } else {
-            Toast.makeText(getApplicationContext(), "Pas de connexion Internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "No Internet connection", Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -220,16 +220,16 @@ public class UtilisationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_SHORT).show();
                     break;
                 case -999:
-                    Toast.makeText(getApplicationContext(), "Erreur lors de l'enregistrement de l'utilisation.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error saving usage.", Toast.LENGTH_SHORT).show();
                     break;
                 case -2:
-                    Toast.makeText(getApplicationContext(), "Pas de géolocalisation, enregistrement de l'utilisation impossible.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No geolocation, recording of use impossible.", Toast.LENGTH_SHORT).show();
                     break;
                 case -1:
-                    Toast.makeText(getApplicationContext(), "Le tag sans contact " + hexTagId + " n'est pas celui de l'utilisation initiale.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The contactless tag " + hexTagId + " is not that of initial use.", Toast.LENGTH_SHORT).show();
                     break;
                 case 0:
-                    Toast.makeText(getApplicationContext(), "Fin d'utilisation enregistrée.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "End of use recorded.", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
             }

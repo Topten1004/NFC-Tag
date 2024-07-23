@@ -123,7 +123,7 @@ public class PassageActivity extends AppCompatActivity {
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Description de la tâche")
+        builder.setMessage("Description of the task")
                 .setPositiveButton("Ok", dialogClickListener)
                 .show();
     }
@@ -175,11 +175,11 @@ public class PassageActivity extends AppCompatActivity {
                 new enregistrerPassageTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 finish();
             }else{
-                Toast.makeText(getApplicationContext(), "Le tag ne correspond pas au tag de la demande initiale.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "The tag does not match the original request tag.", Toast.LENGTH_SHORT).show();
             }
             scanEnCours = false;
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Erreur lors de la lecture du tag.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error reading the tag.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -259,16 +259,16 @@ public class PassageActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_SHORT).show();
                     break;
                 case -999:
-                    Toast.makeText(getApplicationContext(), "Erreur lors de l'enregistrement du passage.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error saving the passage.", Toast.LENGTH_SHORT).show();
                     break;
                 case -2:
-                    Toast.makeText(getApplicationContext(), "Pas de géolocalisation, enregistrement du passage impossible.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No geolocation, recording of the passage impossible.", Toast.LENGTH_SHORT).show();
                     break;
                 case -1:
-                    Toast.makeText(getApplicationContext(), "Le tag sans contact " + hexTagId + " n'est pas celui du passage initial.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The contactless tag " + hexTagId + " is not that of the initial passage.", Toast.LENGTH_SHORT).show();
                     break;
                 case 0:
-                    Toast.makeText(getApplicationContext(), "Passage enregistré.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Passage recorded.", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
             }

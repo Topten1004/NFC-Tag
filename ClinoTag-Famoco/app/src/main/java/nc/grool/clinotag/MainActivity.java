@@ -59,7 +59,6 @@ import nc.grool.clinotag.outil.Format;
 public class MainActivity extends AppCompatActivity {
 
     public Location location;
-
     static boolean scanEnCours = false;
     NfcAdapter mAdapter;
 
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
         Button btn = this.findViewById(R.id.Notification);
-//        TextView txtInstructions = this.findViewById(R.id.txtInstructions);
+//      TextView txtInstructions = this.findViewById(R.id.txtInstructions);
 
         if(Globals.isWorking == true)
         {
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             btn.setVisibility(View.VISIBLE);
         }
-
 
         if(mAdapter == null){
         } else {
@@ -88,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-//        if(mAdapter != null)
-//        {
-//            if(mAdapter.isEnabled())
-//                toogleNfc(true);
-//        }
+//      if(mAdapter != null)
+//      {
+//          if(mAdapter.isEnabled())
+//          toogleNfc(true);
+//      }
 
         chargement();
     }

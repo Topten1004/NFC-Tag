@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     CountDownTimer cdtSaisie = null;
     static boolean bloqueSaisie = false;
 
+    Switch trainMode;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -37,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
 
         HttpsTrustManager.allowAllSSL();
         labCodeLogin = (TextView) findViewById(R.id.labCodeLogin);
+        trainMode = (Switch)findViewById(R.id.sw_trainmode);
+
         setTitle("ClinoTag - Login");
 
         Globals g = (Globals)getApplication();
@@ -48,11 +52,15 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Internet connection required", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 Agent result = new JsonTaskAgent().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
                 if (result != null) {
                     finish();
                     Globals.cetAgent = result;
                     startActivityForResult(new Intent(getApplicationContext(), MainActivity.class), 0);
+
+                    Globals.trainMode = result.trainMode;
                 } else {
                     Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
                 }
@@ -62,6 +70,14 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    public void OnSwitchTrainMode(View v){
+        if(trainMode.isActivated() == true)
+            Globals.trainMode = true;
+        else
+            Globals.trainMode = false;
     }
 
     public void SaisieCode(View v) {

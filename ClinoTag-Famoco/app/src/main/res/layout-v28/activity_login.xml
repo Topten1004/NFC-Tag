@@ -1,0 +1,187 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:orientation="vertical"
+    android:padding="0dp"
+    tools:context=".LoginActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/design_default_color_secondary_variant"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/labTitreLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:text="Veuillez saisir votre code d'accès"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUn1"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/btnUn2"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/btnUn3"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="3" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUn4"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/btnUn5"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="5" />
+
+            <Button
+                android:id="@+id/btnUn6"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="6" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUn7"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/btnUn8"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="8" />
+
+            <Button
+                android:id="@+id/btnUn9"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="9" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUn0"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
+                android:onClick="SaisieCode"
+                android:text="0" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/labCodeLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
+
+        <Switch
+            android:id="@+id/sw_trainmode"
+            android:layout_width="228dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:onClick="OnSwitchTrainMode"
+            android:text="Train Mode:" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

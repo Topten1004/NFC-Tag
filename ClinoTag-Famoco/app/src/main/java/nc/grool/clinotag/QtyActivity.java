@@ -45,12 +45,9 @@ import nc.grool.clinotag.outil.Format;
 public class QtyActivity extends AppCompatActivity {
 
     TextView labQtyCount;
-
     TextView labLieuName;
     String QtyCount = "";
-
     static boolean scanEnCours = false;
-
     static String hexTagId;
     NfcAdapter mAdapter;
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -58,7 +55,6 @@ public class QtyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qty);
-
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         Globals.idConstructeur = Build.SERIAL.toUpperCase();
@@ -220,7 +216,7 @@ public class QtyActivity extends AppCompatActivity {
                     Globals.listeClient = new JsonTaskClients().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Le tag " + hexTagId + " est inconnu, que souhaitez-vous enregistrer ?")
+                    builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
                             .setNeutralButton("Lieu", dialogClickListener)
                             .setNegativeButton("Matériel", dialogClickListener)
                             .setPositiveButton("Annuler", dialogClickListener)
@@ -233,7 +229,7 @@ public class QtyActivity extends AppCompatActivity {
             }
             scanEnCours = false;
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Erreur lors de la lecture du tag.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error reading the tag.", Toast.LENGTH_SHORT).show();
         }
     }
 
