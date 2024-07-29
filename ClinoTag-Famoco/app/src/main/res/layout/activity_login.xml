@@ -9,11 +9,10 @@
     android:padding="0dp"
     tools:context=".LoginActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/design_default_color_secondary_variant"
+        android:background="#43bae4"
         android:orientation="vertical">
 
         <TextView
@@ -21,9 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:text="Veuillez saisir votre code d'accès"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:text="Please enter your access code"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,9 +38,9 @@
             <Button
                 android:id="@+id/btnUn1"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="1" />
@@ -49,9 +48,9 @@
             <Button
                 android:id="@+id/btnUn2"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="2" />
@@ -59,9 +58,9 @@
             <Button
                 android:id="@+id/btnUn3"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="3" />
@@ -78,9 +77,9 @@
             <Button
                 android:id="@+id/btnUn4"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="4" />
@@ -88,9 +87,9 @@
             <Button
                 android:id="@+id/btnUn5"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="5" />
@@ -98,9 +97,9 @@
             <Button
                 android:id="@+id/btnUn6"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="6" />
@@ -117,9 +116,9 @@
             <Button
                 android:id="@+id/btnUn7"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="7" />
@@ -127,9 +126,9 @@
             <Button
                 android:id="@+id/btnUn8"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="8" />
@@ -137,9 +136,9 @@
             <Button
                 android:id="@+id/btnUn9"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="9" />
@@ -148,7 +147,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="82dp"
+            android:layout_height="62dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:orientation="horizontal">
@@ -156,9 +155,9 @@
             <Button
                 android:id="@+id/btnUn0"
                 android:layout_width="0dp"
-                android:layout_height="64dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:onClick="SaisieCode"
                 android:text="0" />
@@ -169,7 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 

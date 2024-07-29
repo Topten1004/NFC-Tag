@@ -18,13 +18,13 @@ else
             <form asp-action="Login" asp-route-returnurl="@rurl">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label class="control-label">Identifiant</label>
-                    <input asp-for="Login" class="form-control" placeholder="votre identifiant"  value="@ViewData["login"]" />
+                    <label class="control-label">Login</label>
+                    <input asp-for="Login" class="form-control" placeholder="Type your login"  value="@ViewData["login"]" />
                     <span asp-validation-for="Login" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Mot de passe</label>
-                    <input asp-for="Mdp" class="form-control" type="password" placeholder="votre mot de passe"/>
+                    <label class="control-label">Password</label>
+                    <input asp-for="Mdp" class="form-control" type="password" placeholder="Type your password"/>
                     <span asp-validation-for="Mdp" class="text-danger"></span>
                 </div>
                 <div class="form-group">

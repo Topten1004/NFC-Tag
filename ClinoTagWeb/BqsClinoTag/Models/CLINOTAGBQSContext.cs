@@ -24,8 +24,8 @@ namespace BqsClinoTag.Models
         public virtual DbSet<GeolocAgent> GeolocAgents { get; set; } = null!;
         public virtual DbSet<Lieu> Lieus { get; set; } = null!;
         public virtual DbSet<Materiel> Materiels { get; set; } = null!;
-        public virtual DbSet<Notification> Notifications { get; set; } = null!;
-        public virtual DbSet<Passage> Passages { get; set; } = null!;
+        public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<Passage> Passages { get; set; }
         public virtual DbSet<PassageTache> PassageTaches { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Tache> Taches { get; set; } = null!;
@@ -33,7 +33,7 @@ namespace BqsClinoTag.Models
         public virtual DbSet<TachePlanifiee> TachePlanifiees { get; set; } = null!;
         public virtual DbSet<Uclient> Uclients { get; set; } = null!;
         public virtual DbSet<Utilisateur> Utilisateurs { get; set; } = null!;
-        public virtual DbSet<Utilisation> Utilisations { get; set; } = null!;
+        public virtual DbSet<Utilisation> Utilisations { get; set; }
         public virtual DbSet<SatisfactionLog> SatisfactionLogs { get; set; } = null!;
         public virtual DbSet<SettingsModel> AdminSettings { get; set; } = null!;
         public virtual DbSet<Acknowledge> Acknowledges { get; set; } = null!;     
