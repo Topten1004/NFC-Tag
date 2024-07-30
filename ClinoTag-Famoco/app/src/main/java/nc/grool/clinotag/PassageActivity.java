@@ -82,7 +82,7 @@ public class PassageActivity extends AppCompatActivity {
         Globals.PassageEnCours.lTache = Globals.LieuEnCours.lTache;
 
         labDateHeurePassage = (TextView) findViewById(R.id.labDateHeurePassage);
-        labDateHeurePassage.setText("Début : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
+        labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
 
         editCommentaire = (EditText) findViewById(R.id.editCommentaire);
 
@@ -93,7 +93,7 @@ public class PassageActivity extends AppCompatActivity {
 
             public void onFinish() {
                 setTitle(Globals.getCurrentTime() + " - " + Globals.LieuEnCours.client + "/" + Globals.LieuEnCours.nom);
-                labDateHeurePassage.setText("Début : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
+                labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
                 this.start();
             }
         }.start();

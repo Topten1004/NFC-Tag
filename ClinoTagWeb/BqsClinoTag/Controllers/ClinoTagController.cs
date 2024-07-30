@@ -384,7 +384,7 @@ namespace BqsClinoTag.Controllers
         public async Task<List<ScanTaskVM>> ScanTaskByLocation(string uidTag)
         {
             var result = new List<ScanTaskVM>();
-            var model = await db.TacheLieus.Where(x => x.IdLieuNavigation.UidTag == uidTag).ToListAsync();
+            var model = await db.TacheLieus.Include(x => x.IdLieuNavigation).Where(x => x.IdLieuNavigation.UidTag == uidTag).ToListAsync();
 
             foreach(var item in model)
             {
@@ -456,7 +456,8 @@ namespace BqsClinoTag.Controllers
         public async Task<AgentLight?> AgentLogin(string codeagent)
         {
             Agent? unA = await db.Agents.Where(a => a.Code == codeagent).FirstOrDefaultAsync();
-            if (unA != null) return new AgentLight(unA);
+            if (unA != null) 
+                return new AgentLight(unA);
             else return null;
         }
 
