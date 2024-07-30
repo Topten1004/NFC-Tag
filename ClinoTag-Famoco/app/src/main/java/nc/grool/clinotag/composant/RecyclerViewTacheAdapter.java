@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -46,35 +47,32 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
         holder.switchTache.setTag(taches.get(position).idTacheLieu);
 
         holder.switchTache.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            for (Tache t: Globals.PassageEnCours.lTache) {
-                if(t.idTacheLieu == (Integer)buttonView.getTag()){
-                    t.fait = isChecked;
-                    return;
+            if (Globals.PassageEnCours != null && Globals.PassageEnCours.lTache != null) {
+                for (Tache t : Globals.PassageEnCours.lTache) {
+                    if (t.idTacheLieu == (Integer) buttonView.getTag()) {
+                        t.fait = isChecked;
+                        return;
+                    }
                 }
+            } else {
             }
         });
 
         holder.labTache.setOnClickListener(view -> {
-            for (Tache t: Globals.PassageEnCours.lTache) {
-                if(t.idTache == (Integer)view.getTag() && t.description != null){
-                    // Affiche la description
-                    DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                        }
-                    };
-                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle(t.nom)
-                            .setMessage(t.description)
-                            .setPositiveButton("Ok", dialogClickListener)
-                            .show();
-                    return;
+            if (Globals.PassageEnCours != null && Globals.PassageEnCours.lTache != null) {
+                for (Tache t : Globals.PassageEnCours.lTache) {
+                    if (t.idTache == (Integer) view.getTag() && t.description != null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setTitle(t.nom)
+                                .setMessage(t.description)
+                                .setPositiveButton("Ok", null)
+                                .show();
+                        return;
+                    }
                 }
             }
-
         });
     }
-
     @Override
     public int getItemCount() {
         //returns the number of elements the RecyclerView will display

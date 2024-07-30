@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 //          toogleNfc(true);
 //      }
 
-        chargement();
+//      ReadingTag("535E110701EE40");
     }
 
     @Override
@@ -161,12 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
     static String hexTagId;
 
-    public void onClickImgNfc(View v) {
-        if(!scanEnCours) {
-            ReadingTag(hexTagId); //534E35AF016640-9
-        }
-    }
-
     public void onClickNotification(View v) {
         
         String req = Globals.urlAPIClinoTag + "Notify/" ;
@@ -217,22 +211,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chargement() {
-
         Button btn = this.findViewById(R.id.Notification);
-
-        if(Globals.isWorking == true)
-        {
-            btn.setVisibility(View.GONE);
-        } else {
-            btn.setVisibility(View.VISIBLE);
-        }
-
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
-        RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        adapter.setOnItemClickListener(onItemClickListener);
-        adapter.notifyDataSetChanged();
+
+        if (Globals.cetAgent.trainMode == false) {
+            if (Globals.isWorking == true) {
+                btn.setVisibility(View.GONE);
+            } else {
+                btn.setVisibility(View.VISIBLE);
+            }
+
+            recyclerView.setVisibility(View.GONE);
+            if (Globals.listLieus != null) {
+                RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                adapter.notifyDataSetChanged();
+            }
+        } else {
+            if (Globals.LieuEnCours != null && Globals.LieuEnCours.lTache != null) {
+                recyclerView = findViewById(R.id.recyclerViewTache);
+                RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LieuEnCours.lTache, getApplication());
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }
+        }
     }
 
     private void ReadingTag(String hexTagId) {
@@ -244,61 +247,63 @@ public class MainActivity extends AppCompatActivity {
                 if (result != null && !result.equals("")) {
                     if(result.equals("LIEU")) {
 
+                        req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
 
+                        Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
-                        if(Globals.trainMode == true)
-                        {
-                            req = Globals.urlAPIClinoTag + "ScanTask/" + hexTagId ;
+                        // find location from Uid Tag
+                        if (rLieu != null) {
+                            // finish();
 
-                            List<ScanTask> tasks = new JsonTaskTasks().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+                            if(rLieu.progress == 1)
+                                Globals.isWorking = true;
+                            else if(rLieu.progress == 2)
+                                Globals.isWorking = false;
 
-                        }
-                        else {
-                            req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
+                            Globals.LieuEnCours = rLieu;
 
-                            Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
-
-                            // find location from Uid Tag
-                            if (rLieu != null) {
-                                // finish();
-
-                                if(rLieu.progress == 1)
-                                    Globals.isWorking = true;
-                                else if(rLieu.progress == 2)
-                                    Globals.isWorking = false;
-
-                                Globals.LieuEnCours = rLieu;
+                            if(Globals.cetAgent.trainMode == false)
+                            {
                                 startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
-                                Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
+                            } else{
+                                chargement();
                             }
                         }
                     } else if(result.equals("MATERIEL")) {
 
-                        // set agent is working part
-                        if(Globals.isWorking == true)
-                            Globals.isWorking = false;
+                        if(Globals.cetAgent.trainMode == false)
+                        {
+                            // set agent is working part
+                            if(Globals.isWorking == true)
+                                Globals.isWorking = false;
 
-                        else if(Globals.isWorking == false)
-                            Globals.isWorking = true;
+                            else if(Globals.isWorking == false)
+                                Globals.isWorking = true;
 
-                        req = Globals.urlAPIClinoTag + "ScanMateriel/" + hexTagId ;
-                        Materiel rMateriel = new JsonTaskMateriel().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
-                        if (rMateriel != null) {
-                            //finish();
-                            Globals.MaterielEnCours = rMateriel;
-                            startActivityForResult(new Intent(getApplicationContext(), UtilisationActivity.class), 0);
-                            Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " récupérée.", Toast.LENGTH_SHORT).show();
+                            req = Globals.urlAPIClinoTag + "ScanMateriel/" + hexTagId ;
+                            Materiel rMateriel = new JsonTaskMateriel().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+                            if (rMateriel != null) {
+                                //finish();
+                                Globals.MaterielEnCours = rMateriel;
+                                startActivityForResult(new Intent(getApplicationContext(), UtilisationActivity.class), 0);
+                                Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " recovered.", Toast.LENGTH_SHORT).show();
+                            }
                         }
+
                     } else if(result.equals("QTY"))
                     {
-                        req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
-                        Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+                        if(Globals.cetAgent.trainMode == false)
+                        {
+                            req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
+                            Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
-                        Globals.LieuEnCours = rLieu;
+                            Globals.LieuEnCours = rLieu;
 
-                        // find location from Uid Tag
-                        if (rLieu != null) {
-                            startActivityForResult(new Intent(getApplicationContext(), QtyActivity.class), 0);
+                            // find location from Uid Tag
+                            if (rLieu != null) {
+                                startActivityForResult(new Intent(getApplicationContext(), QtyActivity.class), 0);
+                            }
                         }
                     }
                 } else {
@@ -317,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
                     Globals.listeClient = new JsonTaskClients().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("Le tag " + hexTagId + " est inconnu, que souhaitez-vous enregistrer ?")
+                    builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
                             .setNeutralButton("Lieu", dialogClickListener)
                             .setNegativeButton("Matériel", dialogClickListener)
                             .setPositiveButton("Annuler", dialogClickListener)
@@ -330,7 +335,7 @@ public class MainActivity extends AppCompatActivity {
             }
             scanEnCours = false;
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Erreur lors de la lecture du tag.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error reading the tag.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -345,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
         final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
 
         AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Sélection du client")
+                .setTitle("Customer selection")
                 .setItems(csClientsNom, (dialog, which) -> {
                     dialogNomMateriel(hexTagId, Integer.parseInt(lClientId.get(which)));
                 });
@@ -398,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
         final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
 
         AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Sélection du client")
+                .setTitle("Customer selection")
                 .setItems(csClientsNom, (dialog, which) -> {
                     dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
                 });
