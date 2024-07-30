@@ -380,6 +380,26 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpGet]
+        [Route("ScanTask/{uidTag}")]
+        public async Task<List<ScanTaskVM>> ScanTaskByLocation(string uidTag)
+        {
+            var result = new List<ScanTaskVM>();
+            var model = await db.TacheLieus.Where(x => x.IdLieuNavigation.UidTag == uidTag).ToListAsync();
+
+            foreach(var item in model)
+            {
+                ScanTaskVM _task = new ScanTaskVM();
+
+                _task.Name = item.IdTacheNavigation.Nom;
+                _task.Description = item.IdTacheNavigation.Description?? string.Empty;
+
+                result.Add(_task);
+            }
+
+            return result;
+        }
+
+        [HttpGet]
         [Route("ScanLieu/{uidLieu}")]
         public async Task<LieuLight?> ScanLieu(string uidLieu)
         {

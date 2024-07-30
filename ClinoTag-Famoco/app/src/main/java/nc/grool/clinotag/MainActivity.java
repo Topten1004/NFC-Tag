@@ -47,6 +47,7 @@ import nc.grool.clinotag.dto.Client;
 import nc.grool.clinotag.dto.Lieu;
 import nc.grool.clinotag.dto.LieuOuMaterielPost;
 import nc.grool.clinotag.dto.Materiel;
+import nc.grool.clinotag.dto.ScanTask;
 import nc.grool.clinotag.json.JsonTaskAgent;
 import nc.grool.clinotag.json.JsonTaskClients;
 import nc.grool.clinotag.json.JsonTaskIntegerPost;
@@ -54,6 +55,7 @@ import nc.grool.clinotag.json.JsonTaskLieu;
 import nc.grool.clinotag.json.JsonTaskMateriel;
 import nc.grool.clinotag.json.JsonTaskNotification;
 import nc.grool.clinotag.json.JsonTaskString;
+import nc.grool.clinotag.json.JsonTaskTasks;
 import nc.grool.clinotag.outil.Format;
 
 public class MainActivity extends AppCompatActivity {
@@ -104,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle(Globals.getCurrentTime() + " - " + Globals.cetAgent.nom);
         new CountDownTimer(5000, 300) {
-
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         chargement();
     }
 
-    private String niveauBatterie() {
+    private String onBatteryLevel() {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = getApplicationContext().registerReceiver(null, ifilter);
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
@@ -242,21 +243,34 @@ public class MainActivity extends AppCompatActivity {
                 String result = new JsonTaskString().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
                 if (result != null && !result.equals("")) {
                     if(result.equals("LIEU")) {
-                        req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
-                        Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
-                        // find location from Uid Tag
-                        if (rLieu != null) {
-                            // finish();
 
-                            if(rLieu.progress == 1)
-                                Globals.isWorking = true;
-                            else if(rLieu.progress == 2)
-                                Globals.isWorking = false;
 
-                            Globals.LieuEnCours = rLieu;
-                            startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
-                            Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();
+                        if(Globals.trainMode == true)
+                        {
+                            req = Globals.urlAPIClinoTag + "ScanTask/" + hexTagId ;
+
+                            List<ScanTask> tasks = new JsonTaskTasks().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+                        }
+                        else {
+                            req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
+
+                            Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+                            // find location from Uid Tag
+                            if (rLieu != null) {
+                                // finish();
+
+                                if(rLieu.progress == 1)
+                                    Globals.isWorking = true;
+                                else if(rLieu.progress == 2)
+                                    Globals.isWorking = false;
+
+                                Globals.LieuEnCours = rLieu;
+                                startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
+                                Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } else if(result.equals("MATERIEL")) {
 
