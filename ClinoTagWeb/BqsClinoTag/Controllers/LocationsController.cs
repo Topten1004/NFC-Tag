@@ -15,12 +15,12 @@ using static System.Net.WebRequestMethods;
 namespace BqsClinoTag.Controllers
 {
     [Authorize(Roles = nameof(Droits.Roles.SUPERADMIN) + "," + nameof(Droits.Roles.ADMIN) + "," + nameof(Droits.Roles.MANAGER))]
-    public class LieuxController : Controller
+    public class LocationsController : Controller
     {
         private readonly CLINOTAGBQSContext _context;
         private string PublicLink = "https://demo.clinotag.com/api/clinoTag/link?";
 
-        public LieuxController(CLINOTAGBQSContext context)
+        public LocationsController(CLINOTAGBQSContext context)
         {
             _context = context;
         }

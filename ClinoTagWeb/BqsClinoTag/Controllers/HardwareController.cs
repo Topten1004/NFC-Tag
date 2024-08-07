@@ -14,11 +14,11 @@ using System.Globalization;
 namespace BqsClinoTag.Controllers
 {
     [Authorize(Roles = nameof(Droits.Roles.SUPERADMIN) + "," + nameof(Droits.Roles.ADMIN) + "," + nameof(Droits.Roles.MANAGER))]
-    public class HardwaresController : Controller
+    public class HardwareController : Controller
     {
         private readonly CLINOTAGBQSContext _context;
 
-        public HardwaresController(CLINOTAGBQSContext context)
+        public HardwareController(CLINOTAGBQSContext context)
         {
             _context = context;
         }
