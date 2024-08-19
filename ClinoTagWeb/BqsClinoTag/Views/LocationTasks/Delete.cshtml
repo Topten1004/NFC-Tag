@@ -1,5 +1,5 @@
-﻿@model BqsClinoTag.Models.Tache
-
+﻿@model BqsClinoTag.Models.TacheLieu
+@using BqsClinoTag.Services
 @{
     ViewData["Title"] = "Suppression";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,17 +12,23 @@
     <h4>Task</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nom)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdTacheNavigation.Nom)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nom)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdTacheNavigation.Nom)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdLieuNavigation.Nom)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdLieuNavigation.Nom)
+        </dd>
+        <dt class="col-sm-2">
+            Image
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@ImageHelper.ConvertImageToBase64(Model.Photo)" alt="Image" />
         </dd>
     </dl>
     

@@ -25,18 +25,18 @@ namespace BqsClinoTag.Controllers
         // GET: LocationTasks
         public async Task<IActionResult> Index()
         {
-              return View(await _context.TacheLieus.Include(x => x.IdTacheNavigation).Include( x => x.IdLieuNavigation).ToListAsync());
+            return View(await _context.TacheLieus.Include(x => x.IdTacheNavigation).Include( x => x.IdLieuNavigation).ToListAsync());
         }
 
         // GET: LocationTasks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Taches == null)
+            if (id == null || _context.TacheLieus == null)
             {
                 return NotFound();
             }
 
-            var locationTask = await _context.TacheLieus
+            var locationTask = await _context.TacheLieus.Include(x => x.IdLieuNavigation).Include(x => x.IdTacheNavigation)
                 .FirstOrDefaultAsync(m => m.IdTl == id);
 
             if (locationTask == null)
@@ -48,8 +48,22 @@ namespace BqsClinoTag.Controllers
         }
 
         // GET: LocationTasks/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
+            ViewBag.Tasks = await _context.Taches
+                .Select(t => new SelectListItem
+                {
+                    Value = t.IdTache.ToString(),
+                    Text = t.Nom
+                }).ToListAsync();
+
+            ViewBag.Locations = await _context.Lieus
+               .Select(l => new SelectListItem
+               {
+                   Value = l.IdLieu.ToString(),
+                   Text = l.Nom
+               }).ToListAsync();
+
             return View();
         }
 
@@ -60,16 +74,17 @@ namespace BqsClinoTag.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdTache,IdLieu")] TacheLieu tache)
         {
-            if (ModelState.IsValid)
+
+            if(tache.IdTache > 0 && tache.IdLieu > 0)
             {
                 _context.Add(tache);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(tache);
         }
 
-        // GET: Taches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.TacheLieus == null)
@@ -82,23 +97,43 @@ namespace BqsClinoTag.Controllers
             {
                 return NotFound();
             }
+
+            // Pre-select the current task
+            ViewBag.Tasks = await _context.Taches
+                .Select(t => new SelectListItem
+                {
+                    Value = t.IdTache.ToString(),
+                    Text = t.Nom,
+                    Selected = t.IdTache == tache.IdTache // This sets the selected item
+                }).ToListAsync();
+
+            // Pre-select the current location
+            ViewBag.Locations = await _context.Lieus
+                .Select(l => new SelectListItem
+                {
+                    Value = l.IdLieu.ToString(),
+                    Text = l.Nom,
+                    Selected = l.IdLieu == tache.IdLieu // This sets the selected item
+                }).ToListAsync();
+
             return View(tache);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdTache,IdLieu")] Tache tache)
+        public async Task<IActionResult> Edit(int id, [Bind("IdTache,IdLieu")] TacheLieu tache)
         {
-            if (id != tache.IdTache)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
+            if (tache.IdLieu > 0 && tache.IdTache > 0)
             {
                 try
                 {
-                    _context.Update(tache);
+                    var task = _context.TacheLieus.Include(x => x.IdLieuNavigation).Include(x => x.IdTacheNavigation).Where(x => x.IdTl == id).FirstOrDefault();
+
+                    task.IdLieu = tache.IdLieu;
+                    task.IdTache = tache.IdTache;
+
+                    _context.Update(task);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -116,6 +151,31 @@ namespace BqsClinoTag.Controllers
             }
             return View(tache);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Import(int id, IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await file.CopyToAsync(ms);
+                    var fileBytes = ms.ToArray();
+                    var base64String = Convert.ToBase64String(fileBytes);
+
+                    // Find the TacheLieu by ID
+                    var tacheLieu = await _context.TacheLieus.FindAsync(id);
+                    if (tacheLieu != null)
+                    {
+                        tacheLieu.Photo = fileBytes; // Save as byte[] in the database
+                        await _context.SaveChangesAsync();
+                    }
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
         // GET: LocationTask/Clone/5
         public async Task<IActionResult> Clone(int? id)
@@ -142,13 +202,14 @@ namespace BqsClinoTag.Controllers
         // GET: Taches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Taches == null)
+            if (id == null || _context.TacheLieus == null)
             {
                 return NotFound();
             }
 
-            var tache = await _context.TacheLieus
+            var tache = await _context.TacheLieus.Include(x => x.IdTacheNavigation).Include(x => x.IdLieuNavigation)
                 .FirstOrDefaultAsync(m => m.IdTl == id);
+
             if (tache == null)
             {
                 return NotFound();

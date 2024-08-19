@@ -28,11 +28,14 @@ namespace BqsClinoTag.Models
         [Column("DH_DEBUT")]
         [DataType(DataType.DateTime)]
         public DateTime DhDebut { get; set; }
+
         [Column("DH_FIN")]
         [DataType(DataType.DateTime)]
         public DateTime DhFin { get; set; }
+
         [Column("PHOTO")]
         public byte[]? Photo { get; set; }
+
         [Column("COMMENTAIRE")]
         [DataType(DataType.Text)]
         public string? Commentaire { get; set; }
@@ -40,9 +43,11 @@ namespace BqsClinoTag.Models
         [ForeignKey("IdAgent")]
         [InverseProperty("Passages")]
         public virtual Agent IdAgentNavigation { get; set; } = null!;
+
         [ForeignKey("IdLieu")]
         [InverseProperty("Passages")]
         public virtual Lieu IdLieuNavigation { get; set; } = null!;
+        
         [InverseProperty("IdPassageNavigation")]
         public virtual ICollection<PassageTache> PassageTaches { get; set; }
     }

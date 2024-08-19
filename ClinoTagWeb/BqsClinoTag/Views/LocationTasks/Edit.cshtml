@@ -11,9 +11,23 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdTache" />
+        <form asp-action="Edit" asp-route-id="@Model.IdTl">
+            <input type="hidden" asp-for="IdTl" />
+            <div class="form-group">
+                <label class="control-label">Task</label>
+                <select asp-for="IdTache" class="form-control" asp-items="ViewBag.Tasks"></select>
+                <span asp-validation-for="IdTache" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Location</label>
+                <select asp-for="IdLieu" class="form-control" asp-items="ViewBag.Locations"></select>
+                <span asp-validation-for="IdLieu" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary my-2" />
+            </div>
         </form>
     </div>
 </div>

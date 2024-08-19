@@ -338,8 +338,8 @@ namespace BqsClinoTag.Services
             var builder = new BodyBuilder();
             MailText = MailText.Replace("[titre]", "Récupération des identifiants");
             MailText = MailText.Replace("[message]", 
-                "Vous avez demandé une récupération des identifiants pour vous connecter sur Totem<br><br>Identifiant : <b>" + 
-                request.Login + "</b><br>Mot de passe : <b>" + request.MotDePasse + "</b><br><br>" +
+                "Vous avez demandé une récupération des identifiants pour vous connecter sur Totem<br><br>Login : <b>" + 
+                request.Login + "</b><br>Password : <b>" + request.MotDePasse + "</b><br><br>" +
                 "<b>Vous pouvez vous connecter à partir de ce lien : <a href='" + urlLogin + "'>https://bqs-clinotag.square.nc</a></b>");
 
             var plain = new TextPart(MimeKit.Text.TextFormat.Plain) { Text = $"Totem Distribution - Récupération des identifiants - https://bqs-clinotag.square.nc" };
