@@ -45,7 +45,7 @@
 
             <div class="form-group">
                 <br />
-                <button type="button" class="button-image" data-bs-toggle="modal" data-bs-target="#TaskModal">
+                <button type="button" class="button-image" data-bs-toggle="modal" data-bs-target="#tacheModal">
                     <img class="img-24x24" src="~/img/plus.48x48.png">
                 </button><span>Task(s)</span>
                 <table class="table table-sm table-hover">
@@ -62,18 +62,10 @@
                                 @t.IdTacheNavigation.Nom
                             </td>
                             <td>
-                                    <a asp-controller="Lieux" asp-action="SupprTaskLieu" asp-route-id="@t.IdTl">
-                                        <img class="img-24x24" src="~/img/suppr.48x48.png">
-                                    </a>
+                                <a asp-controller="Locations" asp-action="SupprTaskLieu" asp-route-id="@t.IdTl">
+                                    <img class="img-24x24" src="~/img/suppr.48x48.png">
+                                </a>
                             </td>
-@*                            <td>
-                                @if (!t.PassageTasks.Any())
-                                {
-                                    <a asp-controller="Lieux" asp-action="SupprTaskLieu" asp-route-id="@t.IdTl">
-                                        <img class="img-24x24" src="~/img/suppr.48x48.png">
-                                    </a>
-                                }
-                            </td>*@
                         </tr>
                     }
                 </table>
@@ -82,10 +74,52 @@
                 <input type="submit" value="Save" class="btn btn-primary my-2" />
             </div>
         </form>
-        @await Html.PartialAsync("_ChoixTask")
     </div>
 </div>
 
+<div class="modal fade" id="tacheModal" tabindex="-1" role="dialog" aria-labelledby="tacheModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add a task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    @foreach (Tache tache in ViewBag.ListeTache)
+                    {
+                        <a href="#" class="btnTacheChoisie list-group-item list-group-item-action" data-idtache="@tache.IdTache">@tache.Nom</a>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".btnTacheChoisie").click(function () {
+
+        var idTache = $(this).data("idtache");
+        var idLieu = $("#idLieu").val();
+
+        $.get("/Lieux/AjoutTacheLieu/" + idLieu + "/" + idTache, function (data) {
+            if (data === true) {
+                location.reload();
+            } else {
+                $('#hTitreMessage').text("Erreur");
+                $('#pMessage').html("Error adding task. Operation canceled");
+                $('#ModalMessage').modal("show");
+            }
+            var modal = $("#tacheModal");
+            modal.hide();
+        });
+    });
+
+</script>
 <div>
     <a asp-action="Index">Back</a>
 </div>

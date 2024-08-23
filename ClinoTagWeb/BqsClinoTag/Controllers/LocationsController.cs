@@ -26,7 +26,7 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpGet]
-        [Route("Lieux/SupprTacheLieu/{idTacheLieu}")]
+        [Route("Locations/SupprTaskLieu/{idTacheLieu}")]
         public async Task<IActionResult> SupprTacheLieu(int idTacheLieu)
         {
             TacheLieu tl = await _context.TacheLieus.FindAsync(idTacheLieu);
@@ -34,11 +34,11 @@ namespace BqsClinoTag.Controllers
             _context.TacheLieus.Remove(tl);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Edit", "Lieux", new { id = idLieu });
+            return RedirectToAction("Edit", "Locations", new { id = idLieu });
         }
 
         [HttpGet]
-        [Route("Lieux/AjoutTacheLieu/{idLieu}/{idTache}")]
+        [Route("Locations/AjoutTacheLieu/{idLieu}/{idTache}")]
         public async Task<bool> AjoutTacheLieu(int idLieu, int idTache)
         {
             try
@@ -56,7 +56,7 @@ namespace BqsClinoTag.Controllers
             }
         }
 
-        // GET: Lieux
+        // GET: Locations
         public async Task<IActionResult> Index(int idClient = 0)
         {
             var lieus = await _context.Lieus.ToListAsync();
@@ -97,7 +97,7 @@ namespace BqsClinoTag.Controllers
             }
         }
 
-        // GET: Lieux/Details/5
+        // GET: Locations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Lieus == null || !await AutoriseUtilisateur((int)id))
@@ -117,12 +117,14 @@ namespace BqsClinoTag.Controllers
             return View(lieu);
         }
 
-        // GET: Lieux/Create
+        // GET: Locations/Create
         public IActionResult Create()
         {
             chargeListeCLient();            
             return View();
         }
+
+
         private void chargeListeCLient()
         {
             string? userRole = User.FindFirst(ClaimTypes.Role)?.Value;

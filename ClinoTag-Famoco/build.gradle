@@ -4,6 +4,10 @@ plugins {
     id 'com.android.library' version '7.2.1' apply false
 }
 
+ext {
+    ndkVersion = '27.0.12077973'
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
