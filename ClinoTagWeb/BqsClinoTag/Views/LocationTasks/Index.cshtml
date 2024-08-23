@@ -1,0 +1,70 @@
+﻿@model IEnumerable<BqsClinoTag.Models.TacheLieu>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    function showFileInput(id) {
+        document.getElementById('fileInput_' + id).click();
+    }
+
+    function submitFile(id) {
+        document.getElementById('importForm_' + id).submit();
+    }
+</script>
+
+<h1>Tasks by Location</h1>
+
+<p>
+    <a asp-action="Create">New</a>
+</p>
+<table class="table text-nowrap table-primary">
+    <thead>
+        <tr>
+            <th>
+                Location Name
+            </th>
+            <th>
+                Task Name
+            </th>
+            <th>
+                Task Description
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdLieuNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdTacheNavigation.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdTacheNavigation.Description)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdTl">Modify</a> |
+                <a asp-action="Details" asp-route-id="@item.IdTl">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdTl">Delete</a> |
+                <a href="javascript:void(0);" onclick="showFileInput(@item.IdTl)">Import</a> |
+                <a asp-action="Clone" asp-route-id="@item.IdTl">Clone</a>
+
+                <form id="importForm_@item.IdTl" asp-action="Import" asp-controller="LocationTasks" method="post" enctype="multipart/form-data" style="display:none;">
+                    <input type="hidden" name="id" value="@item.IdTl" />
+                    <input type="file" id="fileInput_@item.IdTl" name="file" accept=".png" style="display:none;" onchange="submitFile(@item.IdTl);" />
+                </form>
+            </td>
+            <td>
+                @if (item.Photo != null)
+                {
+                    <img src="~/img/camera.128x128.png" class="img-32x32" />
+                }
+            </td>
+        </tr>}
+    </tbody>
+</table>

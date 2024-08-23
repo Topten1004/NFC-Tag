@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdAgent" />
             <div class="form-group">
-                <label asp-for="Nom" class="control-label"></label>
+                <label class="control-label">Name</label>
                 <input asp-for="Nom" class="form-control" />
                 <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
@@ -47,10 +47,10 @@
 <script>
     $("#Code").keyup(function() {
         if($("#Code").val().length == 5){
-            $.get("/Agents/CodeOk?codeSaisie=" + $("#Code").val() + "&idAgent=" + $("#IdAgent").val(), function (data) {
+            $.get("/Agents/CodeOk?code=" + $("#Code").val() + "&idAgent=" + $("#IdAgent").val(), function (data) {
                 if(data == false){
                     $('#hTitreMessage').text("Erreur");
-                    $('#pMessage').html("Le code saisie est déjà utilisé.<br>Le code doit être un nombre de longueur 5 (ex: 78901).");
+                    $('#pMessage').html("The code entered is already used.<br>The code must be a number of length 5 (ex: 78901).");
                     $('#ModalMessage').modal("show");
                 }
             });

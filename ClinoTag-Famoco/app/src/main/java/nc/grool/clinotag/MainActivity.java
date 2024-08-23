@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 //          toogleNfc(true);
 //      }
 
-//      ReadingTag("535E110701EE40");
+        ReadingTag("535E110701EE40");
     }
 
     @Override
@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             scanEnCours = true;
             String req = Globals.urlAPIClinoTag + "IdentificationTag/" + hexTagId ;
+
             try {
                 String result = new JsonTaskString().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
                 if (result != null && !result.equals("")) {
@@ -264,9 +265,12 @@ public class MainActivity extends AppCompatActivity {
 
                             if(Globals.cetAgent.trainMode == false)
                             {
+
                                 startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
                                 Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
+
                             } else{
+
                                 chargement();
                             }
                         }

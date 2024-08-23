@@ -74,6 +74,10 @@ namespace BqsClinoTag.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("NOM");
 
+                    b.Property<bool>("TrainMode")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("train_mode");
+
                     b.HasKey("IdAgent");
 
                     b.HasIndex(new[] { "Code" }, "AgentCodeUnique")
@@ -104,6 +108,39 @@ namespace BqsClinoTag.Migrations
                     b.HasKey("IdAcknowledgeLog");
 
                     b.ToTable("acknowledge_log");
+                });
+
+            modelBuilder.Entity("BqsClinoTag.Models.ChatHistory", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Checked")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("checked");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("content");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasMaxLength(100)
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("timestamp");
+
+                    b.Property<string>("RoomName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("room_name");
+
+                    b.HasKey("id");
+
+                    b.ToTable("chat_history");
                 });
 
             modelBuilder.Entity("BqsClinoTag.Models.Client", b =>

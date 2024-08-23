@@ -51,6 +51,7 @@ namespace BqsClinoTag.Models
         [ForeignKey("Role")]
         [InverseProperty("Utilisateurs")]
         public virtual Role RoleNavigation { get; set; } = null!;
+
         [InverseProperty("IdUtilisateurNavigation")]
         public virtual ICollection<Uclient> Uclients { get; set; }
     }

@@ -1,0 +1,38 @@
+﻿@model BqsClinoTag.Models.TacheLieu
+@using BqsClinoTag.Services
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Task</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdTacheNavigation.Nom)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdTacheNavigation.Nom)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IdLieuNavigation.Nom)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IdLieuNavigation.Nom)
+        </dd>
+        <dt class="col-sm-2">
+            Image
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@ImageHelper.ConvertImageToBase64(Model.Photo)" alt="Image" />
+        </dd>
+     </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdTache">Modify</a> |
+    <a asp-action="Index">Back</a>
+</div>

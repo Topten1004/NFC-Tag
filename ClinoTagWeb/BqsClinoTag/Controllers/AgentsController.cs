@@ -23,18 +23,25 @@ namespace BqsClinoTag.Controllers
         }
 
         // GET: Agents
-        public async Task<bool> CodeOk(string codeSaisie, int? idAgent)
+        public async Task<bool> CodeOk(string code, int? idAgent)
         {
             try
             {
-                if (codeSaisie == null) return false;
-                if (codeSaisie.Trim().Length != 5) return false;
-                int codeSaisieInt = -1;
-                if (Int32.TryParse(codeSaisie, out codeSaisieInt) == false) return false;
+                if (code == null) 
+                    return false;
+
+                if (code.Trim().Length != 5) 
+                    return false;
+                
+                int codeInt = -1;
+
+                if (Int32.TryParse(code, out codeInt) == false) 
+                    return false;
+
                 if(idAgent.HasValue)
-                    return !await _context.Agents.AnyAsync(a => a.Code == codeSaisie.Trim() && a.IdAgent != idAgent.Value);
+                    return !await _context.Agents.AnyAsync(a => a.Code == code.Trim() && a.IdAgent != idAgent.Value);
                 else
-                    return !await _context.Agents.AnyAsync(a => a.Code == codeSaisie.Trim());
+                    return !await _context.Agents.AnyAsync(a => a.Code == code.Trim());
             }
             catch(Exception ex)
             {

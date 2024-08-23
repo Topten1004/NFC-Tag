@@ -15,12 +15,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IdUtilisateur" />
             <div class="form-group">
-                <label asp-for="Nom" class="control-label"></label>
+                <label class="control-label">Last Name</label>
                 <input asp-for="Nom" class="form-control" />
                 <span asp-validation-for="Nom" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Prenom" class="control-label"></label>
+                <label class="control-label">Sure Name</label>
                 <input asp-for="Prenom" class="form-control" />
                 <span asp-validation-for="Prenom" class="text-danger"></span>
             </div>
@@ -42,7 +42,6 @@
             <div class="form-group">
                 <label asp-for="Role" class="control-label"></label>
                 <select asp-for="Role" class="form-control" asp-items="ViewBag.Role" readonly="readonly"></select>
-                @*<span asp-validation-for="Role" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary my-2" />
