@@ -24,14 +24,14 @@ import nc.grool.clinotag.dto.Utilisation;
 public class Globals extends Application {
 
     public static Agent cetAgent = null;
-    public static Lieu LieuEnCours = null;
-    public static Materiel MaterielEnCours = null;
-    public static Passage PassageEnCours = null;
+    public static Lieu LocationInProgress = null;
+    public static Materiel MaterialInProgress = null;
+    public static Passage PassageInProgress = null;
     public static Utilisation UtilisationEnCours = null;
     public static List<Client> listeClient = new ArrayList<>();
     public static List<Lieu> listLieus = new ArrayList<>();
     public static List<String> lstCarteMaitresse = new ArrayList<>();
-    public static String idConstructeur;
+    public static String idConstructor;
     public static String dns = "bqs-clinotag.square.nc";
 
     public static String url = "https://demo.clinotag.com";

@@ -75,25 +75,25 @@ public class PassageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passage);
 
-        Globals.PassageEnCours = new Passage();
-        Globals.PassageEnCours.dateDebut = new Date();
-        Globals.PassageEnCours.idAgent = Globals.cetAgent.idAgent;
-        Globals.PassageEnCours.idLieu  =Globals.LieuEnCours.idLieu;
-        Globals.PassageEnCours.lTache = Globals.LieuEnCours.lTache;
+        Globals.PassageInProgress = new Passage();
+        Globals.PassageInProgress.dateDebut = new Date();
+        Globals.PassageInProgress.idAgent = Globals.cetAgent.idAgent;
+        Globals.PassageInProgress.idLieu  =Globals.LocationInProgress.idLieu;
+        Globals.PassageInProgress.lTache = Globals.LocationInProgress.lTache;
 
         labDateHeurePassage = (TextView) findViewById(R.id.labDateHeurePassage);
-        labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
+        labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
 
         editCommentaire = (EditText) findViewById(R.id.editCommentaire);
 
-        setTitle(Globals.getCurrentTime() + " - " + Globals.LieuEnCours.client + "/" + Globals.LieuEnCours.nom);
+        setTitle(Globals.getCurrentTime() + " - " + Globals.LocationInProgress.client + "/" + Globals.LocationInProgress.nom);
         new CountDownTimer(5000, 300) {
 
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                setTitle(Globals.getCurrentTime() + " - " + Globals.LieuEnCours.client + "/" + Globals.LieuEnCours.nom);
-                labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageEnCours.dateDebut, new Date()) + " min.");
+                setTitle(Globals.getCurrentTime() + " - " + Globals.LocationInProgress.client + "/" + Globals.LocationInProgress.nom);
+                labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
                 this.start();
             }
         }.start();
@@ -163,7 +163,7 @@ public class PassageActivity extends AppCompatActivity {
         try {
             scanEnCours = true;
 
-            if(hexTagId.equals(Globals.LieuEnCours.uidTag)){
+            if(hexTagId.equals(Globals.LocationInProgress.uidTag)){
                 String req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
                 Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
@@ -185,7 +185,7 @@ public class PassageActivity extends AppCompatActivity {
 
     private void chargement() {
         RecyclerView recyclerView = findViewById(R.id.recyclerViewTache);
-        RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LieuEnCours.lTache, getApplication());
+        RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LocationInProgress.lTache, getApplication());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        adapter.setOnItemClickListener(onItemClickListener);
@@ -205,7 +205,7 @@ public class PassageActivity extends AppCompatActivity {
 
                 if(!g.isNetworkConnected()) return -100;
 
-                Passage passage = Globals.PassageEnCours;
+                Passage passage = Globals.PassageInProgress;
                 passage.dhDebut = String.valueOf(passage.dateDebut.getTime());
                 passage.dhFin = String.valueOf(new Date().getTime());
                 passage.commentaire = String.valueOf(editCommentaire.getText());

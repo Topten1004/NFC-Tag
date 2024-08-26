@@ -63,7 +63,7 @@ public class UtilisationActivity extends AppCompatActivity {
         Globals.UtilisationEnCours.dateDebut = new Date();
         Globals.UtilisationEnCours.dhDebut = String.valueOf(Globals.UtilisationEnCours.dateDebut.getTime());
         Globals.UtilisationEnCours.idAgent = Globals.cetAgent.idAgent;
-        Globals.UtilisationEnCours.idMateriel  = Globals.MaterielEnCours.idMateriel;
+        Globals.UtilisationEnCours.idMateriel  = Globals.MaterialInProgress.idMateriel;
 
         Globals g = (Globals)getApplication();
         if(g.isNetworkConnected()){
@@ -101,19 +101,21 @@ public class UtilisationActivity extends AppCompatActivity {
 
             labInstruction = (TextView) findViewById(R.id.labInstructions);
             String sInstruction = "aucune";
-            if(Globals.MaterielEnCours.instruction != null) sInstruction = Globals.MaterielEnCours.instruction;
-            labInstruction.setText("Instruction(s) : " + sInstruction);
 
+            if(Globals.MaterialInProgress.instruction != null)
+                sInstruction = Globals.MaterialInProgress.instruction;
+
+            labInstruction.setText("Instruction(s) : " + sInstruction);
             editCommentaire = (EditText) findViewById(R.id.editCommentaireUtilisation);
 
-            setTitle(Globals.getCurrentTime() + " - " + Globals.MaterielEnCours.client + "/" + Globals.MaterielEnCours.nom);
+            setTitle(Globals.getCurrentTime() + " - " + Globals.MaterialInProgress.client + "/" + Globals.MaterialInProgress.nom);
             new CountDownTimer(5000, 300) {
 
                 public void onTick(long millisUntilFinished) {}
 
                 public void onFinish() {
-                    setTitle(Globals.getCurrentTime() + " - " + Globals.MaterielEnCours.client + "/" + Globals.MaterielEnCours.nom);
-                    labDateHeureUtilisation.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " soit " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
+                    setTitle(Globals.getCurrentTime() + " - " + Globals.MaterialInProgress.client + "/" + Globals.MaterialInProgress.nom);
+                    labDateHeureUtilisation.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
                     this.start();
                 }
             }.start();
@@ -127,11 +129,12 @@ public class UtilisationActivity extends AppCompatActivity {
 
     public void onClickImgNfc(View v) {
         if(!scanEnCours) {
-            ReadingTag(hexTagId); // Voiture BQS
+            ReadingTag(hexTagId); // BQS Car
         }
     }
 
     void toogleNfc(Boolean enable){
+
         if (enable) {
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
 
@@ -158,7 +161,7 @@ public class UtilisationActivity extends AppCompatActivity {
     private void ReadingTag(String hexTagId) {
         try {
             scanEnCours = true;
-            if(hexTagId.equals(Globals.MaterielEnCours.uidTag)){
+            if(hexTagId.equals(Globals.MaterialInProgress.uidTag)){
 
                 String req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
                 Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
@@ -171,11 +174,11 @@ public class UtilisationActivity extends AppCompatActivity {
                 new enregistrerUtilisationTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 finish();
             }else{
-                Toast.makeText(getApplicationContext(), "Le tag ne correspond pas au tag de la demande initiale.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "The tag does not match the tag of the initial request.", Toast.LENGTH_SHORT).show();
             }
             scanEnCours = false;
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Erreur lors de la lecture du tag.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error reading tag.", Toast.LENGTH_SHORT).show();
         }
     }
 

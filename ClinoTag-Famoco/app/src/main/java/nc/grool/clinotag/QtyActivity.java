@@ -13,7 +13,6 @@ import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,13 +27,11 @@ import java.util.concurrent.ExecutionException;
 
 import nc.grool.clinotag.composant.DialogTexte;
 import nc.grool.clinotag.composant.HttpsTrustManager;
-import nc.grool.clinotag.dto.Agent;
 import nc.grool.clinotag.dto.Client;
 import nc.grool.clinotag.dto.Lieu;
 import nc.grool.clinotag.dto.LieuOuMaterielPost;
 import nc.grool.clinotag.dto.Materiel;
 import nc.grool.clinotag.dto.QtyPost;
-import nc.grool.clinotag.json.JsonTaskAgent;
 import nc.grool.clinotag.json.JsonTaskClients;
 import nc.grool.clinotag.json.JsonTaskIntegerPost;
 import nc.grool.clinotag.json.JsonTaskLieu;
@@ -57,14 +54,14 @@ public class QtyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qty);
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
-        Globals.idConstructeur = Build.SERIAL.toUpperCase();
+        Globals.idConstructor = Build.SERIAL.toUpperCase();
 
         HttpsTrustManager.allowAllSSL();
         labQtyCount = (TextView) findViewById(R.id.InputQtyCount);
         labQtyCount.setText("");
 
         labLieuName = (TextView) findViewById(R.id.labLieuName);
-        labLieuName.setText(Globals.LieuEnCours.nom);
+        labLieuName.setText(Globals.LocationInProgress.nom);
 
         QtyCount = "";
         setTitle("ClinoTag - QTY");
@@ -128,7 +125,7 @@ public class QtyActivity extends AppCompatActivity {
             Globals g = (Globals)getApplication();
             if(g.isNetworkConnected()){
                 int result = -100;
-                QtyPost lieu = new QtyPost(Globals.LieuEnCours.uidTag, Integer.parseInt(QtyCount));
+                QtyPost lieu = new QtyPost(Globals.LocationInProgress.uidTag, Integer.parseInt(QtyCount));
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
                             Globals.urlAPIClinoTag + "AjoutQTY",
@@ -167,7 +164,7 @@ public class QtyActivity extends AppCompatActivity {
                             else if(rLieu.progress == 2)
                                 Globals.isWorking = false;
 
-                            Globals.LieuEnCours = rLieu;
+                            Globals.LocationInProgress = rLieu;
                             startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
                             Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();
                         }
@@ -184,16 +181,16 @@ public class QtyActivity extends AppCompatActivity {
                         Materiel rMateriel = new JsonTaskMateriel().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
                         if (rMateriel != null) {
                             //finish();
-                            Globals.MaterielEnCours = rMateriel;
+                            Globals.MaterialInProgress = rMateriel;
                             startActivityForResult(new Intent(getApplicationContext(), UtilisationActivity.class), 0);
-                            Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " récupérée.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " recovered.", Toast.LENGTH_SHORT).show();
                         }
                     } else if(result.equals("QTY"))
                     {
                         req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
                         Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
-                        Globals.LieuEnCours = rLieu;
+                        Globals.LocationInProgress = rLieu;
 
                         // find location from Uid Tag
                         if (rLieu != null) {
@@ -217,9 +214,9 @@ public class QtyActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
-                            .setNeutralButton("Lieu", dialogClickListener)
-                            .setNegativeButton("Matériel", dialogClickListener)
-                            .setPositiveButton("Annuler", dialogClickListener)
+                            .setNeutralButton("Place", dialogClickListener)
+                            .setNegativeButton("Material", dialogClickListener)
+                            .setPositiveButton("Cancel", dialogClickListener)
                             .show();
                 }
             } catch (ExecutionException e) {
@@ -279,7 +276,7 @@ public class QtyActivity extends AppCompatActivity {
         final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
 
         AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(QtyActivity.this)
-                .setTitle("Sélection du client")
+                .setTitle("Customer selection")
                 .setItems(csClientsNom, (dialog, which) -> {
                     dialogNomMateriel(hexTagId, Integer.parseInt(lClientId.get(which)));
                 });
@@ -298,7 +295,7 @@ public class QtyActivity extends AppCompatActivity {
         final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
 
         AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(QtyActivity.this)
-                .setTitle("Sélection du client")
+                .setTitle("Customer selection")
                 .setItems(csClientsNom, (dialog, which) -> {
                     dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
                 });
@@ -355,7 +352,7 @@ public class QtyActivity extends AppCompatActivity {
         Globals g = (Globals)getApplication();
         if(g.isNetworkConnected()){
             int result = -100;
-            QtyPost lieu = new QtyPost(Globals.LieuEnCours.uidTag, Integer.parseInt(QtyCount));
+            QtyPost lieu = new QtyPost(Globals.LocationInProgress.uidTag, Integer.parseInt(QtyCount));
             try {
                 result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
                         Globals.urlAPIClinoTag + "AjoutQTY",
@@ -376,6 +373,7 @@ public class QtyActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_LONG).show();
         }
     }
+    
     public void SaisieCode(View v) {
         Button btn = (Button) findViewById(v.getId());
         QtyCount = QtyCount + btn.getText();

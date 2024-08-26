@@ -67,7 +67,7 @@ public class Location {
 
             if(g.isNetworkConnected()){
                 String req = Globals.urlAPIClinoTag + "GeolocAgent/"
-                        + Globals.idConstructeur + "/"
+                        + Globals.idConstructor + "/"
                         + Globals.cetAgent.idAgent + "/"
                         + latitude + "/"
                         + longitude + "/";

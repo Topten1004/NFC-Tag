@@ -23,12 +23,10 @@ import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -42,26 +40,22 @@ import nc.grool.clinotag.composant.DialogTexte;
 import nc.grool.clinotag.composant.Location;
 import nc.grool.clinotag.composant.RecyclerViewLieuAdapter;
 import nc.grool.clinotag.composant.RecyclerViewTacheAdapter;
-import nc.grool.clinotag.dto.Agent;
 import nc.grool.clinotag.dto.Client;
 import nc.grool.clinotag.dto.Lieu;
 import nc.grool.clinotag.dto.LieuOuMaterielPost;
 import nc.grool.clinotag.dto.Materiel;
-import nc.grool.clinotag.dto.ScanTask;
-import nc.grool.clinotag.json.JsonTaskAgent;
 import nc.grool.clinotag.json.JsonTaskClients;
 import nc.grool.clinotag.json.JsonTaskIntegerPost;
 import nc.grool.clinotag.json.JsonTaskLieu;
 import nc.grool.clinotag.json.JsonTaskMateriel;
 import nc.grool.clinotag.json.JsonTaskNotification;
 import nc.grool.clinotag.json.JsonTaskString;
-import nc.grool.clinotag.json.JsonTaskTasks;
 import nc.grool.clinotag.outil.Format;
 
 public class MainActivity extends AppCompatActivity {
 
     public Location location;
-    static boolean scanEnCours = false;
+    static boolean scanInProgress = false;
     NfcAdapter mAdapter;
 
     @Override
@@ -71,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
         Button btn = this.findViewById(R.id.Notification);
-//      TextView txtInstructions = this.findViewById(R.id.txtInstructions);
 
         if(Globals.isWorking)
         {
@@ -80,19 +73,12 @@ public class MainActivity extends AppCompatActivity {
             btn.setVisibility(View.VISIBLE);
         }
 
-        if(mAdapter == null){
-        } else {
-            if (!mAdapter.isEnabled()) {
-            } else {
+
+        if(mAdapter != null){
+            if (mAdapter.isEnabled()) {
                 toogleNfc(true);
             }
         }
-
-//      if(mAdapter != null)
-//      {
-//          if(mAdapter.isEnabled())
-//          toogleNfc(true);
-//      }
 
 //        ReadingTag("04428462F14A81");
     }
@@ -147,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         location.initLocation();
-        chargement();
+        loadingLists();
     }
 
     private String onBatteryLevel() {
@@ -164,13 +150,15 @@ public class MainActivity extends AppCompatActivity {
     public void onClickNotification(View v) {
         
         String req = Globals.urlAPIClinoTag + "Notify/" ;
+
         try {
             List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
             if (result != null) {
 
                 Globals.listLieus = result;
-                chargement();
+                loadingLists();
+
             } else {
 
                 Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
@@ -191,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTagDiscovered(final Tag tag) {
                     runOnUiThread(() -> {
-                        if(!scanEnCours){
+                        if(!scanInProgress){
                             hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
                             Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
 //                          tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
@@ -213,13 +201,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void chargement() {
+    private void loadingLists() {
+
         Button btn = this.findViewById(R.id.Notification);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
+        RecyclerView recyclerViewTask = findViewById(R.id.recyclerViewTasks);
 
-        if (Globals.cetAgent.trainMode == false) {
+        if ( !Globals.cetAgent.trainMode) {
 
-            if (Globals.isWorking == true) {
+            if (Globals.isWorking) {
                 btn.setVisibility(View.GONE);
             } else {
                 btn.setVisibility(View.VISIBLE);
@@ -238,18 +229,19 @@ public class MainActivity extends AppCompatActivity {
 
             recyclerView.setVisibility(View.GONE);
 
-            if (Globals.LieuEnCours != null && Globals.LieuEnCours.lTache != null) {
-                recyclerView = findViewById(R.id.recyclerViewTache);
-                RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LieuEnCours.lTache, getApplication());
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            if (Globals.LocationInProgress != null && Globals.LocationInProgress.lTache != null) {
+
+                recyclerViewTask = findViewById(R.id.recyclerViewTache);
+                RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LocationInProgress.lTache, getApplication());
+                recyclerViewTask.setAdapter(adapter);
+                recyclerViewTask.setLayoutManager(new LinearLayoutManager(this));
             }
         }
     }
 
     private void ReadingTag(String hexTagId) {
         try {
-            scanEnCours = true;
+            scanInProgress = true;
             String req = Globals.urlAPIClinoTag + "IdentificationTag/" + hexTagId ;
 
             try {
@@ -267,33 +259,32 @@ public class MainActivity extends AppCompatActivity {
 
                             if(rLieu.progress == 1)
                                 Globals.isWorking = true;
+
                             else if(rLieu.progress == 2)
                                 Globals.isWorking = false;
 
-                            Globals.LieuEnCours = rLieu;
+                            Globals.LocationInProgress = rLieu;
 
                             startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
                             Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
 
-                            chargement();
-
+                            loadingLists();
                         }
                     } else if(result.equals("MATERIEL")) {
 
-                        if(Globals.cetAgent.trainMode == false)
+                        if(!Globals.cetAgent.trainMode)
                         {
                             // set agent is working part
-                            if(Globals.isWorking == true)
+                            if(Globals.isWorking)
                                 Globals.isWorking = false;
-
-                            else if(Globals.isWorking == false)
+                            else
                                 Globals.isWorking = true;
 
                             req = Globals.urlAPIClinoTag + "ScanMateriel/" + hexTagId ;
                             Materiel rMateriel = new JsonTaskMateriel().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
                             if (rMateriel != null) {
                                 //finish();
-                                Globals.MaterielEnCours = rMateriel;
+                                Globals.MaterialInProgress = rMateriel;
                                 startActivityForResult(new Intent(getApplicationContext(), UtilisationActivity.class), 0);
                                 Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " recovered.", Toast.LENGTH_SHORT).show();
                             }
@@ -301,12 +292,12 @@ public class MainActivity extends AppCompatActivity {
 
                     } else if(result.equals("QTY"))
                     {
-                        if(Globals.cetAgent.trainMode == false)
+                        if(!Globals.cetAgent.trainMode)
                         {
                             req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
                             Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
-                            Globals.LieuEnCours = rLieu;
+                            Globals.LocationInProgress = rLieu;
 
                             // find location from Uid Tag
                             if (rLieu != null) {
@@ -341,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            scanEnCours = false;
+            scanInProgress = false;
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error reading the tag.", Toast.LENGTH_SHORT).show();
         }

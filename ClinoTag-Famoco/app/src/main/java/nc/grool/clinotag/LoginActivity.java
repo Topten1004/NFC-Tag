@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Globals.idConstructeur = Build.SERIAL.toUpperCase();
+        Globals.idConstructor = Build.SERIAL.toUpperCase();
 
         HttpsTrustManager.allowAllSSL();
         labCodeLogin = (TextView) findViewById(R.id.labCodeLogin);

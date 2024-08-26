@@ -1,13 +1,11 @@
 package nc.grool.clinotag.composant;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -47,8 +45,8 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
         holder.switchTache.setTag(taches.get(position).idTacheLieu);
 
         holder.switchTache.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (Globals.PassageEnCours != null && Globals.PassageEnCours.lTache != null) {
-                for (Tache t : Globals.PassageEnCours.lTache) {
+            if (Globals.PassageInProgress != null && Globals.PassageInProgress.lTache != null) {
+                for (Tache t : Globals.PassageInProgress.lTache) {
                     if (t.idTacheLieu == (Integer) buttonView.getTag()) {
                         t.fait = isChecked;
                         return;
@@ -59,8 +57,8 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
         });
 
         holder.labTache.setOnClickListener(view -> {
-            if (Globals.PassageEnCours != null && Globals.PassageEnCours.lTache != null) {
-                for (Tache t : Globals.PassageEnCours.lTache) {
+            if (Globals.PassageInProgress != null && Globals.PassageInProgress.lTache != null) {
+                for (Tache t : Globals.PassageInProgress.lTache) {
                     if (t.idTache == (Integer) view.getTag() && t.description != null) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                         builder.setTitle(t.nom)
