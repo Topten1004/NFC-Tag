@@ -106,7 +106,7 @@
         var idTache = $(this).data("idtache");
         var idLieu = $("#idLieu").val();
 
-        $.get("/Lieux/AjoutTacheLieu/" + idLieu + "/" + idTache, function (data) {
+        $.get("/Locations/AjoutTacheLieu/" + idLieu + "/" + idTache, function (data) {
             if (data === true) {
                 location.reload();
             } else {

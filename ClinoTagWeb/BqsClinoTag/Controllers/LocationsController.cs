@@ -141,7 +141,7 @@ namespace BqsClinoTag.Controllers
             }
         }
 
-        // POST: Lieux/Create
+        // POST: Locations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -167,7 +167,7 @@ namespace BqsClinoTag.Controllers
             return View(lieu);
         }
 
-        // GET: Lieux/Edit/5
+        // GET: Locations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Lieus == null || !await AutoriseUtilisateur((int)id)) return NotFound();
@@ -187,7 +187,7 @@ namespace BqsClinoTag.Controllers
             return View(lieu);
         }
 
-        // POST: Lieux/Edit/5
+        // POST: Locations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -255,7 +255,7 @@ namespace BqsClinoTag.Controllers
             return View(lieu);
         }
 
-        // GET: Lieux/Delete/5
+        // GET: Locations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Lieus == null || !await AutoriseUtilisateur((int)id))
@@ -289,7 +289,7 @@ namespace BqsClinoTag.Controllers
             else return false;
         }
 
-        // POST: Lieux/Delete/5
+        // POST: Locations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn = this.findViewById(R.id.Notification);
 //      TextView txtInstructions = this.findViewById(R.id.txtInstructions);
 
-        if(Globals.isWorking == true)
+        if(Globals.isWorking)
         {
             btn.setVisibility(View.GONE);
         } else {
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 //          toogleNfc(true);
 //      }
 
-        ReadingTag("535E110701EE40");
+//        ReadingTag("04428462F14A81");
     }
 
     @Override
@@ -168,9 +168,11 @@ public class MainActivity extends AppCompatActivity {
             List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
             if (result != null) {
+
                 Globals.listLieus = result;
                 chargement();
             } else {
+
                 Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
             }
 
@@ -180,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     void toogleNfc(Boolean enable) {
         if(enable){
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
@@ -215,20 +218,26 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
 
         if (Globals.cetAgent.trainMode == false) {
+
             if (Globals.isWorking == true) {
                 btn.setVisibility(View.GONE);
             } else {
                 btn.setVisibility(View.VISIBLE);
             }
 
-            recyclerView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
             if (Globals.listLieus != null) {
                 RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 adapter.notifyDataSetChanged();
             }
+
         } else {
+
+            recyclerView.setVisibility(View.GONE);
+
             if (Globals.LieuEnCours != null && Globals.LieuEnCours.lTache != null) {
                 recyclerView = findViewById(R.id.recyclerViewTache);
                 RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LieuEnCours.lTache, getApplication());
@@ -263,16 +272,11 @@ public class MainActivity extends AppCompatActivity {
 
                             Globals.LieuEnCours = rLieu;
 
-                            if(Globals.cetAgent.trainMode == false)
-                            {
+                            startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
+                            Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
 
-                                startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
-                                Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
+                            chargement();
 
-                            } else{
-
-                                chargement();
-                            }
                         }
                     } else if(result.equals("MATERIEL")) {
 

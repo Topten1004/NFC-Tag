@@ -25,7 +25,7 @@ test-results/
 # Icon must end with two \r
 Icon
 
-
+appsettings.json
 # Thumbnails
 ._*
 
@@ -469,4 +469,5 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+ClinoTagWeb/BqsClinoTag/appsettings.json
 ClinoTagWeb/BqsClinoTag/appsettings.json

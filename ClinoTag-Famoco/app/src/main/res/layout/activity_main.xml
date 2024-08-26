@@ -1,60 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/purple_200"
     tools:context=".MainActivity">
-
 
     <Button
         android:id="@+id/Notification"
         android:layout_width="89dp"
         android:layout_height="72dp"
-        android:layout_marginTop="180dp"
-        android:layout_marginBottom="512dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
         android:background="@drawable/btnnotify"
         android:foreground="@drawable/btnnotify"
         android:onClick="onClickNotification"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLieu"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="300dp"
         android:layout_marginTop="60dp"
         android:focusable="true"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Notification"
-        app:layout_constraintVertical_bias="1.0"
         app:spanCount="2"
-        tools:ignore="MissingConstraints"
         tools:listitem="@android:layout/simple_list_item_2" />
-
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewMagasin"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewLieu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Notification"
-        app:layout_constraintVertical_bias="0.347">
+        android:layout_marginEnd="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTache"
@@ -62,15 +43,9 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            app:layoutManager="GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@android:layout/simple_list_item_checked">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:listitem="@android:layout/simple_list_item_checked" />
 
     </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

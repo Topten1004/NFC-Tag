@@ -36,12 +36,12 @@
                             @if (User.IsInRole(nameof(Droits.Roles.SUPERADMIN)) || User.IsInRole(nameof(Droits.Roles.ADMIN))){
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Customers
+                                        Users
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <a class="nav-link" asp-area="" asp-controller="Utilisateurs" asp-action="Index">User</a>
-                                        <a class="nav-link" asp-area="" asp-controller="Clients" asp-action="Index">Customer</a>
-                                        <a class="nav-link" asp-area="" asp-controller="Agents" asp-action="Index">Agent</a>
+@*                                         <a class="nav-link" asp-area="" asp-controller="Clients" asp-action="Index">Customer</a>
+ *@                                        <a class="nav-link" asp-area="" asp-controller="Agents" asp-action="Index">Agent</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -71,7 +71,7 @@
                             @if (User.IsInRole(nameof(Droits.Roles.MANAGER)))
                             {
                                 <li class="nav-item">
-                                  <a class="nav-link active" asp-area="" asp-controller="Lieux" asp-action="Index">Location</a>
+                                    <a class="nav-link active" asp-area="" asp-controller="Locations" asp-action="Index">Location</a>
                                 </li>
                                 <li class="nav-item">
                                   <a class="nav-link active" asp-area="" asp-controller="Passages" asp-action="Index">Cleaning</a>
