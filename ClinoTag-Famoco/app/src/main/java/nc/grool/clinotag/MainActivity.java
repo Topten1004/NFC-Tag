@@ -27,12 +27,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -58,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
     static boolean scanInProgress = false;
     NfcAdapter mAdapter;
 
+    public TextView tvScannedTime = null;
+
+    public TextView tvLocationName = null;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -65,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
         Button btn = this.findViewById(R.id.Notification);
+
+        tvScannedTime = this.findViewById(R.id.scannedTime);
+        tvLocationName = this.findViewById(R.id.locationName);
+
+        tvScannedTime.setVisibility(View.GONE);
+        tvLocationName.setVisibility(View.GONE);
 
         if(Globals.isWorking)
         {
@@ -80,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-//        ReadingTag("04428462F14A81");
     }
 
     @Override
@@ -137,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String onBatteryLevel() {
+
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = getApplicationContext().registerReceiver(null, ifilter);
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
@@ -148,27 +161,29 @@ public class MainActivity extends AppCompatActivity {
     static String hexTagId;
 
     public void onClickNotification(View v) {
-        
-        String req = Globals.urlAPIClinoTag + "Notify/" ;
 
-        try {
-            List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+        ReadingTag("535E110701EE40");
 
-            if (result != null) {
-
-                Globals.listLieus = result;
-                loadingLists();
-
-            } else {
-
-                Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        String req = Globals.urlAPIClinoTag + "Notify/" ;
+//
+//        try {
+//            List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+//
+//            if (result != null) {
+//
+//                Globals.listLieus = result;
+//                loadingLists();
+//
+//            } else {
+//
+//                Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     void toogleNfc(Boolean enable) {
@@ -206,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn = this.findViewById(R.id.Notification);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
-        RecyclerView recyclerViewTask = findViewById(R.id.recyclerViewTasks);
+        RecyclerView recyclerViewTask = findViewById(R.id.recyclerViewTrainModeTasks);
 
         if ( !Globals.cetAgent.trainMode) {
 
@@ -231,7 +246,17 @@ public class MainActivity extends AppCompatActivity {
 
             if (Globals.LocationInProgress != null && Globals.LocationInProgress.lTache != null) {
 
-                recyclerViewTask = findViewById(R.id.recyclerViewTache);
+                tvScannedTime.setVisibility(View.VISIBLE);
+                tvLocationName.setVisibility(View.VISIBLE);
+
+
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                String currentTime = sdf.format(new Date());
+                tvScannedTime.setText("Scanned Time: " + currentTime);
+
+                tvLocationName.setText("Location Name:" + Globals.LocationInProgress.nom);
+
+                recyclerViewTask = findViewById(R.id.recyclerViewTrainModeTasks);
                 RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LocationInProgress.lTache, getApplication());
                 recyclerViewTask.setAdapter(adapter);
                 recyclerViewTask.setLayoutManager(new LinearLayoutManager(this));
@@ -240,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ReadingTag(String hexTagId) {
+
         try {
             scanInProgress = true;
             String req = Globals.urlAPIClinoTag + "IdentificationTag/" + hexTagId ;
@@ -265,10 +291,14 @@ public class MainActivity extends AppCompatActivity {
 
                             Globals.LocationInProgress = rLieu;
 
-                            startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
-                            Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
+                            if( !Globals.trainMode)
+                            {
+                                startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
+                                Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
+                            } else{ // display the tasks when user on train mode
 
-                            loadingLists();
+                                loadingLists();
+                            }
                         }
                     } else if(result.equals("MATERIEL")) {
 

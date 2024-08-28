@@ -10,42 +10,47 @@
 
     <Button
         android:id="@+id/Notification"
-        android:layout_width="89dp"
-        android:layout_height="72dp"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/btnnotify"
-        android:foreground="@drawable/btnnotify"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_notify"
+        android:foreground="@drawable/btn_notify"
         android:onClick="onClickNotification"
-        android:text="" />
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/scannedTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="32sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLieu"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:focusable="true"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
         tools:listitem="@android:layout/simple_list_item_2" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollViewMagasin"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTrainModeTasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewTasks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@android:layout/simple_list_item_checked" />
-
-    </androidx.core.widget.NestedScrollView>
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@android:layout/simple_list_item_checked" />
 
 </LinearLayout>
