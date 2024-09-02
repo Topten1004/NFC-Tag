@@ -157,7 +157,6 @@ public class QtyActivity extends AppCompatActivity {
 
                         // find location from Uid Tag
                         if (rLieu != null) {
-                            // finish();
 
                             if(rLieu.progress == 1)
                                 Globals.isWorking = true;
@@ -166,21 +165,18 @@ public class QtyActivity extends AppCompatActivity {
 
                             Globals.LocationInProgress = rLieu;
                             startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
-                            Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " récupérée.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
                         }
                     } else if(result.equals("MATERIEL")) {
 
                         // set agent is working part
-                        if(Globals.isWorking == true)
-                            Globals.isWorking = false;
-
-                        else if(Globals.isWorking == false)
-                            Globals.isWorking = true;
+                        Globals.isWorking = !Globals.isWorking;
 
                         req = Globals.urlAPIClinoTag + "ScanMateriel/" + hexTagId ;
                         Materiel rMateriel = new JsonTaskMateriel().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
                         if (rMateriel != null) {
-                            //finish();
+//                          finish();
                             Globals.MaterialInProgress = rMateriel;
                             startActivityForResult(new Intent(getApplicationContext(), UtilisationActivity.class), 0);
                             Toast.makeText(getApplicationContext(), rMateriel.client + "/" + rMateriel.nom + " recovered.", Toast.LENGTH_SHORT).show();
@@ -201,16 +197,14 @@ public class QtyActivity extends AppCompatActivity {
                     DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                         switch (which){
                             case DialogInterface.BUTTON_NEUTRAL:
-                                DialogNouveauLieu(hexTagId);
+                                OnSaveLocation(hexTagId, 10);
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
-                                DialogNouveauMateriel(hexTagId);
+                                OnSaveHardware(hexTagId, 10);
                                 break;
                         }
                     };
 
-                    req = Globals.urlAPIClinoTag + "ListeClient";
-                    Globals.listeClient = new JsonTaskClients().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
@@ -230,7 +224,7 @@ public class QtyActivity extends AppCompatActivity {
         }
     }
 
-    void dialogNomMateriel(String hexTagId, int idClient) {
+    void OnSaveHardware(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomMateriel = DialogTexte.creerDialogTexte(QtyActivity.this);
         dialogNomMateriel.show();
@@ -257,6 +251,7 @@ public class QtyActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Hardware registration failed.", Toast.LENGTH_SHORT).show();
                 }
                 dialogNomMateriel.dismiss();
+
             }else{
                 Toast.makeText(getApplicationContext(), R.string.noconnexion, Toast.LENGTH_LONG).show();
             }
@@ -264,46 +259,7 @@ public class QtyActivity extends AppCompatActivity {
         });
     }
 
-
-    private void DialogNouveauMateriel(String hexTagId) {
-        List<String> lClientId = new ArrayList<String>();
-        List<String> lClientNom = new ArrayList<String>();
-        for(Client p : Globals.listeClient){
-            lClientId.add(String.valueOf(p.idClient));
-            lClientNom.add(p.nom);
-        }
-
-        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
-
-        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(QtyActivity.this)
-                .setTitle("Customer selection")
-                .setItems(csClientsNom, (dialog, which) -> {
-                    dialogNomMateriel(hexTagId, Integer.parseInt(lClientId.get(which)));
-                });
-
-        dialogPubliBuilder.create().show();
-    }
-
-    private void DialogNouveauLieu(String hexTagId) {
-        List<String> lClientId = new ArrayList<String>();
-        List<String> lClientNom = new ArrayList<String>();
-        for(Client p : Globals.listeClient){
-            lClientId.add(String.valueOf(p.idClient));
-            lClientNom.add(p.nom);
-        }
-
-        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
-
-        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(QtyActivity.this)
-                .setTitle("Customer selection")
-                .setItems(csClientsNom, (dialog, which) -> {
-                    dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
-                });
-
-        dialogPubliBuilder.create().show();
-    }
-
-    void dialogNomLieu(String hexTagId, int idClient) {
+    void OnSaveLocation(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomLieu = DialogTexte.creerDialogTexte(QtyActivity.this);
         dialogNomLieu.show();
@@ -341,7 +297,7 @@ public class QtyActivity extends AppCompatActivity {
     }
 
     public  void onRemove(View v) {
-        if(QtyCount.length() >= 1)
+        if(!QtyCount.isEmpty())
         {
             QtyCount = QtyCount.substring(0, QtyCount.length()-1);
             labQtyCount.setText(QtyCount);

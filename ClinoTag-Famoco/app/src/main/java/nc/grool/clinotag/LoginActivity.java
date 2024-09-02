@@ -23,11 +23,14 @@ import nc.grool.clinotag.json.JsonTaskAgent;
 public class LoginActivity extends AppCompatActivity {
 
     TextView labCodeLogin;
-    String codeSaisie = "";
+    String codeEntry = "";
+
     CountDownTimer cdtSaisie = null;
     static boolean bloqueSaisie = false;
 
-    Switch trainMode;
+    public Switch swTrainMode;
+
+    public boolean trainModeFlag = false;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -39,9 +42,9 @@ public class LoginActivity extends AppCompatActivity {
 
         HttpsTrustManager.allowAllSSL();
         labCodeLogin = (TextView) findViewById(R.id.labCodeLogin);
-        trainMode = (Switch)findViewById(R.id.sw_trainmode);
+        swTrainMode = (Switch)findViewById(R.id.sw_trainmode);
 
-        setTitle("ClinoTag - Login");
+        setTitle("Cleanotag - Login");
 
         Globals g = (Globals)getApplication();
         String codeAgent = g.lirePref("codeAgent");
@@ -56,11 +59,13 @@ public class LoginActivity extends AppCompatActivity {
                 Agent result = new JsonTaskAgent().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
 
                 if (result != null) {
+
                     finish();
                     Globals.cetAgent = result;
+                    Globals.trainMode = result.trainMode;
+
                     startActivityForResult(new Intent(getApplicationContext(), MainActivity.class), 0);
 
-                    Globals.trainMode = result.trainMode;
                 } else {
                     Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
                 }
@@ -72,12 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     public void OnSwitchTrainMode(View v){
-        if(trainMode.isActivated() == true)
-            Globals.trainMode = true;
-        else
-            Globals.trainMode = false;
+        trainModeFlag = swTrainMode.isActivated();
     }
 
     public void SaisieCode(View v) {
@@ -88,19 +89,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {}
             public void onFinish() {
                 bloqueSaisie = false;
-                codeSaisie = "";
+                codeEntry = "";
                 labCodeLogin.setText("");
                 this.start();
             }
         }.start();
 
         Button btn = (Button) findViewById(v.getId());
-        codeSaisie = codeSaisie + btn.getText();
+        codeEntry = codeEntry + btn.getText();
         labCodeLogin.append("*");
 
-        if(codeSaisie.length() == 5){
+        if(codeEntry.length() == 5){
             bloqueSaisie = true;
-            String req = Globals.urlAPIClinoTag + "AgentLogin/" + codeSaisie;
+            String req = Globals.urlAPIClinoTag + "AgentLogin/" + codeEntry;
             try {
                 Globals g = (Globals)getApplication();
                 if(!g.isNetworkConnected()){
@@ -109,9 +110,18 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 Agent result = new JsonTaskAgent().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
                 if (result != null) {
+
                     finish();
+
                     Globals.cetAgent = result;
-                    g.ecrirePref("codeAgent", codeSaisie);
+                    Globals.trainMode = result.trainMode;
+
+                    if( !Globals.trainMode)
+                    {
+                        Globals.trainMode = trainModeFlag;
+                    }
+
+                    g.ecrirePref("codeAgent", codeEntry);
                     startActivityForResult(new Intent(getApplicationContext(), MainActivity.class), 0);
                 } else {
                     Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
@@ -121,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            codeSaisie = "";
+            codeEntry = "";
             labCodeLogin.setText("");
             bloqueSaisie = false;
         }

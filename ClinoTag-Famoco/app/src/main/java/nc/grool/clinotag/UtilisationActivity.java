@@ -78,16 +78,6 @@ public class UtilisationActivity extends AppCompatActivity {
                     return;
                 } else {
                     Globals.UtilisationEnCours = uneU;
-//                    String fU = Fichier.lecture(getApplicationContext(), Globals.UtilisationEnCours.idUtilisation + ".utilisation");
-//                    if(fU == null)
-//                        Fichier.ecriture(getApplicationContext(),
-//                                Globals.UtilisationEnCours.idUtilisation + ".utilisation",
-//                                new Gson().toJson(Globals.UtilisationEnCours));
-//                    else
-//                    {
-//                        Type t = new TypeToken<Utilisation>(){}.getType();
-//                        Globals.UtilisationEnCours =  new Gson().fromJson(fU, t);
-//                    }
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -97,7 +87,7 @@ public class UtilisationActivity extends AppCompatActivity {
 
             Globals.UtilisationEnCours.dateDebut = Format.DateMilliEpoch(Globals.UtilisationEnCours.dhDebut);
             labDateHeureUtilisation = (TextView) findViewById(R.id.labDateHeureUtilisation);
-            labDateHeureUtilisation.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
+            labDateHeureUtilisation.setText("Beginning : " + Format.ShowShortDateTime(Globals.UtilisationEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
 
             labInstruction = (TextView) findViewById(R.id.labInstructions);
             String sInstruction = "aucune";
@@ -115,7 +105,7 @@ public class UtilisationActivity extends AppCompatActivity {
 
                 public void onFinish() {
                     setTitle(Globals.getCurrentTime() + " - " + Globals.MaterialInProgress.client + "/" + Globals.MaterialInProgress.nom);
-                    labDateHeureUtilisation.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.UtilisationEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
+                    labDateHeureUtilisation.setText("Beginning : " + Format.ShowShortDateTime(Globals.UtilisationEnCours.dateDebut) + " either " + Format.DifferenceMinute(Globals.UtilisationEnCours.dateDebut, new Date()) + " min.");
                     this.start();
                 }
             }.start();

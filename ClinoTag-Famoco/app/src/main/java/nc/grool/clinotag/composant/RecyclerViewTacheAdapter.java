@@ -71,6 +71,7 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
             }
         });
     }
+
     @Override
     public int getItemCount() {
         //returns the number of elements the RecyclerView will display
@@ -86,7 +87,6 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
         CardView cv;
         TextView labTache;
         Switch switchTache;
-
 
         public ViewHolderSite(View itemView) {
             super(itemView);

@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle(Globals.getCurrentTime() + " - " + Globals.cetAgent.nom);
         new CountDownTimer(5000, 300) {
-            public void onTick(long millisUntilFinished) {}cd /
+            public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
                 setTitle(Globals.getCurrentTime() + " - " + Globals.cetAgent.nom); //+ niveauBatterie() + "% - "
@@ -162,8 +162,6 @@ public class MainActivity extends AppCompatActivity {
     static String hexTagId;
 
     public void onClickNotification(View v) {
-
-//        ReadingTag("53DE708A01F440");
 
         String req = Globals.urlAPIClinoTag + "Notify/" ;
 
@@ -235,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
 
             if (Globals.listLieus != null) {
+
                 RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -247,9 +246,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (Globals.LocationInProgress != null && Globals.LocationInProgress.lTache != null) {
 
-//              tvScannedTime.setVisibility(View.VISIBLE);
                 tvLocationName.setVisibility(View.VISIBLE);
-
 
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                 String currentTime = sdf.format(new Date());
@@ -266,14 +263,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ReadingTag(String hexTagId) {
-
         try {
             scanInProgress = true;
             String req = Globals.urlAPIClinoTag + "IdentificationTag/" + hexTagId ;
 
             try {
                 String result = new JsonTaskString().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
-                if (result != null && !result.equals("")) {
+
+                if (result != null && !result.equals(""))
+                {
                     if(result.equals("LIEU")) {
 
                         req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
@@ -303,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     } else if(result.equals("MATERIEL")) {
 
-                        if(!Globals.cetAgent.trainMode)
+                        if(!Globals.trainMode)
                         {
                             // set agent is working part
                             if(Globals.isWorking)
@@ -323,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
 
                     } else if(result.equals("QTY"))
                     {
-                        if(!Globals.cetAgent.trainMode)
+                        if(!Globals.trainMode)
                         {
                             req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
                             Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
@@ -337,26 +335,27 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                        switch (which){
-                            case DialogInterface.BUTTON_NEUTRAL:
-                                DialogNouveauLieu(hexTagId);
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                DialogNouveauMateriel(hexTagId);
-                                break;
-                        }
-                    };
 
-                    req = Globals.urlAPIClinoTag + "ListeClient";
-                    Globals.listeClient = new JsonTaskClients().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+                    if(!Globals.trainMode)
+                    {
+                        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                            switch (which){
+                                case DialogInterface.BUTTON_NEUTRAL:
+                                    OnSaveLocation(hexTagId, 10);
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    OnSaveHardware(hexTagId, 10);
+                                    break;
+                            }
+                        };
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
-                            .setNeutralButton("Lieu", dialogClickListener)
-                            .setNegativeButton("Matériel", dialogClickListener)
-                            .setPositiveButton("Annuler", dialogClickListener)
-                            .show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
+                                .setNeutralButton("Location", dialogClickListener)
+                                .setNegativeButton("Hardware", dialogClickListener)
+                                .setPositiveButton("Cancel", dialogClickListener)
+                                .show();
+                    }
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -369,26 +368,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void DialogNouveauMateriel(String hexTagId) {
-        List<String> lClientId = new ArrayList<String>();
-        List<String> lClientNom = new ArrayList<String>();
-        for(Client p : Globals.listeClient){
-            lClientId.add(String.valueOf(p.idClient));
-            lClientNom.add(p.nom);
-        }
-
-        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
-
-        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Customer selection")
-                .setItems(csClientsNom, (dialog, which) -> {
-                    dialogNomMateriel(hexTagId, Integer.parseInt(lClientId.get(which)));
-                });
-
-        dialogPubliBuilder.create().show();
-    }
-
-    void dialogNomMateriel(String hexTagId, int idClient) {
+    void OnSaveHardware(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomMateriel = DialogTexte.creerDialogTexte(MainActivity.this);
         dialogNomMateriel.show();
@@ -409,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (result == 0) {
-                    Toast.makeText(getApplicationContext(), "The material is associated with the tag.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The hardware is associated with the tag.", Toast.LENGTH_SHORT).show();
                     ReadingTag(hexTagId);
                 } else {
                     Toast.makeText(getApplicationContext(), "Hardware registration failed.", Toast.LENGTH_SHORT).show();
@@ -422,26 +402,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void DialogNouveauLieu(String hexTagId) {
-        List<String> lClientId = new ArrayList<String>();
-        List<String> lClientNom = new ArrayList<String>();
-        for(Client p : Globals.listeClient){
-            lClientId.add(String.valueOf(p.idClient));
-            lClientNom.add(p.nom);
-        }
-
-        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
-
-        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Customer selection")
-                .setItems(csClientsNom, (dialog, which) -> {
-                    dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
-                });
-
-        dialogPubliBuilder.create().show();
-    }
-
-    void dialogNomLieu(String hexTagId, int idClient) {
+    void OnSaveLocation(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomLieu = DialogTexte.creerDialogTexte(MainActivity.this);
         dialogNomLieu.show();
