@@ -6,7 +6,6 @@
         public string UidTag { get; set; }
         public string? Client { get; set; }
         public string? Nom { get; set; }   
-
         public int? ActionType { get; set; }
         public int? Progress { get; set; }
         public bool? Inventory { get; set; }
@@ -26,12 +25,16 @@
             foreach (TacheLieu t in lieu.TacheLieus)
             {
                 TacheLight tl = new TacheLight();
+
                 tl.idTacheLieu = t.IdTl;
                 tl.idTache = t.IdTache;
                 tl.nom = t.IdTacheNavigation.Nom;
                 tl.description = t.IdTacheNavigation.Description;
-                lTache.Add(tl);
 
+                if(t.Photo != null)
+                    tl.photo = Convert.ToBase64String(t.Photo);
+
+                lTache.Add(tl);
             }
         }
     }

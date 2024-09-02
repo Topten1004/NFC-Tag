@@ -42,6 +42,7 @@ import java.util.concurrent.ExecutionException;
 import nc.grool.clinotag.composant.DialogTexte;
 import nc.grool.clinotag.composant.Location;
 import nc.grool.clinotag.composant.RecyclerViewLieuAdapter;
+import nc.grool.clinotag.composant.RecyclerViewLocationTaskAdapter;
 import nc.grool.clinotag.composant.RecyclerViewTacheAdapter;
 import nc.grool.clinotag.dto.Client;
 import nc.grool.clinotag.dto.Lieu;
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle(Globals.getCurrentTime() + " - " + Globals.cetAgent.nom);
         new CountDownTimer(5000, 300) {
-            public void onTick(long millisUntilFinished) {}
+            public void onTick(long millisUntilFinished) {}cd /
 
             public void onFinish() {
                 setTitle(Globals.getCurrentTime() + " - " + Globals.cetAgent.nom); //+ niveauBatterie() + "% - "
@@ -162,28 +163,28 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickNotification(View v) {
 
-        ReadingTag("535E110701EE40");
+//        ReadingTag("53DE708A01F440");
 
-//        String req = Globals.urlAPIClinoTag + "Notify/" ;
-//
-//        try {
-//            List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
-//
-//            if (result != null) {
-//
-//                Globals.listLieus = result;
-//                loadingLists();
-//
-//            } else {
-//
-//                Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        String req = Globals.urlAPIClinoTag + "Notify/" ;
+
+        try {
+            List<Lieu> result = (List<Lieu>) new JsonTaskNotification().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+
+            if (result != null) {
+
+                Globals.listLieus = result;
+                loadingLists();
+
+            } else {
+
+                Toast.makeText(getApplicationContext(), "Unknown code", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     void toogleNfc(Boolean enable) {
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn = this.findViewById(R.id.Notification);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
-        RecyclerView recyclerViewTask = findViewById(R.id.recyclerViewTrainModeTasks);
+        RecyclerView recyclerViewLocationTask = findViewById(R.id.recyclerViewTrainModeTasks);
 
         if ( !Globals.cetAgent.trainMode) {
 
@@ -246,20 +247,20 @@ public class MainActivity extends AppCompatActivity {
 
             if (Globals.LocationInProgress != null && Globals.LocationInProgress.lTache != null) {
 
-                tvScannedTime.setVisibility(View.VISIBLE);
+//              tvScannedTime.setVisibility(View.VISIBLE);
                 tvLocationName.setVisibility(View.VISIBLE);
 
 
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                 String currentTime = sdf.format(new Date());
-                tvScannedTime.setText("Scanned Time: " + currentTime);
+                tvScannedTime.setText(currentTime);
 
-                tvLocationName.setText("Location Name:" + Globals.LocationInProgress.nom);
+                tvLocationName.setText(Globals.LocationInProgress.nom);
 
-                recyclerViewTask = findViewById(R.id.recyclerViewTrainModeTasks);
-                RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LocationInProgress.lTache, getApplication());
-                recyclerViewTask.setAdapter(adapter);
-                recyclerViewTask.setLayoutManager(new LinearLayoutManager(this));
+                recyclerViewLocationTask = findViewById(R.id.recyclerViewTrainModeTasks);
+                RecyclerViewLocationTaskAdapter adapter = new RecyclerViewLocationTaskAdapter(Globals.LocationInProgress.lTache, getApplication());
+                recyclerViewLocationTask.setAdapter(adapter);
+                recyclerViewLocationTask.setLayoutManager(new LinearLayoutManager(this));
             }
         }
     }
