@@ -415,7 +415,10 @@ namespace BqsClinoTag.Controllers
                 unL.Progress = 1;
 
             await db.SaveChangesAsync();
-            if (unL != null) return new LieuLight(unL);
+
+            if (unL != null) 
+                return new LieuLight(unL);
+
             else return null;
         }
 
@@ -436,8 +439,10 @@ namespace BqsClinoTag.Controllers
                 model.Add(tempItem);
             }
 
-            if (unL != null) return model;
-            else return null;
+            if (unL != null) 
+                return model;
+            else 
+                return null;
         }
 
         [HttpGet]

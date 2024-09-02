@@ -1,9 +1,13 @@
 package nc.grool.clinotag.composant;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,31 +23,44 @@ import nc.grool.clinotag.Globals;
 import nc.grool.clinotag.dto.Tache;
 import nc.grool.clinotag.R;
 
-public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewTacheAdapter.ViewHolderSite> {
+public class RecyclerViewLocationTaskAdapter extends RecyclerView.Adapter<RecyclerViewLocationTaskAdapter.ViewHolderSite> {
 
     private List<Tache> taches = Collections.emptyList();
     private View.OnClickListener mOnItemClickListener;
 
     Context context;
 
-    public RecyclerViewTacheAdapter(List<Tache> list, Context context) {
+    public RecyclerViewLocationTaskAdapter(List<Tache> list, Context context) {
         this.taches = list;
         this.context = context;
     }
 
     @Override
     public ViewHolderSite onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Inflate the layout, initialize the View Holder
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_tache_layout, parent, false);
+        // Inflate the layout, initialize the View Holder
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_location_task_layout, parent, false);
         return new ViewHolderSite(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderSite holder, int position) {
+        // Set task details
         holder.labTache.setTag(taches.get(position).idTache);
         holder.labTache.setText(taches.get(position).nom);
         holder.switchTache.setTag(taches.get(position).idTacheLieu);
 
+        // Check if photo data is available and decode it to Bitmap
+        String base64Photo = taches.get(position).photo;
+        if (base64Photo != null && !base64Photo.isEmpty()) {
+            Bitmap bitmap = base64ToBitmap(base64Photo);
+            if (bitmap != null) {
+                holder.image.setImageBitmap(bitmap);
+            } else {
+            }
+        } else {
+        }
+
+        // Handle switch state change
         holder.switchTache.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (Globals.PassageInProgress != null && Globals.PassageInProgress.lTache != null) {
                 for (Tache t : Globals.PassageInProgress.lTache) {
@@ -52,10 +69,10 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
                         return;
                     }
                 }
-            } else {
             }
         });
 
+        // Handle task name click for showing description
         holder.labTache.setOnClickListener(view -> {
             if (Globals.PassageInProgress != null && Globals.PassageInProgress.lTache != null) {
                 for (Tache t : Globals.PassageInProgress.lTache) {
@@ -74,7 +91,7 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
 
     @Override
     public int getItemCount() {
-        //returns the number of elements the RecyclerView will display
+        // Returns the number of elements the RecyclerView will display
         return taches.size();
     }
 
@@ -87,18 +104,19 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
         CardView cv;
         TextView labTache;
         Switch switchTache;
+        ImageView image;
 
         public ViewHolderSite(View itemView) {
             super(itemView);
 
-            cv = itemView.findViewById(R.id.cardViewDistribution);
-            labTache = itemView.findViewById(R.id.labNomTache);
-            switchTache = itemView.findViewById(R.id.switchTache);
+            cv = itemView.findViewById(R.id.cardViewTaskDistribution);
+            labTache = itemView.findViewById(R.id.lb_task_name);
+            switchTache = itemView.findViewById(R.id.sw_check);
+            image = itemView.findViewById(R.id.img_task_image);
 
             itemView.setTag(this);
             itemView.setOnClickListener(mOnItemClickListener);
         }
-
     }
 
     @Override
@@ -106,17 +124,20 @@ public class RecyclerViewTacheAdapter extends RecyclerView.Adapter<RecyclerViewT
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    // Insert a new item to the RecyclerView on a predefined position
+    // Insert a new item to the RecyclerView at a predefined position
     public void insert(int position, Tache data) {
         taches.add(position, data);
         notifyItemInserted(position);
     }
 
-//    // Remove a RecyclerView item containing a specified Data object
-//    public void remove(Site data) {
-//        int position = taches.indexOf(data);
-//        taches.remove(position);
-//        notifyItemRemoved(position);
-//    }
-
+    // Convert base64 string to Bitmap
+    public Bitmap base64ToBitmap(String base64String) {
+        try {
+            byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace(); // Log the error for debugging
+            return null; // Return null if decoding fails
+        }
+    }
 }

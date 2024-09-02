@@ -27,18 +27,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import nc.grool.clinotag.composant.DialogTexte;
 import nc.grool.clinotag.composant.Location;
 import nc.grool.clinotag.composant.RecyclerViewLieuAdapter;
+import nc.grool.clinotag.composant.RecyclerViewLocationTaskAdapter;
 import nc.grool.clinotag.composant.RecyclerViewTacheAdapter;
 import nc.grool.clinotag.dto.Client;
 import nc.grool.clinotag.dto.Lieu;
@@ -58,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
     static boolean scanInProgress = false;
     NfcAdapter mAdapter;
 
+    public TextView tvScannedTime = null;
+
+    public TextView tvLocationName = null;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -65,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
         Button btn = this.findViewById(R.id.Notification);
+
+        tvScannedTime = this.findViewById(R.id.scannedTime);
+        tvLocationName = this.findViewById(R.id.locationName);
+
+        tvScannedTime.setVisibility(View.GONE);
+        tvLocationName.setVisibility(View.GONE);
 
         if(Globals.isWorking)
         {
@@ -80,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-//        ReadingTag("04428462F14A81");
     }
 
     @Override
@@ -137,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String onBatteryLevel() {
+
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = getApplicationContext().registerReceiver(null, ifilter);
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
@@ -148,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     static String hexTagId;
 
     public void onClickNotification(View v) {
-        
+
         String req = Globals.urlAPIClinoTag + "Notify/" ;
 
         try {
@@ -206,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn = this.findViewById(R.id.Notification);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewLieu);
-        RecyclerView recyclerViewTask = findViewById(R.id.recyclerViewTasks);
+        RecyclerView recyclerViewLocationTask = findViewById(R.id.recyclerViewTrainModeTasks);
 
         if ( !Globals.cetAgent.trainMode) {
 
@@ -219,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
 
             if (Globals.listLieus != null) {
+
                 RecyclerViewLieuAdapter adapter = new RecyclerViewLieuAdapter(Globals.listLieus, getApplication());
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -231,10 +246,18 @@ public class MainActivity extends AppCompatActivity {
 
             if (Globals.LocationInProgress != null && Globals.LocationInProgress.lTache != null) {
 
-                recyclerViewTask = findViewById(R.id.recyclerViewTache);
-                RecyclerViewTacheAdapter adapter = new RecyclerViewTacheAdapter(Globals.LocationInProgress.lTache, getApplication());
-                recyclerViewTask.setAdapter(adapter);
-                recyclerViewTask.setLayoutManager(new LinearLayoutManager(this));
+                tvLocationName.setVisibility(View.VISIBLE);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                String currentTime = sdf.format(new Date());
+                tvScannedTime.setText(currentTime);
+
+                tvLocationName.setText(Globals.LocationInProgress.nom);
+
+                recyclerViewLocationTask = findViewById(R.id.recyclerViewTrainModeTasks);
+                RecyclerViewLocationTaskAdapter adapter = new RecyclerViewLocationTaskAdapter(Globals.LocationInProgress.lTache, getApplication());
+                recyclerViewLocationTask.setAdapter(adapter);
+                recyclerViewLocationTask.setLayoutManager(new LinearLayoutManager(this));
             }
         }
     }
@@ -246,7 +269,9 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 String result = new JsonTaskString().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
-                if (result != null && !result.equals("")) {
+
+                if (result != null && !result.equals(""))
+                {
                     if(result.equals("LIEU")) {
 
                         req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
@@ -265,14 +290,18 @@ public class MainActivity extends AppCompatActivity {
 
                             Globals.LocationInProgress = rLieu;
 
-                            startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
-                            Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
+                            if( !Globals.trainMode)
+                            {
+                                startActivityForResult(new Intent(getApplicationContext(), PassageActivity.class), 0);
+                                Toast.makeText(getApplicationContext(), rLieu.client + "/" + rLieu.nom + " recovered.", Toast.LENGTH_SHORT).show();
+                            } else{ // display the tasks when user on train mode
 
-                            loadingLists();
+                                loadingLists();
+                            }
                         }
                     } else if(result.equals("MATERIEL")) {
 
-                        if(!Globals.cetAgent.trainMode)
+                        if(!Globals.trainMode)
                         {
                             // set agent is working part
                             if(Globals.isWorking)
@@ -292,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
 
                     } else if(result.equals("QTY"))
                     {
-                        if(!Globals.cetAgent.trainMode)
+                        if(!Globals.trainMode)
                         {
                             req = Globals.urlAPIClinoTag + "ScanLieu/" + hexTagId ;
                             Lieu rLieu = new JsonTaskLieu().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
@@ -306,26 +335,27 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                        switch (which){
-                            case DialogInterface.BUTTON_NEUTRAL:
-                                DialogNouveauLieu(hexTagId);
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                DialogNouveauMateriel(hexTagId);
-                                break;
-                        }
-                    };
 
-                    req = Globals.urlAPIClinoTag + "ListeClient";
-                    Globals.listeClient = new JsonTaskClients().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,req).get();
+                    if(!Globals.trainMode)
+                    {
+                        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                            switch (which){
+                                case DialogInterface.BUTTON_NEUTRAL:
+                                    OnSaveLocation(hexTagId, 10);
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    OnSaveHardware(hexTagId, 10);
+                                    break;
+                            }
+                        };
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
-                            .setNeutralButton("Lieu", dialogClickListener)
-                            .setNegativeButton("Matériel", dialogClickListener)
-                            .setPositiveButton("Annuler", dialogClickListener)
-                            .show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
+                                .setNeutralButton("Location", dialogClickListener)
+                                .setNegativeButton("Hardware", dialogClickListener)
+                                .setPositiveButton("Cancel", dialogClickListener)
+                                .show();
+                    }
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -338,26 +368,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void DialogNouveauMateriel(String hexTagId) {
-        List<String> lClientId = new ArrayList<String>();
-        List<String> lClientNom = new ArrayList<String>();
-        for(Client p : Globals.listeClient){
-            lClientId.add(String.valueOf(p.idClient));
-            lClientNom.add(p.nom);
-        }
-
-        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
-
-        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Customer selection")
-                .setItems(csClientsNom, (dialog, which) -> {
-                    dialogNomMateriel(hexTagId, Integer.parseInt(lClientId.get(which)));
-                });
-
-        dialogPubliBuilder.create().show();
-    }
-
-    void dialogNomMateriel(String hexTagId, int idClient) {
+    void OnSaveHardware(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomMateriel = DialogTexte.creerDialogTexte(MainActivity.this);
         dialogNomMateriel.show();
@@ -378,7 +389,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (result == 0) {
-                    Toast.makeText(getApplicationContext(), "The material is associated with the tag.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The hardware is associated with the tag.", Toast.LENGTH_SHORT).show();
                     ReadingTag(hexTagId);
                 } else {
                     Toast.makeText(getApplicationContext(), "Hardware registration failed.", Toast.LENGTH_SHORT).show();
@@ -391,26 +402,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void DialogNouveauLieu(String hexTagId) {
-        List<String> lClientId = new ArrayList<String>();
-        List<String> lClientNom = new ArrayList<String>();
-        for(Client p : Globals.listeClient){
-            lClientId.add(String.valueOf(p.idClient));
-            lClientNom.add(p.nom);
-        }
-
-        final CharSequence[] csClientsNom = lClientNom.toArray(new CharSequence[lClientNom.size()]);
-
-        AlertDialog.Builder dialogPubliBuilder = new MaterialAlertDialogBuilder(MainActivity.this)
-                .setTitle("Customer selection")
-                .setItems(csClientsNom, (dialog, which) -> {
-                    dialogNomLieu(hexTagId, Integer.parseInt(lClientId.get(which)));
-                });
-
-        dialogPubliBuilder.create().show();
-    }
-
-    void dialogNomLieu(String hexTagId, int idClient) {
+    void OnSaveLocation(String hexTagId, int idClient) {
 
         final AlertDialog dialogNomLieu = DialogTexte.creerDialogTexte(MainActivity.this);
         dialogNomLieu.show();

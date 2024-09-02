@@ -55,16 +55,9 @@ public class PassageActivity extends AppCompatActivity {
         super.onStart();
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
-//        if(mAdapter != null)
-//        {
-//            if(mAdapter.isEnabled())
-//                toogleNfc(true);
-//        }
-
         if(mAdapter == null){
         } else {
-            if (!mAdapter.isEnabled()) {
-            } else {
+            if (mAdapter.isEnabled()) {
                 toogleNfc(true);
             }
         }
@@ -82,7 +75,7 @@ public class PassageActivity extends AppCompatActivity {
         Globals.PassageInProgress.lTache = Globals.LocationInProgress.lTache;
 
         labDateHeurePassage = (TextView) findViewById(R.id.labDateHeurePassage);
-        labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
+        labDateHeurePassage.setText("Beginning : " + Format.ShowShortDateTime(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
 
         editCommentaire = (EditText) findViewById(R.id.editCommentaire);
 
@@ -92,17 +85,14 @@ public class PassageActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {}
 
             public void onFinish() {
-                setTitle(Globals.getCurrentTime() + " - " + Globals.LocationInProgress.client + "/" + Globals.LocationInProgress.nom);
-                labDateHeurePassage.setText("Beginning : " + Format.AfficherCourteDateHeure(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
+                setTitle(Globals.getCurrentTime() + " - " + Globals.LocationInProgress.nom);
+                labDateHeurePassage.setText("Beginning : " + Format.ShowShortDateTime(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
                 this.start();
             }
         }.start();
 
         chargement();
 
-//        ((EditText)findViewById(R.id.editCommentaire)).setOnFocusChangeListener((v, hasFocus) -> {
-//            if (!hasFocus) { chargement(); }
-//        });
     }
 
     static String hexTagId;
@@ -118,7 +108,6 @@ public class PassageActivity extends AppCompatActivity {
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-
             }
         };
 

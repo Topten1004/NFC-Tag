@@ -39,13 +39,8 @@ public class Globals extends Application {
     public static Boolean trainMode = false;
     public static Boolean isWorking = false;
 
-//  public static String dns = "10.0.2.2";
-//  public static String url = "https://10.0.2.2:44328";
-
-//  public static String urlAPIGrool = "https://10.0.2.2:44330/api/grool/";
     public static String urlAPIClinoTag = url + "/api/clinotag/";
     public static Boolean dispoAPI= false;
-
 
     private static Location location;
     public static String msgErreur;
@@ -86,23 +81,7 @@ public class Globals extends Application {
         return  false;
     }
 
-//    public void creerBearer() {
-//        try {
-//            if (bTok != null) bTok.bAuthentication(urlAPIBqsClinoTag);
-//            else {
-//                idConstructeur = InfoAppareilKt.getDeviceSerial(getApplicationContext());
-//                bTok = new BearerToken.AccessTokenRequest().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR, idConstructeur, "b37d8d68-3fd1-4500-a15d-28f36254olic", urlAPIBqsClinoTag).get();
-//                if(bTok.access_token == null)bTok = null;
-//            }
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public static String getCurrentTime() {
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();
         return dateFormat.format(date);

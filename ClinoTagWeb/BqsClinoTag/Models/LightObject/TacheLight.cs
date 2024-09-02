@@ -7,5 +7,6 @@
         public string nom { get; set; }
         public string? description { get; set; }
         public bool fait { get; set; }
+        public string? photo { get; set; } = string.Empty;
     }
 }
