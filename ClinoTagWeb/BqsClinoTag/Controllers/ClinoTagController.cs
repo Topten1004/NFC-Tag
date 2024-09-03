@@ -53,8 +53,8 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpPost]
-        [Route("AjoutMateriel")]
-        public async Task<int> AjoutMateriel(LieuOuMaterielPost lieu)
+        [Route("AddHardware")]
+        public async Task<int> AddHardware(LieuOuMaterielPost lieu)
         {
             Client unC = await db.Clients.FindAsync(lieu.idClient);
 
@@ -73,8 +73,8 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpPost]
-        [Route("AjoutLieu")]
-        public async Task<int> AjoutLieu(LieuOuMaterielPost lieu)
+        [Route("AddLocation")]
+        public async Task<int> AddLocation(LieuOuMaterielPost lieu)
         {
             Client unC = await db.Clients.FindAsync(lieu.idClient);
             
@@ -107,8 +107,8 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpPost]
-        [Route("AjoutQTY")]
-        public async Task<int> AjoutQTY(QtyPost qty)
+        [Route("AddQTY")]
+        public async Task<int> AddQTY(QtyPost qty)
         {
 
             Lieu? lieu = await db.Lieus.Where(x => x.UidTag == qty.uidTag).FirstOrDefaultAsync();
@@ -136,8 +136,8 @@ namespace BqsClinoTag.Controllers
         }
 
         [HttpGet]
-        [Route("ListeClient")]
-        public async Task<List<ClientLight>> ListeClient()
+        [Route("ListClient")]
+        public async Task<List<ClientLight>> GetClientList()
         {
             List<Client> lClient = await db.Clients.OrderBy(c => c.Nom).ToListAsync();
             List<ClientLight> list = new List<ClientLight>();
@@ -164,6 +164,7 @@ namespace BqsClinoTag.Controllers
 
             return logs;
         }
+
 
         [HttpGet]
         [Route("Table/Acknowledge")]
@@ -306,8 +307,6 @@ namespace BqsClinoTag.Controllers
 
             List<PassageVM> passageList = new List<PassageVM>();
             List<LocationTaskVM> locationTaskLists = new List<LocationTaskVM>();
-
-            //Lieu location = await db.Lieus.Where(x => x.Nom.ToLower() == lieu.ToLower()).Include(i => i.ClientLieu).Include(i => i.Passages).ThenInclude(u => u.PassageTaches).Include(i => i.TacheLieus).FirstOrDefaultAsync();
 
             Lieu? location = await db.Lieus
                 .Include(l => l.IdClientNavigation)

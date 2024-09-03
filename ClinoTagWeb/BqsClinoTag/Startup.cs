@@ -23,6 +23,7 @@ namespace BqsClinoTag
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddSignalR();
             services.AddScoped<NotificationHub>();
             services.AddScoped<ChatHub>();
