@@ -128,7 +128,7 @@ public class QtyActivity extends AppCompatActivity {
                 QtyPost lieu = new QtyPost(Globals.LocationInProgress.uidTag, Integer.parseInt(QtyCount));
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
-                            Globals.urlAPIClinoTag + "AjoutQTY",
+                            Globals.urlAPIClinoTag + "AddQTY",
                             new Gson().toJson(lieu)).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -233,10 +233,10 @@ public class QtyActivity extends AppCompatActivity {
             Globals g = (Globals)getApplication();
             if(g.isNetworkConnected()){
                 int result = -100;
-                LieuOuMaterielPost materiel = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputTexte.getText().toString());
+                LieuOuMaterielPost materiel = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputText.getText().toString());
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
-                            Globals.urlAPIClinoTag + "AjoutMateriel",
+                            Globals.urlAPIClinoTag + "AddHardware",
                             new Gson().toJson(materiel)).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -268,10 +268,10 @@ public class QtyActivity extends AppCompatActivity {
             Globals g = (Globals)getApplication();
             if(g.isNetworkConnected()){
                 int result = -100;
-                LieuOuMaterielPost lieu = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputTexte.getText().toString());
+                LieuOuMaterielPost lieu = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputText.getText().toString());
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
-                            Globals.urlAPIClinoTag + "AjoutLieu",
+                            Globals.urlAPIClinoTag + "AddLocation",
                             new Gson().toJson(lieu)).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -311,7 +311,7 @@ public class QtyActivity extends AppCompatActivity {
             QtyPost lieu = new QtyPost(Globals.LocationInProgress.uidTag, Integer.parseInt(QtyCount));
             try {
                 result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
-                        Globals.urlAPIClinoTag + "AjoutQTY",
+                        Globals.urlAPIClinoTag + "AddQTY",
                         new Gson().toJson(lieu)).get();
             } catch (ExecutionException e) {
                 e.printStackTrace();

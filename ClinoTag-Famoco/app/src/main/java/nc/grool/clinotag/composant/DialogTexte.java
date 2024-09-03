@@ -15,15 +15,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class DialogTexte {
 
-    public static EditText inputTexte;
+    public static EditText inputText;
     
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static AlertDialog creerDialogTexte(Context _context) {
         String titre = "Tag registration";
-        AlertDialog dialogTexte = new MaterialAlertDialogBuilder(_context)
+        AlertDialog dialogText = new MaterialAlertDialogBuilder(_context)
                 .setTitle(titre)
-                .setMessage("Nom")
+                .setMessage("Name")
                 .setPositiveButton("Register", null)
                 .setNegativeButton("Cancel", null)
                 .create();
@@ -31,15 +31,15 @@ public class DialogTexte {
         LinearLayout layout = new LinearLayout(_context);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        inputTexte = new EditText(_context);
-        inputTexte.setInputType(InputType.TYPE_CLASS_TEXT);
-        inputTexte.setFilters(new InputFilter[] { new InputFilter.LengthFilter(99) });
+        inputText = new EditText(_context);
+        inputText.setInputType(InputType.TYPE_CLASS_TEXT);
+        inputText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(99) });
 
-        inputTexte.setSelection(inputTexte.getText().length());
-        inputTexte.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        layout.addView(inputTexte);
-        dialogTexte.setView(layout);
+        inputText.setSelection(inputText.getText().length());
+        inputText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        layout.addView(inputText);
+        dialogText.setView(layout);
 
-        return dialogTexte;
+        return dialogText;
     }
 }

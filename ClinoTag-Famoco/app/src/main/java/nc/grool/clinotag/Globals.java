@@ -28,9 +28,7 @@ public class Globals extends Application {
     public static Materiel MaterialInProgress = null;
     public static Passage PassageInProgress = null;
     public static Utilisation UtilisationEnCours = null;
-    public static List<Client> listeClient = new ArrayList<>();
     public static List<Lieu> listLieus = new ArrayList<>();
-    public static List<String> lstCarteMaitresse = new ArrayList<>();
     public static String idConstructor;
     public static String dns = "bqs-clinotag.square.nc";
 
@@ -70,7 +68,6 @@ public class Globals extends Application {
             dispoAPI = false;
             try {
                 dispoAPI = new NetworkTask().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,dns).get();
-//                if(dispoAPI) creerBearer();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
