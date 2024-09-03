@@ -341,10 +341,10 @@ public class MainActivity extends AppCompatActivity {
                         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                             switch (which){
                                 case DialogInterface.BUTTON_NEUTRAL:
-                                    OnSaveLocation(hexTagId, 10);
+                                    OnSaveLocation(hexTagId, 9);
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    OnSaveHardware(hexTagId, 10);
+                                    OnSaveHardware(hexTagId, 9);
                                     break;
                             }
                         };
@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity {
             Globals g = (Globals)getApplication();
             if(g.isNetworkConnected()){
                 int result = -100;
-                LieuOuMaterielPost materiel = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputTexte.getText().toString());
+                LieuOuMaterielPost materiel = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputText.getText().toString());
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
                             Globals.urlAPIClinoTag + "AjoutMateriel",
@@ -411,7 +411,7 @@ public class MainActivity extends AppCompatActivity {
             Globals g = (Globals)getApplication();
             if(g.isNetworkConnected()){
                 int result = -100;
-                LieuOuMaterielPost lieu = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputTexte.getText().toString());
+                LieuOuMaterielPost lieu = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputText.getText().toString());
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
                             Globals.urlAPIClinoTag + "AjoutLieu",
