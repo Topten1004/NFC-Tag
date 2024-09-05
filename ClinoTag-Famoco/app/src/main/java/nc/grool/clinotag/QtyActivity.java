@@ -72,22 +72,15 @@ public class QtyActivity extends AppCompatActivity {
         super.onStart();
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
-//        if(mAdapter != null)
-//        {
-//            if(mAdapter.isEnabled())
-//                toogleNfc(true);
-//        }
-
-        if(mAdapter == null){
-        } else {
-            if (!mAdapter.isEnabled()) {
-            } else {
+        if(mAdapter != null){
+            if (mAdapter.isEnabled()) {
                 toogleNfc(true);
             }
         }
     }
 
     void toogleNfc(Boolean enable){
+
         if(enable){
             final ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, ToneGenerator.MAX_VOLUME);
 
@@ -99,8 +92,6 @@ public class QtyActivity extends AppCompatActivity {
 
                             hexTagId = Format.bytesToHexString(tag.getId()).substring(2).toUpperCase();
                             Toast.makeText(getApplicationContext(), hexTagId, Toast.LENGTH_SHORT).show();
-//                          tg.startTone(ToneGenerator.TONE_CDMA_SOFT_ERROR_LITE,200);
-//                          tg.startTone(ToneGenerator.TONE_CDMA_PIP,200);
                             tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD,200);
                             ReadingTag(hexTagId);
                         }
@@ -197,10 +188,10 @@ public class QtyActivity extends AppCompatActivity {
                     DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                         switch (which){
                             case DialogInterface.BUTTON_NEUTRAL:
-                                OnSaveLocation(hexTagId, 10);
+                                OnSaveLocation(hexTagId, 9);
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
-                                OnSaveHardware(hexTagId, 10);
+                                OnSaveHardware(hexTagId, 9);
                                 break;
                         }
                     };
@@ -208,8 +199,8 @@ public class QtyActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("The tag " + hexTagId + " is unknown, what do you want to record?")
-                            .setNeutralButton("Place", dialogClickListener)
-                            .setNegativeButton("Material", dialogClickListener)
+                            .setNeutralButton("Location", dialogClickListener)
+                            .setNegativeButton("Hardware", dialogClickListener)
                             .setPositiveButton("Cancel", dialogClickListener)
                             .show();
                 }
@@ -245,7 +236,7 @@ public class QtyActivity extends AppCompatActivity {
                 }
 
                 if (result == 0) {
-                    Toast.makeText(getApplicationContext(), "The material is associated with the tag.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The hardware is associated with the tag.", Toast.LENGTH_SHORT).show();
                     ReadingTag(hexTagId);
                 } else {
                     Toast.makeText(getApplicationContext(), "Hardware registration failed.", Toast.LENGTH_SHORT).show();

@@ -87,13 +87,11 @@ public class MainActivity extends AppCompatActivity {
             btn.setVisibility(View.VISIBLE);
         }
 
-
         if(mAdapter != null){
             if (mAdapter.isEnabled()) {
                 toogleNfc(true);
             }
         }
-
     }
 
     @Override
@@ -380,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                 LieuOuMaterielPost materiel = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputText.getText().toString());
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
-                            Globals.urlAPIClinoTag + "AjoutMateriel",
+                            Globals.urlAPIClinoTag + "AddHardware",
                             new Gson().toJson(materiel)).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -414,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                 LieuOuMaterielPost lieu = new LieuOuMaterielPost(hexTagId, idClient, DialogTexte.inputText.getText().toString());
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
-                            Globals.urlAPIClinoTag + "AjoutLieu",
+                            Globals.urlAPIClinoTag + "AddLocation",
                             new Gson().toJson(lieu)).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
