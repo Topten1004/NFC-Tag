@@ -79,7 +79,7 @@ public class PassageActivity extends AppCompatActivity {
 
         editCommentaire = (EditText) findViewById(R.id.editCommentaire);
 
-        setTitle(Globals.getCurrentTime() + " - " + Globals.LocationInProgress.client + "/" + Globals.LocationInProgress.nom);
+        setTitle(Globals.getCurrentTime() + " - " + Globals.LocationInProgress.nom);
         new CountDownTimer(5000, 300) {
 
             public void onTick(long millisUntilFinished) {}
@@ -217,13 +217,6 @@ public class PassageActivity extends AppCompatActivity {
                     }else{ passage.photo = ""; }
                 }else{ passage.photo = ""; }
 
-//                passage.lTache = new ArrayList<>();
-//                for (Tache uneTache: Globals.LieuEnCours.lTache
-//                     ) {
-//                    uneTache.fait = true;
-//                    passage.lTache.add(uneTache);
-//                }
-
                 Integer result = null;
                 try {
                     result = new JsonTaskIntegerPost().executeOnExecutor( AsyncTask.THREAD_POOL_EXECUTOR,
@@ -235,9 +228,7 @@ public class PassageActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (result != null) return result;
-//            } else {
-//                return -2;
-//            }
+
             return -999;
         }
 
