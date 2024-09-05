@@ -75,7 +75,7 @@ public class PassageActivity extends AppCompatActivity {
         Globals.PassageInProgress.lTache = Globals.LocationInProgress.lTache;
 
         labDateHeurePassage = (TextView) findViewById(R.id.labDateHeurePassage);
-        labDateHeurePassage.setText("Beginning : " + Format.ShowShortDateTime(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
+        labDateHeurePassage.setText( Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min");
 
         editCommentaire = (EditText) findViewById(R.id.editCommentaire);
 
@@ -86,7 +86,7 @@ public class PassageActivity extends AppCompatActivity {
 
             public void onFinish() {
                 setTitle(Globals.getCurrentTime() + " - " + Globals.LocationInProgress.nom);
-                labDateHeurePassage.setText("Beginning : " + Format.ShowShortDateTime(Globals.PassageInProgress.dateDebut) + " either " + Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
+                labDateHeurePassage.setText( Format.DifferenceMinute(Globals.PassageInProgress.dateDebut, new Date()) + " min.");
                 this.start();
             }
         }.start();
