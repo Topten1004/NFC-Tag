@@ -1,32 +1,39 @@
 ﻿@{
     string roomId = ViewBag.RoomId as string;
+    string token = Context.Request.Cookies["Demo-ClinoTag-Access-Token"];
+    bool isLoggedIn = !string.IsNullOrEmpty(token);
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="mb-3" id="roomListContainer">
-            <label for="roomList" class="form-label">Room List</label>
-            <ul class="list-group" id="roomList">
-                <!-- Room list items will be appended here -->
-            </ul>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <div class="row mb-3">
-            <label for="customerName" class="form-label">Customer Name</label>
-            <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name" style="margin:12px;width:80%">
-        </div>
-        <div class="row mb-3">
-            <div class="col-12">
-                <div id="chatContainer" class="chat-container"></div>
+<div class="container mt-4">
+    <div class="row">
+        @if (isLoggedIn)
+        {
+            <div class="col-md-4">
+                <div id="roomListContainer">
+                    <label for="roomList" class="form-label">Room List</label>
+                    <ul class="list-group" id="roomList">
+                        <!-- Room list items will be appended here -->
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-9">
-                <textarea class="form-control" id="chatMessage" rows="3" placeholder="Type your message..."></textarea>
+        }
+        <div class="col-md-8">
+            <div class="mb-3">
+                <label for="customerName" class="form-label">Customer Name</label>
+                <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name">
             </div>
-            <div class="col-3">
-                <button class="btn btn-primary" id="sendMessageButton">Send</button>
+            <div class="mb-3">
+                <div id="chatContainer" class="chat-container border rounded p-3" style="height: 500px; overflow-y: scroll;">
+                    <!-- Chat messages will be appended here -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-9">
+                    <textarea class="form-control" id="chatMessage" rows="3" placeholder="Type your message..."></textarea>
+                </div>
+                <div class="col-3 d-flex align-items-end">
+                    <button class="btn btn-primary w-100" id="sendMessageButton">Send</button>
+                </div>
             </div>
         </div>
     </div>
@@ -35,7 +42,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
 <script>
     const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
-
     let currentRoomId = null;
 
     connection.start().then(function () {
@@ -96,15 +102,22 @@
     // Handle incoming messages
     connection.on("ReceiveMessage", function (data) {
         if (data.roomId === currentRoomId) {
-            $('#chatContainer').append(`<div class="message">${data.text}</div>`);
+            $('#chatContainer').append(`<div class="message"> ${data.text}</div>`);
         }
     });
 
     // Handle sending messages
     $('#sendMessageButton').click(function () {
-        const message = $('#chatMessage').val();
+        const customerName = $('#customerName').val().trim();
+        const message = $('#chatMessage').val().trim();
+
+        if (!customerName) {
+            alert("Please enter your customer name.");
+            return;
+        }
+
         if (message && currentRoomId) {
-            connection.invoke("SendMessageToRoom", currentRoomId, message).catch(function (err) {
+            connection.invoke("SendMessageToRoom", currentRoomId, `${customerName}: ${message}`).catch(function (err) {
                 console.error("Error sending message:", err.toString());
             });
             $('#chatMessage').val(''); // Clear the message box
