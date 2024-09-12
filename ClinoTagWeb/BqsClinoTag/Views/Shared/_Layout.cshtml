@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BqsClinoTag.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
     @RenderSection("styles", false)
 
@@ -124,9 +125,9 @@
                         </a>
                     }
 
-                    <a href="/Chat/Chat">
-                        <button class="btn btn-outline-danger my-2 my-sm-0">
-                                <i class="fas fa-sms"></i> Message
+                    <a href="#" style="margin-left:12px !important">
+                        <button class="btn btn-outline-danger my-2 my-sm-0" data-toggle="modal" data-target="#qrModal">
+                            <i class="fas fa-sms"></i> Support Chat
                         </button>
                     </a>
 
@@ -134,6 +135,31 @@
             </div>
         </nav>
     </header>
+
+    <div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrModalLabel">Scan QR Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Please scan the QR code below:</p>
+                    <input type="text" class="form-control" placeholder="Enter Code" id="qrInput">
+                    <div class="qr-code-container">
+                        <!-- QR code image goes here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Go</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -142,6 +168,20 @@
 
     <!-- Add some styles for better visualization (optional) -->
     <style>
+        #qrInput {
+            font-size: 1.2em;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-code-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
         .modal-md {
             max-width: 80%; /* Adjust as needed for a smaller modal */
         }
@@ -168,8 +208,82 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <!-- Bootstrap CSS -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 
     <script>
+
+        let locations = [];
+
+        // Fetch locations when the page loads or the modal is opened
+        fetch('https://demo.clinotag.com/api/clinotag/Table/lieu')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json(); // Return the promise here
+            })
+            .then(data => {
+                locations = data; // Assign the resolved data to the locations array
+                console.log('Data received:', locations); // Log the locations data
+                // Process the data here
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+
+        console.log("locations:::", locations);
+
+        document.querySelector('#qrModal .btn-primary').addEventListener('click', function () {
+
+            var qrCode = document.getElementById('qrInput').value;
+
+            if (qrCode) {
+                try {
+                    // Attempt to parse the QR code as a URL
+                    let url = new URL(qrCode);
+                    let locationParam = url.searchParams.get('location');
+
+                    locationParam = locationParam.replace(/^"|"$/g, '');
+
+                    // Check if the location parameter matches any of the Lieu names
+                    let locationExists = locations.some(location => location.nom === locationParam);
+
+                    if (locationExists) {
+                        // Redirect to the correct URL if location is valid
+                        window.location.href = qrCode;
+                    } else {
+                        alert('Invalid QR code. The location does not exist.');
+                    }
+                } catch (error) {
+                    // If the QR code is not a valid URL, display an error message
+                    alert('Invalid QR code format. Please ensure it is a valid URL.');
+                }
+            } else {
+                alert('Please enter the QR code.');
+            }
+        });
+
+
+        $('#messageButton').click(function () {
+            $('#qrModal').modal('show');
+        });
+
+        // Handle QR code input submission
+        $('#qrSubmit').click(function () {
+            var qrCodeValue = $('#qrCodeInput').val();
+            if (qrCodeValue) {
+                // Redirect to the URL based on QR code
+                window.location.href = qrCodeValue;
+            } else {
+                alert("Please scan a QR code.");
+            }
+        });
+
         $(document).ready(function () {
             // Your code here
             var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
