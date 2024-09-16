@@ -23,7 +23,16 @@
                 <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name">
             </div>
             <div class="mb-3">
-                <div id="chatContainer" class="chat-container border rounded p-3" style="height: 500px; overflow-y: scroll;">
+                <label for="languageSelect" class="form-label">Select Language</label>
+                <select class="form-select" id="languageSelect">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <!-- Add more languages as needed -->
+                </select>
+            </div>
+            <div class="mb-3">
+                <div id="chatContainer" class="chat-container border rounded p-3" style="height: 420px; overflow-y: scroll;">
                     <!-- Chat messages will be appended here -->
                 </div>
             </div>
@@ -50,83 +59,99 @@
         // Automatically join the room if roomId is provided
         const roomId = '@ViewBag.RoomId';
 
-        if (roomId && roomId !== 'null') {
+        if (roomId) {
             currentRoomId = roomId;
             connection.invoke("JoinRoom", roomId).catch(function (err) {
-                console.log("JoinRoom", roomId);
                 console.error("Error joining room:", err.toString());
             });
-
-            // Fetch the room list
-            connection.invoke("GetRoomList").catch(function (err) {
-                console.log("GetRoomList:::", roomId);
-                console.error("Error fetching room list:", err.toString());
-            });
         }
+
+        // Fetch and display the room list
+        connection.invoke("GetRoomList").catch(function (err) {
+            console.error("Error fetching room list:", err.toString());
+        });
+
     }).catch(function (err) {
         console.error("SignalR connection failed:", err.toString());
     });
 
-    // Handle room list reception
+    // Handle receiving room list from the server
     connection.on("ReceiveRoomList", function (rooms) {
-        console.log("ReceiveRoomList:::", rooms);
+        console.log("Received rooms:", rooms);
         $('#roomListContainer').show(); // Show the room list container
+        $('#roomList').empty(); // Clear previous list if any
+
         rooms.forEach(room => {
             addRoomToList(room);
         });
     });
 
-    function addRoomToList(room) {
-        $('#roomList').append(`<li class="list-group-item">${room}</li>`);
+    // Handle room list updates
+    connection.on("ReceiveNewRoom", function (roomId) {
+        console.log("ReceiveNewRoom:", roomId);
+        addRoomToList(roomId);
+    });
+
+    // Add room to the list in the UI
+    function addRoomToList(roomId) {
+        const roomList = $('#roomList');
+        const newItem = $('<li>').addClass('list-group-item').text(roomId);
+        newItem.on('click', function () {
+            currentRoomId = roomId;
+            connection.invoke("JoinRoom", roomId).catch(function (err) {
+                console.error("Error joining room:", err.toString());
+            });
+            fetchRoomMessages(roomId); // Fetch the chat history
+        });
+        roomList.append(newItem);
     }
 
-    // Handle room selection
-    $('#roomList').on('click', 'li', function () {
-        $(this).addClass("active").siblings().removeClass("active");
-        currentRoomId = $(this).text();
-
-        // Fetch messages for the selected room
-        connection.invoke("GetRoomMessages", currentRoomId).catch(function (err) {
-            console.error("Error fetching room messages:", err.toString());
-        });
-    });
-
-    // Handle room messages reception
-    connection.on("ReceiveRoomMessages", function (data) {
-        $('#chatContainer').empty(); // Clear previous messages
-        data.messages.forEach(message => {
-            $('#chatContainer').append(`<div class="message">${message}</div>`);
-        });
-    });
-
-    // Handle incoming messages
-    connection.on("ReceiveMessage", function (data) {
-        if (data.roomId === currentRoomId) {
-            $('#chatContainer').append(`<div class="message"> ${data.text}</div>`);
-        }
-    });
-
     // Handle sending messages
-    $('#sendMessageButton').click(function () {
-        const customerName = $('#customerName').val().trim();
-        const message = $('#chatMessage').val().trim();
+    $('#sendMessageButton').on('click', function () {
+        const message = $('#chatMessage').val();
+        const language = $('#languageSelect').val();
+        const roomId = currentRoomId;
 
-        if (!customerName) {
-            alert("Please enter your customer name.");
-            return;
-        }
-
-        if (message && currentRoomId) {
-            connection.invoke("SendMessageToRoom", currentRoomId, `${customerName}: ${message}`).catch(function (err) {
+        if (message && roomId) {
+            connection.invoke("SendMessageToRoom", roomId, message, language).catch(function (err) {
                 console.error("Error sending message:", err.toString());
             });
-            $('#chatMessage').val(''); // Clear the message box
+            $('#chatMessage').val(''); // Clear the input
         }
     });
 
-    // Reconnect on connection loss
-    connection.onclose(function () {
-        console.log("SignalR disconnected. Attempting to reconnect...");
-        setTimeout(() => connection.start(), 5000); // Retry connection after 5 seconds
+    // Fetch chat history for a room
+    function fetchRoomMessages(roomId) {
+        connection.invoke("GetRoomMessages", roomId).catch(function (err) {
+            console.error("Error fetching room messages:", err.toString());
+        });
+    }
+
+    // Handle receiving messages from the server
+    connection.on("ReceiveMessage", function (data) {
+        const roomId = data.roomId;
+        const text = data.text;
+        const chatContainer = $('#chatContainer');
+
+        if (roomId === currentRoomId) {
+            const newMessage = $('<div>').addClass('chat-message').text(text);
+            chatContainer.append(newMessage);
+        }
+    });
+
+    // Handle receiving room chat history
+    connection.on("ReceiveRoomMessages", function (data) {
+        const roomId = data.roomId;
+        const messages = data.messages;
+        const chatContainer = $('#chatContainer');
+
+        if (roomId === currentRoomId) {
+            chatContainer.empty(); // Clear current chat messages
+
+            messages.forEach(message => {
+                const newMessage = $('<div>').addClass('chat-message').text(message);
+                chatContainer.append(newMessage);
+            });
+        }
     });
 </script>

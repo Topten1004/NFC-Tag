@@ -17,7 +17,15 @@ namespace BqsClinoTag.Controllers
         {
             if (!string.IsNullOrEmpty(locationName))
             {
-                locationName = locationName.Trim('"'); // Remove quotes if present
+                if(locationName.Contains('"'))
+                {
+                    locationName = locationName.Trim('"'); // Remove quotes if present
+                }
+            }
+
+            if(locationName == null)
+            {
+                locationName = "Managers";
             }
 
             ViewBag.RoomId = locationName;

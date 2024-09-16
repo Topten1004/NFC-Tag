@@ -93,6 +93,9 @@
                             <li class="nav-item">
                                 <a class="nav-link active" asp-area="" asp-controller="Qty" asp-action="Index">QTY</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" asp-area="" asp-controller="Chat" asp-action="Chat" asp-location="Manager">Support Chat</a>
+                            </li>
                         </ul>
                         <a href="/Home/Logout" >
                             <button class="btn btn-outline-danger my-2 my-sm-0">Disconnect</button>
@@ -123,13 +126,13 @@
                         <a href="/Home/Login" >
                             <button class="btn btn-outline-success my-2 my-sm-0">Connect</button>
                         </a>
-                    }
 
-                    <a href="#" style="margin-left:12px !important">
-                        <button class="btn btn-outline-danger my-2 my-sm-0" data-toggle="modal" data-target="#qrModal">
-                            <i class="fas fa-sms"></i> Support Chat
-                        </button>
-                    </a>
+                        <a href="#" style="margin-left:12px !important">
+                            <button class="btn btn-outline-danger my-2 my-sm-0" data-toggle="modal" data-target="#qrModal">
+                                <i class="fas fa-sms"></i> Support Chat
+                            </button>
+                        </a>
+                    }
 
                 </div>
             </div>
