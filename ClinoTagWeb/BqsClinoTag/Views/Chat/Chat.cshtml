@@ -48,6 +48,13 @@
     </div>
 </div>
 
+<style>
+    .list-group-item.active {
+        background-color: #007bff; /* Blue color or any color you prefer */
+        color: white; /* Ensure text color contrasts with the background */
+    }
+</style>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
 <script>
     const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
@@ -96,13 +103,24 @@
     function addRoomToList(roomId) {
         const roomList = $('#roomList');
         const newItem = $('<li>').addClass('list-group-item').text(roomId);
+
+        // Highlight the selected room if it matches the currentRoomId
+        if (roomId === currentRoomId) {
+            newItem.addClass('active'); // Assuming 'active' is the highlight class
+        }
+
         newItem.on('click', function () {
             currentRoomId = roomId;
+            $('#roomList li').removeClass('active'); // Remove highlight from all items
+            newItem.addClass('active'); // Highlight the selected item
+
             connection.invoke("JoinRoom", roomId).catch(function (err) {
                 console.error("Error joining room:", err.toString());
             });
+
             fetchRoomMessages(roomId); // Fetch the chat history
         });
+
         roomList.append(newItem);
     }
 
