@@ -59,6 +59,7 @@
 <script>
     const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
     let currentRoomId = null;
+    let managerRoomId = "Managers";
 
     connection.start().then(function () {
         console.log("Connected with ID:", connection.connectionId);
@@ -89,18 +90,24 @@
         $('#roomList').empty(); // Clear previous list if any
 
         rooms.forEach(room => {
-            addRoomToList(room);
+
+            if (room !== "Managers")
+                addRoomToList(room);
+
         });
     });
 
     // Handle room list updates
     connection.on("ReceiveNewRoom", function (roomId) {
         console.log("ReceiveNewRoom:", roomId);
-        addRoomToList(roomId);
+
+        if (roomId !== "Managers")
+            addRoomToList(roomId);
     });
 
     // Add room to the list in the UI
     function addRoomToList(roomId) {
+
         const roomList = $('#roomList');
         const newItem = $('<li>').addClass('list-group-item').text(roomId);
 
