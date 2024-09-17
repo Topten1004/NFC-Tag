@@ -1,11 +1,16 @@
 ﻿using BqsClinoTag.Models;
+using BqsClinoTag.ViewModel;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Crmf;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using OpenAI_API;
+using OpenAI_API.Chat;
 
 public class ChatHub : Hub
 {
@@ -34,7 +39,7 @@ public class ChatHub : Hub
         }
         _rooms[roomId].Add(message);
 
-        var translationToEnglish = await TranslateTextAsync(message, language, "en");
+        var translationToEnglish = await TranslateTextAsync(message, language, "English");
 
         ChatHistory chatHistory = new ChatHistory
         {
@@ -108,7 +113,7 @@ public class ChatHub : Hub
 
         if (chatHistory != null)
         {
-            var translatedResponse = await TranslateTextAsync(message, "en", chatHistory.Language);
+            var translatedResponse = await TranslateTextAsync(message, "English", chatHistory.Language);
             await Clients.Group(roomId).SendAsync("ReceiveMessage", new { roomId, text = translatedResponse });
         }
     }
@@ -123,38 +128,32 @@ public class ChatHub : Hub
     // Dummy translation method
     private async Task<string> TranslateTextAsync(string text, string fromLanguage, string toLanguage)
     {
-        // For now, returning the original text. Replace this with actual translation logic.
-        return text;
 
-        var client = new RestClient("https://api.openai.com/v1/chat/completions");
-        var request = new RestRequest
+        var apiModel = "gpt-3.5-turbo"; // Updated model
+
+        OpenAIAPI api = new OpenAIAPI(new APIAuthentication(_apiKey));
+
+        // Prepare the chat completion request
+        var chatRequest = new ChatRequest()
         {
-            Method = Method.Post
-        };
-        request.AddHeader("Authorization", $"Bearer {_apiKey}");
-        request.AddHeader("Content-Type", "application/json");
-
-        var prompt = $"Translate the following message from {fromLanguage} to {toLanguage}: '{text}'";
-
-        var body = new
-        {
-            model = "gpt-4-turbo",
-            messages = new List<object>
+            Messages = new List<ChatMessage>()
             {
-                new { role = "system", content = "You are a translation and language detection assistant." },
-                new { role = "user", content = prompt }
+                new ChatMessage { Role = OpenAI_API.Chat.ChatMessageRole.System, Content = @"You are a translator. Translate" + fromLanguage + "the given text to " + toLanguage +"." },
+                new ChatMessage { Role = OpenAI_API.Chat.ChatMessageRole.User, Content = text }
             },
-            max_tokens = 100
+            Model = apiModel,
+            Temperature = 0.3,
+            MaxTokens = 1000
         };
 
-        request.AddJsonBody(body);
+        string translatedText = string.Empty;
 
-        var response = await client.ExecuteAsync<RestResponse>(request);
-        var content = response.Content;
+        var result = await api.Chat.CreateChatCompletionAsync(chatRequest);
+        foreach (var choice in result.Choices)
+        {
+            translatedText = choice.Message.Content;
+        }
 
-        dynamic result = JsonConvert.DeserializeObject(content);
-        string translatedText = result?.choices[0]?.message?.content?.ToString()?.Trim();
-
-        return translatedText ?? text;
+        return translatedText;
     }
 }
