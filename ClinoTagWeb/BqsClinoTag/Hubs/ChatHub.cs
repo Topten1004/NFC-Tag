@@ -28,7 +28,7 @@ public class ChatHub : Hub
     }
 
     // This method sends a message to the room and handles the translation
-    public async Task SendMessageToRoom(string roomId, string message, string language)
+    public async Task SendMessageToRoom(string roomId, string userName, string message, string language)
     {
         bool isNewRoom = false;
         if (!_rooms.ContainsKey(roomId))
@@ -55,16 +55,17 @@ public class ChatHub : Hub
         await _db.SaveChangesAsync();
 
         // Send the original message in French to the customer only (i.e., the caller)
-        await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = message });
+        await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = userName + ": " +  message });
 
         // Send the translated message in English to the admin (manager group)
-        await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text = translationToEnglish });
+        await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text = userName + ": " + translationToEnglish });
 
         if (isNewRoom)
         {
             await Clients.All.SendAsync("ReceiveNewRoom", roomId);
         }
     }
+
     // When a user joins a room
     public async Task JoinRoom(string roomId)
     {
@@ -106,8 +107,7 @@ public class ChatHub : Hub
         await Clients.Caller.SendAsync("ReceiveRoomMessages", new { roomId, messages });
     }
 
-    // Send admin's response to the room and translate it to the original language
-    public async Task SendAdminResponse(string roomId, string message)
+    public async Task SendAdminResponse(string roomId, string userName, string message)
     {
         // Fetch the chat history to get the customer's language
         var chatHistory = _db.ChatHistorys
@@ -120,13 +120,14 @@ public class ChatHub : Hub
             // Translate admin's message to the customer's language (e.g., from English to French)
             var translatedResponse = await TranslateTextAsync(message, "English", chatHistory.Language);
 
-            // Send the original message (in English) to the manager
-            await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = message });
+            // Send the original message (in English) to the manager (admin group)
+            await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = "Manager: " + message });
 
             // Send the translated message (in French) to the customer
-            await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text = translatedResponse });
+            await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text =  "Manager: " + translatedResponse });
         }
     }
+
 
 
     // Send the list of rooms to the manager

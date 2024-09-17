@@ -1,18 +1,20 @@
 ﻿@{
     string roomId = ViewBag.RoomId as string;
     string token = Context.Request.Cookies["Demo-ClinoTag-Access-Token"];
-    bool isLoggedIn = !string.IsNullOrEmpty(token);
+    bool isLoggedIn = !string.IsNullOrEmpty(Context.Request.Cookies["Demo-ClinoTag-Access-Token"]);
 }
 
 <div class="container mt-4">
+    <!-- Hidden field or variable to pass the login status to JS -->
+    <input type="hidden" id="isLoggedIn" value="@isLoggedIn" />
+
     <div class="row">
         @if (isLoggedIn)
         {
             <div class="col-md-4">
                 <div id="roomListContainer">
                     <label for="roomList" class="form-label">Room List</label>
-                    <ul class="list-group" id="roomList">
-                    </ul>
+                    <ul class="list-group" id="roomList"></ul>
                 </div>
             </div>
         }
@@ -41,8 +43,7 @@
             }
 
             <div class="mb-3">
-                <div id="chatContainer" class="chat-container border rounded p-3" style="height: 420px; overflow-y: scroll;">
-                </div>
+                <div id="chatContainer" class="chat-container border rounded p-3" style="height: 420px; overflow-y: scroll;"></div>
             </div>
             <div class="row">
                 <div class="col-9">
@@ -56,24 +57,27 @@
     </div>
 </div>
 
-<style>
-    .list-group-item.active {
-        background-color: #007bff; /* Blue color or any color you prefer */
-        color: white; /* Ensure text color contrasts with the background */
-    }
-</style>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
 <script>
     const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
     let currentRoomId = null;
     let managerRoomId = "Managers";
-    let isManager = false;
+
+    let isLogin = '@ViewBag.IsLoggin';
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Usage
+    const accessToken = getCookie('Demo-ClinoTag-Access-Token');
+    console.log("accessToken::", accessToken); // Logs the cookie value if it exists
+
 
     connection.start().then(function () {
         console.log("Connected with ID:", connection.connectionId);
 
-        // Automatically join the room if roomId is provided
         const roomId = '@ViewBag.RoomId';
 
         if (roomId) {
@@ -83,58 +87,39 @@
             });
         }
 
-        // Fetch and display the room list
         connection.invoke("GetRoomList").catch(function (err) {
             console.error("Error fetching room list:", err.toString());
         });
-
     }).catch(function (err) {
         console.error("SignalR connection failed:", err.toString());
     });
 
-    // Handle receiving room list from the server
+    // Handle room list
     connection.on("ReceiveRoomList", function (rooms) {
         console.log("Received rooms:", rooms);
-        $('#roomListContainer').show(); // Show the room list container
-        $('#roomList').empty(); // Clear previous list if any
-
+        $('#roomListContainer').show();
+        $('#roomList').empty();
         rooms.forEach(room => {
-
-            if (room !== "Managers")
-                addRoomToList(room);
-
+            if (room !== "Managers") addRoomToList(room);
         });
     });
 
-    // Handle room list updates
-    connection.on("ReceiveNewRoom", function (roomId) {
-        console.log("ReceiveNewRoom:", roomId);
-
-        if (roomId !== "Managers")
-            addRoomToList(roomId);
-    });
-
-    // Add room to the list in the UI
     function addRoomToList(roomId) {
-
         const roomList = $('#roomList');
         const newItem = $('<li>').addClass('list-group-item').text(roomId);
 
-        // Highlight the selected room if it matches the currentRoomId
         if (roomId === currentRoomId) {
-            newItem.addClass('active'); // Assuming 'active' is the highlight class
+            newItem.addClass('active');
         }
 
         newItem.on('click', function () {
             currentRoomId = roomId;
-            $('#roomList li').removeClass('active'); // Remove highlight from all items
-            newItem.addClass('active'); // Highlight the selected item
-
+            $('#roomList li').removeClass('active');
+            newItem.addClass('active');
             connection.invoke("JoinRoom", roomId).catch(function (err) {
                 console.error("Error joining room:", err.toString());
             });
-
-            fetchRoomMessages(roomId); // Fetch the chat history
+            fetchRoomMessages(roomId);
         });
 
         roomList.append(newItem);
@@ -157,29 +142,34 @@
             return;
         }
 
-        // Format the message with customer name
-        message = name + ": " + message;
-
-        console.log("send message:", message);
-        console.log("language:", language);
+        console.log("isLogin:::::", isLogin);
 
         if (message && roomId) {
-            connection.invoke("SendMessageToRoom", roomId, message, language).catch(function (err) {
-                console.error("Error sending message:", err.toString());
-            });
-            $('#chatMessage').val(''); // Clear the input
+            if (isLogin == 2) {
+                // User is logged in (admin), so send an admin response
+                console.log("Sent Admin Message");
+                connection.invoke("SendAdminResponse", roomId, name, message).catch(function (err) {
+                    console.error("Error sending admin message:", err.toString());
+                });
+            } else {
+                // User is not logged in (customer), so send a regular message
+                console.log("Sent User Message");
+                connection.invoke("SendMessageToRoom", roomId, name, message, language).catch(function (err) {
+                    console.error("Error sending message:", err.toString());
+                });
+            }
+
+            $('#chatMessage').val('');  // Clear the input
         }
     });
 
-
-    // Fetch chat history for a room
+    // Fetch chat history
     function fetchRoomMessages(roomId) {
         connection.invoke("GetRoomMessages", roomId).catch(function (err) {
             console.error("Error fetching room messages:", err.toString());
         });
     }
 
-    // Handle receiving messages from the server
     connection.on("ReceiveMessage", function (data) {
         const roomId = data.roomId;
         const text = data.text;
@@ -191,15 +181,13 @@
         }
     });
 
-    // Handle receiving room chat history
     connection.on("ReceiveRoomMessages", function (data) {
         const roomId = data.roomId;
         const messages = data.messages;
         const chatContainer = $('#chatContainer');
 
         if (roomId === currentRoomId) {
-            chatContainer.empty(); // Clear current chat messages
-
+            chatContainer.empty();
             messages.forEach(message => {
                 const newMessage = $('<div>').addClass('chat-message').text(message);
                 chatContainer.append(newMessage);
