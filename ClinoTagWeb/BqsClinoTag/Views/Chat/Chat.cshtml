@@ -142,20 +142,26 @@
 
     // Handle sending messages
     $('#sendMessageButton').on('click', function () {
-        let message = $('#chatMessage').val(); // Use `let` instead of `const`
+        let message = $('#chatMessage').val();
         const language = $('#languageSelect').val();
         const roomId = currentRoomId;
         let name = $('#customerName').val();
 
         if (!name) {
             alert("Please enter the customer name.");
-            return; // Exit the function if name is not provided
-        } 
+            return;
+        }
+
+        if (!message) {
+            alert("Please enter the message.");
+            return;
+        }
 
         // Format the message with customer name
         message = name + ": " + message;
 
         console.log("send message:", message);
+        console.log("language:", language);
 
         if (message && roomId) {
             connection.invoke("SendMessageToRoom", roomId, message, language).catch(function (err) {
