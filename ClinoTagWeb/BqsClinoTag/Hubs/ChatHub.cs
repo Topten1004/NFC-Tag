@@ -73,7 +73,9 @@ public class ChatHub : Hub
         if (!_rooms.ContainsKey(roomId))
         {
             _rooms[roomId] = new List<string>();
+            await Clients.All.SendAsync("ReceiveNewRoom", roomId); // Notify all clients about the new room
         }
+
         await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
     }
 

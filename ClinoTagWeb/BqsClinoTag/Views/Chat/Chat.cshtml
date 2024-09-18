@@ -118,6 +118,21 @@
         roomList.append(newItem);
     }
 
+    connection.on("ReceiveNewRoom", function (roomId) {
+        console.log("New room received:", roomId);
+
+        // Check if the room is not already in the list
+        const existingRoom = $('#roomList li').filter(function () {
+            return $(this).text() === roomId;
+        });
+
+        if (existingRoom.length === 0) {
+            // Add the new room to the list
+            addRoomToList(roomId);
+        }
+    });
+
+
     // Fetch chat history
     function fetchRoomMessages(roomId) {
         connection.invoke("GetRoomMessages", roomId).catch(function (err) {
