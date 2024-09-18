@@ -48,6 +48,7 @@ public class ChatHub : Hub
             RoomName = roomId,
             Content = message,
             Checked = true,
+            UserName = userName,
             Language = language // Store the customer's language
         };
 
@@ -91,11 +92,18 @@ public class ChatHub : Hub
     // Retrieve chat messages for a specific room
     public static List<string> GetMessages(string roomId, CLINOTAGBQSContext db)
     {
-        var messages = db.ChatHistorys
-                         .Where(ch => ch.RoomName == roomId)
+        var history = db.ChatHistorys
+                         .Where(ch => ch.RoomName == roomId && ch.CreatedTime.Date == DateTime.Now.Date)
                          .OrderBy(ch => ch.CreatedTime)
-                         .Select(ch => ch.Content)
                          .ToList();
+
+        List<string> messages = new List<string>();
+
+        foreach (var item in history)
+        {
+            string message = item.UserName + ": " + item.Content;
+            messages.Add(message);
+        }
 
         return messages;
     }
@@ -120,6 +128,19 @@ public class ChatHub : Hub
             // Translate admin's message to the customer's language (e.g., from English to French)
             var translatedResponse = await TranslateTextAsync(message, "English", chatHistory.Language);
 
+            ChatHistory history = new ChatHistory
+            {
+                CreatedTime = DateTime.Now,
+                RoomName = roomId,
+                Content = message,
+                Checked = true,
+                UserName = userName,
+                Language = "English" // Manager language
+            };
+
+            _db.ChatHistorys.Add(history);
+            await _db.SaveChangesAsync();
+
             // Send the original message (in English) to the manager (admin group)
             await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = "Manager: " + message });
 
@@ -140,19 +161,17 @@ public class ChatHub : Hub
     // Dummy translation method
     private async Task<string> TranslateTextAsync(string text, string fromLanguage, string toLanguage)
     {
-
         var apiModel = "gpt-3.5-turbo"; // Updated model
-
         OpenAIAPI api = new OpenAIAPI(new APIAuthentication(_apiKey));
 
         // Prepare the chat completion request
         var chatRequest = new ChatRequest()
         {
             Messages = new List<ChatMessage>()
-            {
-                new ChatMessage { Role = OpenAI_API.Chat.ChatMessageRole.System, Content = @"You are a translator. Translate" + fromLanguage + "the given text to " + toLanguage +"." },
-                new ChatMessage { Role = OpenAI_API.Chat.ChatMessageRole.User, Content = text }
-            },
+        {
+            new ChatMessage { Role = OpenAI_API.Chat.ChatMessageRole.System, Content = @"You are a translator. Translate from " + fromLanguage + " to " + toLanguage + "." },
+            new ChatMessage { Role = OpenAI_API.Chat.ChatMessageRole.User, Content = text }
+        },
             Model = apiModel,
             Temperature = 0.3,
             MaxTokens = 1000
@@ -160,12 +179,27 @@ public class ChatHub : Hub
 
         string translatedText = string.Empty;
 
-        var result = await api.Chat.CreateChatCompletionAsync(chatRequest);
-        foreach (var choice in result.Choices)
+        try
         {
-            translatedText = choice.Message.Content;
-        }
+            // Attempt to call the API and translate the text
+            var result = await api.Chat.CreateChatCompletionAsync(chatRequest);
 
-        return translatedText;
+            foreach (var choice in result.Choices)
+            {
+                translatedText = choice.Message.Content;
+            }
+
+            return translatedText;
+        }
+        catch (HttpRequestException httpEx)
+        {
+            Console.WriteLine("HTTP request failed: " + httpEx.Message);
+            return "Error: Failed to connect to the translation service.";
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred: " + ex.Message);
+            return "Error: An unexpected error occurred.";
+        }
     }
 }

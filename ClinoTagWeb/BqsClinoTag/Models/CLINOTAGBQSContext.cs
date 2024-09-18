@@ -44,8 +44,8 @@ namespace BqsClinoTag.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True"));
-                //optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
+                //optionsBuilder.UseMySql("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=172.16.75.101;user=clinotag;database=clinotag;port=3306;password=Cl1n0t@g:2023;ConvertZeroDateTime=True"));
+                optionsBuilder.UseMySql("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True", ServerVersion.AutoDetect("server=localhost;user=root;database=CLINOTAG-BQS;port=3306;password=;ConvertZeroDateTime=True"));
             }
         }   
 

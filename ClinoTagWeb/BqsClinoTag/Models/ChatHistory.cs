@@ -33,5 +33,9 @@ namespace BqsClinoTag.Models
         [Column("language")]
         public string Language { get; set; }
 
+        [StringLength(100)]
+        [Column("user_name")]
+        public string UserName { get; set; }
+
     }
 }
