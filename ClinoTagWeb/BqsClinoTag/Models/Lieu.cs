@@ -54,7 +54,7 @@ namespace BqsClinoTag.Models
 
         [Column("ASK")]
 
-        public string? Ask { get; set; } = null!;
+        public string? Ask { get; set; }
 
 
         [Column("SATISFACTION")]
@@ -62,7 +62,7 @@ namespace BqsClinoTag.Models
 
         [Column("CONTACT")]
 
-        public string? Contact { get; set; } = null!;
+        public string? Contact { get; set; }
 
         [Column("QTY_DATE")]
 
