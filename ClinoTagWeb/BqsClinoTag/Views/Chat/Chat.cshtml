@@ -1,36 +1,269 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    string roomId = ViewBag.RoomId as string;
+    string token = Context.Request.Cookies["Demo-ClinoTag-Access-Token"];
+    bool isLoggedIn = !string.IsNullOrEmpty(Context.Request.Cookies["Demo-ClinoTag-Access-Token"]);
 }
-<div class="row">
-    <div class="col-md-4">
-        <div class="mb-3" id="roomListContainer">
-            <label for="roomList" class="form-label">Room List</label>
-            <ul class="list-group" id="roomList">
-                <!-- Room list items will be appended here -->
-            </ul>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <div class="row mb-3">
-            <label for="roomName" class="form-label">Room Name</label>
-            <input type="text" class="form-control" id="roomName" placeholder="Enter Room Name" style="margin:12px;width:80%">
-        </div>
-        <div class="row mb-3">
-            <div class="col-12">
-                <div id="chatContainer" class="chat-container">
-                    <!-- Chat messages will be appended here -->
+
+<div class="container mt-4">
+    <!-- Hidden field or variable to pass the login status to JS -->
+    <input type="hidden" id="isLoggedIn" value="@isLoggedIn" />
+
+    <div class="row">
+        @if (isLoggedIn)
+        {
+            <div class="col-md-4">
+                <div id="roomListContainer">
+                    <label for="roomList" class="form-label">Room List</label>
+                    <ul class="list-group" id="roomList"></ul>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-9">
-                <textarea class="form-control" id="chatMessage" rows="3" placeholder="Type your message..."></textarea> <!-- Changed to textarea -->
+        }
+        <div class="col-md-8">
+            @if (isLoggedIn)
+            {
+                <div class="mb-3" style="display:none">
+                    <label for="customerName" class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" id="customerName" value="Manager">
+                </div>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <label for="customerName" class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" id="customerName" placeholder="Enter Customer Name">
+                </div>
+                <div class="mb-3">
+                    <label for="languageSelect" class="form-label">Select Language</label>
+                    <select class="form-select" id="languageSelect">
+                        <option value="English">English</option>
+                        <option value="Spanish">Spanish</option>
+                        <option value="French">French</option>
+                    </select>
+                </div>
+            }
+
+            <div class="mb-3">
+                <div id="chatContainer" class="chat-container border rounded p-3" style="height: 420px; overflow-y: scroll;">
+                    <div>
+                    </div>
+                </div>
             </div>
-            <div class="col-3">
-                <button class="btn btn-primary" id="sendMessageButton">Send</button>
+
+            <div class="row">
+                <div class="col-9">
+                    <textarea class="form-control" id="chatMessage" rows="3" placeholder="Type your message..."></textarea>
+                </div>
+                <div class="col-3 d-flex align-items-end">
+                    <button class="btn btn-primary w-100" id="sendMessageButton">Send</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    let currentRoomId = null;
+    let managerRoomId = "Managers";
+
+    let isLogin = '@ViewBag.IsLoggin';
+    let lastDate = null;
+
+    connection.start().then(function () {
+        console.log("Connected with ID:", connection.connectionId);
+
+        const roomId = '@ViewBag.RoomId';
+
+        if (roomId) {
+            currentRoomId = roomId;
+            connection.invoke("JoinRoom", roomId).catch(function (err) {
+                console.error("Error joining room:", err.toString());
+            });
+        }
+        connection.invoke("GetRoomList").catch(function (err) {
+            console.error("Error fetching room list:", err.toString());
+        });
+    }).catch(function (err) {
+        console.error("SignalR connection failed:", err.toString());
+    });
+
+    // Handle room list
+    connection.on("ReceiveRoomList", function (rooms) {
+        console.log("Received rooms:", rooms);
+        $('#roomListContainer').show();
+        $('#roomList').empty();
+        rooms.forEach(room => {
+            if (room !== "Managers") addRoomToList(room);
+        });
+    });
+
+    function addRoomToList(roomId) {
+        const roomList = $('#roomList');
+        const newItem = $('<li>').addClass('list-group-item').text(roomId);
+
+        if (roomId === currentRoomId) {
+            newItem.addClass('active');
+        }
+
+        newItem.on('click', function () {
+            currentRoomId = roomId;
+            $('#roomList li').removeClass('active');
+            newItem.addClass('active');
+            connection.invoke("JoinRoom", roomId).catch(function (err) {
+                console.error("Error joining room:", err.toString());
+            });
+            fetchRoomMessages(roomId);
+        });
+
+        roomList.append(newItem);
+    }
+
+    connection.on("ReceiveNewRoom", function (roomId) {
+        console.log("New room received:", roomId);
+
+        // Check if the room is not already in the list
+        const existingRoom = $('#roomList li').filter(function () {
+            return $(this).text() === roomId;
+        });
+
+        if (existingRoom.length === 0) {
+            // Add the new room to the list
+            addRoomToList(roomId);
+        }
+    });
+
+
+    // Fetch chat history
+    function fetchRoomMessages(roomId) {
+        connection.invoke("GetRoomMessages", roomId).catch(function (err) {
+            console.error("Error fetching room messages:", err.toString());
+        });
+    }
+
+    // Function to format date as YYYY/MM/DD
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}/${month}/${day}`;
+    }
+
+    // Function to display the current date in the center of the chat container
+    function displayCurrentDate(chatContainer) {
+        const currentDate = new Date(); // Get the current date
+        const dateDiv = $('<div>').addClass('text-center font-weight-bold my-2').text(formatDate(currentDate));
+        chatContainer.append(dateDiv);
+    }
+
+    function scrollToBottom() {
+        const chatContainer = $('#chatContainer');
+        chatContainer.scrollTop(chatContainer[0].scrollHeight);
+    }
+
+    // Handle receiving room messages
+    connection.on("ReceiveRoomMessages", function (data) {
+        const roomId = data.roomId;
+        const messages = data.messages;
+
+        if (roomId === currentRoomId) {
+            displayMessages(messages);
+        }
+    });
+
+    // Function to display messages
+    function displayMessages(messages) {
+        const chatContainer = $('#chatContainer');
+        chatContainer.empty(); // Clear previous messages
+
+        // Always display the current date first in the chat container
+        displayCurrentDate(chatContainer);
+
+        // Loop through each message and display it
+        messages.forEach(message => {
+            console.log("message history:::", message.message);
+
+            // Check if the message is from the manager or customer
+            const messageClass = message.message.includes('Manager:') ? 'manager-message' : 'customer-message';
+
+            // Create the message element with the respective class
+            const newMessage = $('<div>').addClass(`chat-message ${messageClass}`).html(`${message.message} <span class="message-time">(${message.created})</span>`);
+            chatContainer.append(newMessage);
+        });
+
+        scrollToBottom();
+    }
+
+    // Handle receiving a new message in real-time
+    connection.on("ReceiveMessage", function (data) {
+        const text = data.text;
+        const created = data.created;
+
+        // Check if the message is from the manager or customer
+        const messageClass = text.includes('Manager:') ? 'manager-message' : 'customer-message';
+
+        if (data.roomId === currentRoomId) {
+            const newMessage = $('<div>').addClass(`chat-message ${messageClass}`).html(`${text} <span class="message-time">(${created})</span>`);
+            $('#chatContainer').append(newMessage);
+        }
+
+        scrollToBottom();
+    });
+
+    // Handle sending messages
+    $('#sendMessageButton').on('click', function () {
+        let message = $('#chatMessage').val();
+        const language = $('#languageSelect').val();
+        const roomId = currentRoomId;
+        let name = $('#customerName').val();
+
+        if (!name) {
+            alert("Please enter the customer name.");
+            return;
+        }
+
+        if (!message) {
+            alert("Please enter the message.");
+            return;
+        }
+
+        if (message && roomId) {
+            if (isLogin == 2) {
+                // User is logged in (admin), so send an admin response
+                connection.invoke("SendAdminResponse", roomId, name, message).catch(function (err) {
+                    console.error("Error sending admin message:", err.toString());
+                });
+            } else {
+                // User is not logged in (customer), so send a regular message
+                connection.invoke("SendMessageToRoom", roomId, name, message, language).catch(function (err) {
+                    console.error("Error sending message:", err.toString());
+                });
+            }
+
+            $('#chatMessage').val('');  // Clear the input
+        }
+    });
+</script>
+<style>
+    
+    /* Styles for the chat messages */
+    .chat-message {
+        margin-bottom: 10px; /* Adds a gap between each message */
+    }
+
+    /* Styles for the message time */
+    .message-time {
+        font-size: 0.8em; /* Makes the time smaller */
+        color: #777; /* Makes the time a lighter color for better contrast */
+        margin-left: 10px; /* Adds a gap between the message text and the time */
+    }
+
+    .manager-message {
+        color: blue; /* You can choose a different color for the manager's messages */
+        font-weight: bold; /* Make the manager's message bold for emphasis */
+    }
+
+    /* Styles for customer messages */
+    .customer-message {
+        color: green; /* You can choose a different color for the customer's messages */
+    }
+</style>

@@ -181,7 +181,7 @@ namespace BqsClinoTag.Controllers
             if (lieu == null) return NotFound();
 
             var excludedIDs = new HashSet<int>(lieu.TacheLieus.Select(p => p.IdTache));
-            ViewBag.ListeTache = await _context.Taches.Where(t => !excludedIDs.Contains(t.IdTache)).ToListAsync();
+            ViewBag.ListeTache = await _context.Taches.ToListAsync();
 
             chargeListeCLient();
             return View(lieu);

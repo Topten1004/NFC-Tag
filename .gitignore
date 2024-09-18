@@ -129,6 +129,9 @@ artifacts/
 # StyleCop
 StyleCopReport.xml
 
+# Env file
+appsettings.json
+
 # Files built by Visual Studio
 *_i.c
 *_p.c
@@ -469,5 +472,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+ClinoTagWeb/BqsClinoTag/appsettings.json
 ClinoTagWeb/BqsClinoTag/appsettings.json
 ClinoTagWeb/BqsClinoTag/appsettings.json

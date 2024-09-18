@@ -29,5 +29,13 @@ namespace BqsClinoTag.Models
 
         public Boolean Checked { get; set; } = false;
 
+        [StringLength(100)]
+        [Column("language")]
+        public string Language { get; set; }
+
+        [StringLength(100)]
+        [Column("user_name")]
+        public string UserName { get; set; }
+
     }
 }
