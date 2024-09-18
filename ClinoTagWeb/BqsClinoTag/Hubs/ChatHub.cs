@@ -56,10 +56,10 @@ public class ChatHub : Hub
         await _db.SaveChangesAsync();
 
         // Send the original message in French to the customer only (i.e., the caller)
-        await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = userName + ": " +  message });
+        await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = userName + ": " +  message, created = DateTime.Now.ToString("hh:mm") });
 
         // Send the translated message in English to the admin (manager group)
-        await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text = userName + ": " + translationToEnglish });
+        await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text = userName + ": " + translationToEnglish, created = DateTime.Now.ToString("hh:mm") });
 
         if (isNewRoom)
         {
@@ -90,19 +90,24 @@ public class ChatHub : Hub
     }
 
     // Retrieve chat messages for a specific room
-    public static List<string> GetMessages(string roomId, CLINOTAGBQSContext db)
+    public static List<ChatLog> GetMessages(string roomId, CLINOTAGBQSContext db)
     {
         var history = db.ChatHistorys
                          .Where(ch => ch.RoomName == roomId && ch.CreatedTime.Date == DateTime.Now.Date)
                          .OrderBy(ch => ch.CreatedTime)
                          .ToList();
 
-        List<string> messages = new List<string>();
+        List<ChatLog> messages = new List<ChatLog>();
 
         foreach (var item in history)
         {
-            string message = item.UserName + ": " + item.Content;
-            messages.Add(message);
+            ChatLog log = new ChatLog();
+
+            log.message = item.UserName + ": " + item.Content;
+            log.roomId = roomId;
+            log.created = item.CreatedTime.ToString("hh:mm");
+
+            messages.Add(log);
         }
 
         return messages;
@@ -142,10 +147,10 @@ public class ChatHub : Hub
             await _db.SaveChangesAsync();
 
             // Send the original message (in English) to the manager (admin group)
-            await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = "Manager: " + message });
+            await Clients.Caller.SendAsync("ReceiveMessage", new { roomId, text = "Manager: " + message, created = DateTime.Now.ToString("hh:mm") });
 
             // Send the translated message (in French) to the customer
-            await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text =  "Manager: " + translatedResponse });
+            await Clients.OthersInGroup(roomId).SendAsync("ReceiveMessage", new { roomId, text =  "Manager: " + translatedResponse, created = DateTime.Now.ToString("hh:mm") });
         }
     }
 
@@ -201,5 +206,14 @@ public class ChatHub : Hub
             Console.WriteLine("An error occurred: " + ex.Message);
             return "Error: An unexpected error occurred.";
         }
+    }
+
+    public record ChatLog
+    {
+        public string message { get; set; }
+
+        public string roomId { get; set; }
+
+        public string created { get; set; }
     }
 }
