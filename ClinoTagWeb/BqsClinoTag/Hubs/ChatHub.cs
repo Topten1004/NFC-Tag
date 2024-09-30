@@ -40,7 +40,11 @@ public class ChatHub : Hub
         _rooms[roomId].Add(message);
 
         // Translate customer's message to English for the manager
-        var translationToEnglish = await TranslateTextAsync(message, language, "English");
+
+        string? translationToEnglish = message;
+
+        if (language != "English")
+            translationToEnglish = await TranslateTextAsync(message, language, "English");
 
         ChatHistory chatHistory = new ChatHistory
         {
@@ -132,8 +136,10 @@ public class ChatHub : Hub
 
         if (chatHistory != null)
         {
-            // Translate admin's message to the customer's language (e.g., from English to French)
-            var translatedResponse = await TranslateTextAsync(message, "English", chatHistory.Language);
+            string translatedResponse = message;
+
+            if(chatHistory.Language != "English")
+                translatedResponse = await TranslateTextAsync(message, "English", chatHistory.Language);
 
             ChatHistory history = new ChatHistory
             {

@@ -150,14 +150,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Please scan the QR code below:</p>
-                    <input type="text" class="form-control" placeholder="Enter Code" id="qrInput">
-                    <div class="qr-code-container">
-                        <!-- QR code image goes here -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Go</button>
+                    <div id="reader" style="width:100%;"></div>
                 </div>
             </div>
         </div>
@@ -211,6 +204,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
     <!-- Bootstrap CSS -->
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -240,51 +235,50 @@
 
         console.log("locations:::", locations);
 
-        document.querySelector('#qrModal .btn-primary').addEventListener('click', function () {
+        $('#qrModal').on('shown.bs.modal', function () {
+            const qrCodeScanner = new Html5Qrcode("reader");  // 'reader' is the id of the div to display camera feed
 
-            var qrCode = document.getElementById('qrInput').value;
+            qrCodeScanner.start(
+                { facingMode: "environment" }, // Use the back camera for scanning
+                {
+                    fps: 10,    // Frames per second for scanning
+                    qrbox: 250  // Size of the scanning box (optional)
+                },
+                qrCodeMessage => {
+                    // QR code is successfully decoded
+                    console.log(`QR Code detected: ${qrCodeMessage}`);
 
-            if (qrCode) {
-                try {
-                    // Attempt to parse the QR code as a URL
-                    let url = new URL(qrCode);
-                    let locationParam = url.searchParams.get('location');
 
-                    locationParam = locationParam.replace(/^"|"$/g, '');
-
-                    // Check if the location parameter matches any of the Lieu names
-                    let locationExists = locations.some(location => location.nom === locationParam);
-
-                    if (locationExists) {
-                        // Redirect to the correct URL if location is valid
-                        window.location.href = qrCode;
+                    if (isValidUrl(qrCodeMessage)) {
+                        window.location.href = qrCodeMessage;
                     } else {
-                        alert('Invalid QR code. The location does not exist.');
+                        alert("Invalid QR code or not a URL.");
                     }
-                } catch (error) {
-                    // If the QR code is not a valid URL, display an error message
-                    alert('Invalid QR code format. Please ensure it is a valid URL.');
+
+                    qrCodeScanner.stop();
+                },
+                errorMessage => {
+                    // Handle errors or failures in QR code detection
+                    console.log(`Error: ${errorMessage}`);
+                    alert("Invalid QR code or not a URL.");
                 }
-            } else {
-                alert('Please enter the QR code.');
+            ).catch(err => {
+                console.log(`Failed to start QR code scanner: ${err}`);
+                alert("Failed to start QR code scanner.");
+
+            });
+        });
+
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
             }
-        });
+        }
 
-
-        $('#messageButton').click(function () {
-            $('#qrModal').modal('show');
-        });
-
-        // Handle QR code input submission
-        $('#qrSubmit').click(function () {
-            var qrCodeValue = $('#qrCodeInput').val();
-            if (qrCodeValue) {
-                // Redirect to the URL based on QR code
-                window.location.href = qrCodeValue;
-            } else {
-                alert("Please scan a QR code.");
-            }
-        });
 
         $(document).ready(function () {
             // Your code here
