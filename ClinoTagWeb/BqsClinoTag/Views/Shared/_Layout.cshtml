@@ -9,16 +9,14 @@
     <title>@ViewData["Title"] - BQS ClinoTag</title>
     <link rel="icon" type="image/x-icon" href="/img/bqsclinotag.png" />
     <link rel="stylesheet" href="~/css/jquery-ui.css"/>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BqsClinoTag.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
     @RenderSection("styles", false)
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
 </head>
 <body>
     <header>
@@ -162,7 +160,12 @@
         </main>
     </div>
 
-    <!-- Add some styles for better visualization (optional) -->
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - ClinoTag - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
     <style>
         #qrInput {
             font-size: 1.2em;
@@ -193,25 +196,40 @@
             max-height: 500px; /* Adjust height to keep the room list scrollable if it gets too long */
             overflow-y: auto;
         }
+
+        html {
+            height: 100%;
+            margin: 0;
+            position: relative;
+            min-height: 100%;
+        }
+
+        /* Use flexbox to create a sticky footer */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes up the full viewport height */
+        }
+
+        /* The main content should grow to push the footer down */
+        main {
+            flex: 1; /* This will allow the main content to grow and fill space */
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            width: 100%;
+            border-top: 1px solid #e7e7e7;
+            position: relative !important;
+            padding: 20px 0;
+        }
+
+        .container {
+            max-width: 96%;
+        }
+
     </style>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - ClinoTag - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
-    <!-- Bootstrap CSS -->
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
 
     <script>
 
@@ -405,9 +423,16 @@
         });
 
     </script>
-    @await RenderSectionAsync("Scripts", required: false)
-
     @await Html.PartialAsync("../Shared/_Message")
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
